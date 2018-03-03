@@ -41,6 +41,7 @@
         "people_info": {
           "description": "Please provide information about the people involved",
           "items": {
+            "title": "Person",
             "properties": {
               "email": {
                 "title": "Email-Adresses",

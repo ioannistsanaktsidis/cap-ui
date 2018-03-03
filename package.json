@@ -31,6 +31,7 @@
   "license": "MIT",
   "dependencies": {
     "grommet": "^1.0.0",
+    "grommet-addons": "^0.6.0",
     "lodash": "4.17.4",
     "object-assign": "4.1.0",
     "react": "16.2.0",

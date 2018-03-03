@@ -11,28 +11,50 @@ html, body {
 
 body {
   font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  line-height: 1.4em;
+  // line-height: 1.4em;
   color: #4d4d4d;
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
   font-smoothing: antialiased;
-  font-weight: 300;
+  // font-weight: 300;
+  overflow: hidden;
+  margin: 0px;  /*removes default style*/
+  display: flex;  /*enables flex content for its children*/
+  box-sizing: border-box;
 }
 
 #app {
+  flex: 1;
+}
+#app-main {
+  height: 100%;  /*allows both columns to span the full height of the browser window*/
+  display: flex;
+  flex-direction: column;
+}
+
+#header {
+  height: 55.97px;
+    flex-shrink: 0;
+    display: inline-flex;
+}
+
+#main-container {
+  flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
+  overflow-y: auto;  /*adds scroll to this container*/
   height: 100%;
+  display: flex;
 }
 
-td {
-	padding: 12px;
-}
+// td {
+// 	padding: 12px;
+// }
 
-h2 {
-	color: $vin-blue;
-}
+// h2 {
+// 	color: $vin-blue;
+// }
 
-.savings { color: $vin-green; }
-.loss { color: $vin-red; }
-input.small { width: 46px; }
-td.fuel-savings-label { width: 175px; }
+// .savings { color: $vin-green; }
+// .loss { color: $vin-red; }
+// input.small { width: 46px; }
+// td.fuel-savings-label { width: 175px; }

@@ -17,50 +17,20 @@ const Header = () => {
   const activeStyle = { color: 'blue' };
 
   return (
-    <GrommetHeader fixed={true} style={{backgroundColor: '#3c4c79'}}>
-      <Title style={{paddingLeft: 10}}>
-        { config.project.name || "Project Name"}
-      </Title>
-      <div style={{backgroundColor: '#fff'}}>
-        <NavLink exact to="/" activeStyle={activeStyle}>Home</NavLink>
-        {' | '}
-        <NavLink exact to="/search" activeStyle={activeStyle}>Search</NavLink>
-        {' | '}
-        <NavLink exact to="/deposit" activeStyle={activeStyle}>Deposit</NavLink>
-        {' | '}
-        <NavLink to="/fuel-savings" activeStyle={activeStyle}>Demo App</NavLink>
-        {' | '}
-        <NavLink to="/about" activeStyle={activeStyle}>About</NavLink>
-      </div>
-      <Box flex={true}
-        justify="end"
-        direction="row"
-        responsive={false}>
-        <Search inline={true}
-          fill={true}
-          size="medium"
-          placeHolder="Search"
-          dropAlign={{"right": "right"}} />
-            <SearchBox
-              autofocus={true}
-              searchOnChange={true}
-              prefixQueryFields={["actors^1","type^2","languages","title^10"]}/>
-        <Menu icon={<MenuIcon />}
-          dropAlign={{"right": "right"}}>
-          <Anchor path={{path:"/"}}>
-            Home
-          </Anchor>
-          <Anchor path={{path:"/search"}}>
-            Search
-          </Anchor>
-          <Anchor path={{path:"/fuel-savings"}}>
-            Demo App
-          </Anchor>
-          <Anchor path={{path:"/about"}}>
-            About
-          </Anchor>
-        </Menu>
-      </Box>
+    <GrommetHeader size="small" colorIndex="neutral-4-a" justify="between">
+      <Anchor path={{path:"/"}}>
+        <Title>
+          { config.project.name || "Project Name"}
+        </Title>
+      </Anchor>
+      <Menu direction="row" responsive={true}>
+        <Anchor path={{path:"/deposit"}}>Deposit</Anchor>
+        <Anchor path={{path:"/search"}}>Search</Anchor>
+      </Menu>
+      <Search inline={true}
+        size="medium"
+        placeHolder="Search"
+        dropAlign={{"right": "right"}} />
     </GrommetHeader>
   );
 };

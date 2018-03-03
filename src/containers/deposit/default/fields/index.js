@@ -4,7 +4,7 @@
 // import NumberField from "./NumberField";
 // import ObjectField from "./ObjectField";
 // import SchemaField from "./SchemaField";
-import StringField from "./StringField";
+// import StringField from "./StringField";
 // import TitleField from "./TitleField";
 // import UnsupportedField from "./UnsupportedField";
 
@@ -15,7 +15,7 @@ export default {
   // NumberField,
   // ObjectField,
   // SchemaField,
-  StringField,
+  // StringField,
   // TitleField,
   // UnsupportedField,
 };
