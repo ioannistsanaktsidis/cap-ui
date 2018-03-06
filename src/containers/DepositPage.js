@@ -51,6 +51,7 @@ const _TextWidget = function(props) {
     return props.onChange(value === "" ? options.emptyValue : value);
   };
 
+  console.log("_TextWidget::::", props)
   return (
 
     <FormField
@@ -59,22 +60,11 @@ const _TextWidget = function(props) {
       <TextInput id='item1'
         name='item-1'
         placeHolder={props.placeholder}
-        onDOMChange={_onChange}/>
+        onDOMChange={_onChange}
+        value={props.value}/>
     </FormField>
   );
 };
-
-
-  // return (
-  //   <FormField
-  //     label={props.label}
-  //     help={props.schema.description}>
-  //     <TextInput id='item1'
-  //       name='item-1'
-  //       placeHolder={props.placeholder}
-  //       onDOMChange={_onChange}/>
-  //   </FormField>
-  // );
 
 
 const fields = {
@@ -82,12 +72,12 @@ const fields = {
 };
 
 const widgets = {
-  text: _TextWidget
+  text: _TextWidget,
 };
 
 const uiSchema = {
   "basic_info": {
-    "ui:widget": "textarea"
+    "ui:object": "layerObjectField"
   }
 };
 

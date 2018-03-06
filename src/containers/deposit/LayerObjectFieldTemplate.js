@@ -11,17 +11,16 @@ import Layer from 'grommet/components/Layer';
 import Button from 'grommet/components/Button';
 import Edit from 'grommet/components/icons/base/Edit';
 
-
 class LayerObjectFieldTemplate extends React.Component {
   constructor(props) {
     super(props);
 
-    this.props.
+    console.log("LLLL::::",this.props)
+    // this.props.
     this.state = {
       layerActive: false
     };
 
-    this._onClick = this._onClick.bind(this);
   }
 
 
@@ -30,7 +29,8 @@ class LayerObjectFieldTemplate extends React.Component {
   }
 
   render() {
-    console.log(this.props)
+
+    console.log(this.props.idSchema['$id'] == "root")
     if (this.props.idSchema['$id'] == "root" ) {
       return (
         <Box>
@@ -49,17 +49,17 @@ class LayerObjectFieldTemplate extends React.Component {
 
             <Button icon={<Edit />}
               label='Edit'
-              onClick={(e) => {this.state.layerActive = !this.state.layerActive;console.log("ggggg:::::", e)}}
-              href='#' />
+              onClick={this._onClick.bind(this)}/>
           </div>
           {
-            open ?
+            this.state.layerActive ?
             <Layer
               closer={true}
               flush={true}
+              onClose={()=>{this.setState({layerActive:false})}}
               overlayClose={true}
               >
-              <Box>
+              <Box pad="large" >
                 {this.props.properties.map(prop => prop.content )}
               </Box>
             </Layer>
@@ -71,6 +71,33 @@ class LayerObjectFieldTemplate extends React.Component {
     }
   }
 }
+
+// let LayerObjectFieldTemplate = function (props) {
+//   console.log(props);
+
+//   if (props.idSchema['$id'] == "root" ) {
+//     return (<Box>
+//       {props.properties.map(prop => prop.content )}</Box>)
+//   }
+//   else {
+
+//   return (
+//     <Box className="grommetux-form-field" >
+//       <Accordion animate={false} openMulti={true}>
+//         <AccordionPanel pad="medium" heading={(
+//           <div>
+//             <Title>{props.title}{props.required ? "*" : null}</Title>
+//             {props.description ? <Paragraph size='small'>{props.description}</Paragraph> : null}
+//           </div>)}>
+//           <Box>
+//             {props.properties.map(prop => prop.content )}
+//           </Box>
+//         </AccordionPanel>
+//       </Accordion>
+//     </Box>
+//   );
+// }
+// }
 
 export default LayerObjectFieldTemplate;
 
