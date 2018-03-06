@@ -4,24 +4,25 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Box from 'grommet/components/Box';
-import Split from 'grommet/components/Split';
-import Columns from 'grommet/components/Columns';
 import Header from 'grommet/components/Header';
-import Heading from 'grommet/components/Heading';
-import Paragraph from 'grommet/components/Paragraph';
 import Form from "react-jsonschema-form";
-import SplitPane from 'react-split-pane';
 
 import FieldTemplate from './deposit/FieldTemplate';
 import ObjectFieldTemplate from './deposit/ObjectFieldTemplate';
+import LayerObjectFieldTemplate from './deposit/LayerObjectFieldTemplate';
 import ArrayFieldTemplate from './deposit/ArrayFieldTemplate';
 
 import CMSAnalysisSchema from './schemas/cms-analysis2';
-import App from 'grommet/components/App';
 import TextInput from 'grommet/components/TextInput';
 import FormField from 'grommet/components/FormField';
-import FormFields from 'grommet/components/FormFields';
+import _Form from 'grommet/components/Form';
 import Sidebar from 'grommet/components/Sidebar';
+import Button from 'grommet/components/Button';
+
+
+import DatabaseIcon from 'grommet/components/icons/base/Database';
+import UploadIcon from 'grommet/components/icons/base/Upload';
+import TreeIcon from 'grommet/components/icons/base/Tree';
 
 const log = (type) => console.log.bind(console, type);
 
@@ -32,7 +33,7 @@ const schemaFieldsToRemove = [
   "_cap_status",
   "_buckets",
   "_files"
-]
+];
 
 let schema = CMSAnalysisSchema;
 // let schema = physicsObjectsSchema;
@@ -40,49 +41,55 @@ let schema = CMSAnalysisSchema;
 let schemaTitle = schema.title ? schema.title : "Deposit";
 let schemaDescription = schema.description ? schema.description : null;
 
-schema.properties = _.omit(schema.properties, schemaFieldsToRemove)
-schema = { type: schema.type, properties: schema.properties }
-// Define the custom field component to use for the root object
-const uiSchema = {
-};
+schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
+schema = { type: schema.type, properties: schema.properties };
 
 const _TextWidget = function(props) {
   // TOFIX onBlur, onFocus
-  var _onChange = function _onChange(_ref) {
+  let _onChange = function _onChange(_ref) {
     var value = _ref.target.value;
-    console.log("booom:", value)
     return props.onChange(value === "" ? options.emptyValue : value);
   };
 
   return (
+
     <FormField
       label={props.label}
       help={props.schema.description}>
       <TextInput id='item1'
         name='item-1'
         placeHolder={props.placeholder}
-        suggestions={[]}
         onDOMChange={_onChange}/>
     </FormField>
   );
 };
 
 
+  // return (
+  //   <FormField
+  //     label={props.label}
+  //     help={props.schema.description}>
+  //     <TextInput id='item1'
+  //       name='item-1'
+  //       placeHolder={props.placeholder}
+  //       onDOMChange={_onChange}/>
+  //   </FormField>
+  // );
+
+
 const fields = {
-  // text: TextWidget,
-
-
-  // StringField: TextWidget
-
-  // PhysicsObjectsField: PhysicsObjectsField
+  'layerObjectField': LayerObjectFieldTemplate
 };
 
 const widgets = {
   text: _TextWidget
-  // PhysicsObjectsField: PhysicsObjectsField
 };
 
-
+const uiSchema = {
+  "basic_info": {
+    "ui:widget": "textarea"
+  }
+};
 
 export class DepositPage extends React.Component {
   constructor(props) {
@@ -94,11 +101,6 @@ export class DepositPage extends React.Component {
   }
 
   render() {
-//     return (
-//       <Box colorIndex="neutral-4-t" flex={true}>
-// sdf
-//       </Box>
-//     )
     return (
       <Box  basis="full" flex={true}>
         <Header colorIndex="neutral-4-t" >
@@ -107,42 +109,55 @@ export class DepositPage extends React.Component {
           <Box></Box>
         </Header>
         <Box flex={true} wrap={false} direction="row">
-          <Box direction="row" full={false} fixed={false} flex={true}>
+          <Box direction="row" full={false} flex={true}>
             <Sidebar full={false} size="medium" colorIndex='light-2'>
               <Box flex={true}>
-                <Header>
-                  Code
+                <Header size="small" colorIndex="neutral-4-a" pad="small">
+                  <Box flex={true}
+                    justify='between'
+                    alignContent='center'
+                    direction='row'
+                    responsive={false}>
+                    <span>Code</span>
+                  <Button size="xsmall" icon={<UploadIcon />}></Button>
+                  </Box>
                 </Header>
               </Box>
               <Box flex={true}>
-                <Header>
-                  Data
+                <Header size="small" colorIndex="neutral-4-a" pad="small">
+                  <Box flex={true}
+                    justify='between'
+                    alignContent='center'
+                    direction='row'
+                    responsive={false}>
+                    <span>Data</span>
+                  <Button size="xsmall" icon={<UploadIcon />}></Button>
+                  </Box>
                 </Header>
               </Box>
             </Sidebar>
 
-            <Box fixed={false} direction="row" flex={true} wrap={false}>
-            <Box   flex={true} wrap={false}>
-
-                  <Form
-                    schema={schema}
-                    uiSchema={uiSchema}
-                    FieldTemplate={FieldTemplate}
-                    ObjectFieldTemplate={ObjectFieldTemplate}
-                    ArrayFieldTemplate={ArrayFieldTemplate}
-                    widgets={widgets}
-                    fields={fields}
-                    onSubmit={log("submitted")}
-                    onError={log("errors")}
-                    onBlur={(type) => {
-                      console.log(type);
-                      // this.setState({formData: change.formData})
-                    }}
-                    onChange={(change) => {
-                      console.log("CHANGE::",change);
-                      // this.setState({formData: change.formData})
-                    }}
-                  />
+            <Box direction="row" flex={true} wrap={false}>
+            <Box size={{width: {min: "large"}}} flex={true} wrap={false}>
+              <Form
+                schema={schema}
+                FieldTemplate={FieldTemplate}
+                ObjectFieldTemplate={ObjectFieldTemplate}
+                ArrayFieldTemplate={ArrayFieldTemplate}
+                widgets={widgets}
+                fields={fields}
+                uiSchema={uiSchema}
+                onSubmit={log("submitted")}
+                onError={log("errors")}
+                onBlur={(type) => {
+                  console.log(type);
+                  // this.setState({formData: change.formData})
+                }}
+                onChange={(change) => {
+                  console.log("CHANGE::",change);
+                  // this.setState({formData: change.formData})
+                }}
+              />
             </Box>
 
               <Sidebar full={false} size="large" colorIndex='grey-2' pad="small">
@@ -157,54 +172,6 @@ export class DepositPage extends React.Component {
     );
   }
 }
-
-
-      // <Box basis="full" centered={false} full={true}>
-      //   <Header pad="small" colorIndex="neutral-4-t" justify="between">
-      //     <Box>{schemaTitle}</Box>
-      //     <Box>{(schemaDescription)}</Box>
-      //     <Box></Box>
-      //   </Header>
-      //   <Box full={true} direction="row">
-      //     < full={true} fixed={true} size="large" colorIndex='light-2' pad="small">
-      //       <Box>s
-      //         <Header>Code</Header>
-      //       </Box>
-      //       <Box>
-      //         <Header>Data</Header>
-      //       </Box>
-      //     </Sidebar>
-
-      //     <Box full={true} alignContent="center" justify="center">
-      //       <Box>
-      //         <Form
-      //           schema={schema}
-      //           uiSchema={uiSchema}
-      //           FieldTemplate={FieldTemplate}
-      //           ObjectFieldTemplate={ObjectFieldTemplate}
-      //           ArrayFieldTemplate={ArrayFieldTemplate}
-      //           widgets={widgets}
-      //           fields={fields}
-      //           onSubmit={log("submitted")}
-      //           onError={log("errors")}
-      //           onBlur={(type) => {
-      //             console.log(type);
-      //             // this.setState({formData: change.formData})
-      //           }}
-      //           onChange={(change) => {
-      //             console.log("CHANGE::",change);
-      //             this.setState({formData: change.formData})
-      //           }}
-
-      //         />
-      //       </Box>
-      //     </Box>
-      //     <Sidebar colorIndex='grey-1-a' pad="small"></Sidebar>
-      //   </Box>
-      // </Box>
-
-
-
 
 DepositPage.propTypes = {
   actions: PropTypes.object.isRequired,

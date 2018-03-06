@@ -1,10 +1,15 @@
 import {createStore, compose, applyMiddleware} from 'redux';
-import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
+// import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
 // 'routerMiddleware': the new way of storing route changes with redux middleware since rrV4.
 import { routerMiddleware } from 'react-router-redux';
+
+import {createLogger} from 'redux-logger';
+
 import rootReducer from '../reducers';
+
+
 export const history = createHistory();
 function configureStoreProd(initialState) {
   const reactRouterMiddleware = routerMiddleware(history);
@@ -25,16 +30,21 @@ function configureStoreProd(initialState) {
 
 function configureStoreDev(initialState) {
   const reactRouterMiddleware = routerMiddleware(history);
+  const loggerMiddleware = createLogger()
+
   const middlewares = [
     // Add other middleware on this line...
 
     // Redux middleware that spits an error on you when you try to mutate your state either inside a dispatch or between dispatches.
-    reduxImmutableStateInvariant(),
+    // **REMARK_BY_PAM not needed if using ImmutableJS
+    // TOFIX remove libbrary dependency
+    // reduxImmutableStateInvariant(),
 
     // thunk middleware can also accept an extra argument to be passed to each thunk action
     // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
     thunk,
     reactRouterMiddleware,
+    loggerMiddleware,
   ];
 
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // add support for Redux dev tools

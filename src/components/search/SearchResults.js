@@ -23,14 +23,12 @@ import NextIcon from 'grommet/components/icons/base/Next';
 import PreviousIcon from 'grommet/components/icons/base/Previous';
 import Sort from 'grommet-addons/components/Sort';
 
-import "searchkit/theming/theme.scss";
-
-export class SearchResults extends React.Component {
+class SearchResults extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selected: {}
-    };
+    // this.state = {
+    //   selected: {}
+    // };
   }
 
   componentDidMount() {}
@@ -38,28 +36,31 @@ export class SearchResults extends React.Component {
   componentWillUnmount() {}
 
   render() {
+      // console.log("result111s::", this.props.results);
     if (this.props.results){
+      // let _results = this.props.results.toJS();
+      console.log("results::", this.props.results);
       return (
-        <Box flex={true}>
-        <List>
-          {
-            this.props.results.hits.map(item => (
-              <ListItem key={item.id} >
-                <Box>
-                  <Header justify='between'>
-                    <Title>{item.metadata.title.title}</Title>
-                    <span  className='secondary'>
-                      {item.created}
-                    </span>
-                  </Header>
-                  <Paragraph size='medium'>
-                    {item.metadata.title.title}
-                  </Paragraph>
-                </Box>
-              </ListItem>
-            ))
-          }
-        </List>
+        <Box flex={true} colorIndex="light-2">
+          <List >
+            {
+              this.props.results.map(item => (
+                <ListItem key={item.id} >
+                  <Box flex={true}>
+                    <Header justify='between'>
+                      <Title>{item.metadata.title.title}</Title>
+                      <span  className='secondary'>
+                        {item.created}
+                      </span>
+                    </Header>
+                    <Paragraph size='medium'>
+                      {item.metadata.title.title}
+                    </Paragraph>
+                  </Box>
+                </ListItem>
+              ))
+            }
+          </List>
         </Box>
       );
     }

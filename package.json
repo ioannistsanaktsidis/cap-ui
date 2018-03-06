@@ -34,6 +34,7 @@
     "grommet-addons": "^0.6.0",
     "lodash": "4.17.4",
     "object-assign": "4.1.0",
+    "query-string": "^5.1.0",
     "react": "16.2.0",
     "react-dom": "16.2.0",
     "react-jsonschema-form": "1.0.0",
@@ -42,7 +43,9 @@
     "react-router-redux": "5.0.0-alpha.6",
     "react-split-pane": "0.1.74",
     "redux": "3.6.0",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "2.1.0",
+    "reselect": "^3.0.1",
     "searchkit": "2.3.0"
   },
   "devDependencies": {

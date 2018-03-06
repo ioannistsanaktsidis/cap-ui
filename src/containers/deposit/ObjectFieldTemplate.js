@@ -9,6 +9,7 @@ import AccordionPanel from 'grommet/components/AccordionPanel';
 import Header from 'grommet/components/Header';
 
 let ObjectFieldTemplate = function (props) {
+  console.log(props);
 
   if (props.idSchema['$id'] == "root" ) {
     return (<Box>
@@ -17,19 +18,19 @@ let ObjectFieldTemplate = function (props) {
   else {
 
   return (
-  <Box className="grommetux-form-field" >
-    <Accordion animate={false} openMulti={true}>
-      <AccordionPanel pad="medium" heading={(
-        <div>
-          <Title>{props.title}{props.required ? "*" : null}</Title>
-          {props.description ? <Paragraph size='small'>{props.description}</Paragraph> : null}
-        </div>)}>
-        <Box>
-          {props.properties.map(prop => prop.content )}
-        </Box>
-      </AccordionPanel>
-    </Accordion>
-        </Box>
+    <Box className="grommetux-form-field" >
+      <Accordion animate={false} openMulti={true}>
+        <AccordionPanel pad="medium" heading={(
+          <div>
+            <Title>{props.title}{props.required ? "*" : null}</Title>
+            {props.description ? <Paragraph size='small'>{props.description}</Paragraph> : null}
+          </div>)}>
+          <Box>
+            {props.properties.map(prop => prop.content )}
+          </Box>
+        </AccordionPanel>
+      </Accordion>
+    </Box>
   );
 }
 }

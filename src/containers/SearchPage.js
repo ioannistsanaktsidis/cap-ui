@@ -4,97 +4,141 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import axios from 'axios';
 
-import App from 'grommet/components/App';
 import Box from 'grommet/components/Box';
-import Split from 'grommet/components/Split';
 import SearchFacets from '../components/search/SearchFacets';
 import SearchUtils from '../components/search/SearchUtils';
 import SearchResults from '../components/search/SearchResults';
 let actions = {};
+import {fetchSearch, toggleAggs} from '../actions/search';
+import queryString from 'query-string';
 
-export class SearchPage extends React.Component {
+class SearchPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {results: {}};
+    this.state = {results: {}, selectedAggs: {}};
   }
 
   componentDidMount() {
-    console.log("searching::")
-    this.search();
+    this.props.fetchSearch()
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
 
-
-  search(url, params) {
-    let searchApiUrl = 'https://videos.cern.ch/api/records';
-    let results;
-    const searchUrl = `${searchApiUrl}/${window.location.search}`;
-
-
-    axios.get(searchUrl).then( (response) => {
-      console.log("response", response)
-      results = response.data;
-
-      this.setState({
-        results: results
-      });
-    })
   }
 
+  _toggleAggs = (selectedAggs) => {
+    let currentParams = this.getSearchParams()
+    const location = {
+      search: `${queryString.stringify(Object.assign(currentParams,selectedAggs))}`
+    }
+    this.props.history.push(location);
+    this.props.fetchSearch()
+  }
 
+  _changePage = (page) => {
+    let currentParams = this.getSearchParams()
+
+    const location = {
+      search: `${queryString.stringify(Object.assign(currentParams,{page: page}))}`
+    }
+    this.props.history.push(location);
+    this.props.fetchSearch()
+  }
+
+  _changePageSize = (size) => {
+    let currentParams = this.getSearchParams()
+    const location = {
+      search: `${queryString.stringify(Object.assign(currentParams,{size: size}))}`
+    }
+    this.props.history.push(location);
+    this.props.fetchSearch()
+  }
+
+  getSearchParams = () => {
+    let params = queryString.parse(this.props.location.search);
+    return params;
+  }
 
   render() {
     let utils;
-    let total = null
-    let results = null
-    let aggs = null
+    let total = null;
+    let results = null;
+    let aggs = null;
 
-    if (this.state.results.aggregations) {
-      aggs = (<SearchFacets aggs={this.state.results.aggregations}/>)
+    let _results = {};
+    let _total = 0;
+    let _hits = [];
+    let _aggs = {};
+
+    let _location = queryString.parse(this.props.location.search);
+
+    this.getSearchParams();
+
+    if (this.props.results) {
+      _results = this.props.results.toJS();
+      _total = _results.hits.total;
+      _hits = _results.hits.hits;
+      _aggs = _results.aggregations;
     }
 
+    if (_aggs) {
+      aggs = (
+        <SearchFacets
+          aggs={_aggs}
+          selectedAggs={this.state.selectedAggs}
+          onChange={this._toggleAggs}/>
+      );
+    }
 
-    if (this.state.results.hits) {
-      if (this.state.results.hits.total) {
-        total = this.state.results.hits.total;
-        utils = (<SearchUtils total={total} links={this.state.results.links}/>)
-      }
-
-      if (this.state.results.hits.hits) {
-        results = (<SearchResults results={this.state.results.hits} links={this.state.results.links}/>)
-      }
+    if (_results && _results.hits) {
+      total = _results.hits.total;
+      utils = (
+        <SearchUtils
+          loading={this.props.loading}
+          currentPage={_location.page ? parseInt(_location.page) : 1}
+          size={_location.size ? parseInt(_location.size) : 10}
+          total={total}
+          onPageChange={this._changePage}
+          onPageSizeChange={this._changePageSize}
+        />
+      );
+      results = (<SearchResults results={_results.hits.hits} />);
     }
 
     return (
-        <Box  flex={true} direction="row">
-
+      <Box  flex={true}>
+        {utils}
+        <Box flex={true} direction="row">
           {aggs}
-          <Box flex={true}>
-
-            {utils}
-            {results}
-          </Box>
-
+          {results}
         </Box>
+      </Box>
     );
   }
 }
 
 SearchPage.propTypes = {
-  actions: PropTypes.object.isRequired,
-  fuelSavings: PropTypes.object.isRequired
+  // actions: PropTypes.object.isRequired,
+  // fuelSavings: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    fuelSavings: state.fuelSavings
+    // total: state.search.getIn(['results', 'total']),
+    // hits: state.search.getIn(['results', 'hits']),
+    // aggs: state.search.getIn(['aggs']),
+    results: state.search.getIn(['results']),
+    loading: state.search.getIn(['loading']),
+    // selectedAggs: state.search.getIn(['selectedAggs'])
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    // fetchSearch,
+    fetchSearch: () => dispatch(fetchSearch()),
+    // toggleAggs
+    // toggleAggs: (name, value, category) => dispatch(toggleAggs(name, value, category))
   };
 }
 

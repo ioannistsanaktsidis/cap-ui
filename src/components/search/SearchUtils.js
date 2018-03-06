@@ -14,6 +14,7 @@ import Menu from 'grommet/components/Menu';
 import Anchor from 'grommet/components/Anchor';
 import Title from 'grommet/components/Title';
 import Paragraph from 'grommet/components/Paragraph';
+import Spinning from 'grommet/components/icons/Spinning';
 
 
 import List from 'grommet/components/List';
@@ -23,50 +24,67 @@ import NextIcon from 'grommet/components/icons/base/Next';
 import PreviousIcon from 'grommet/components/icons/base/Previous';
 import Sort from 'grommet-addons/components/Sort';
 
+
 import "searchkit/theming/theme.scss";
 
-export class SearchUtils extends React.Component {
+export default class SearchUtils extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selected: {}
-    };
   }
 
   componentDidMount() {
+    this.props.total;
+    this.props.size;
+    let current
   }
 
   componentWillUnmount() {}
 
+  _onPageChange(page) {
+    this.props.onPageChange(page);
+  }
+
+  _onPageSizeChange(size) {
+    this.props.onPageSizeChange(size);
+  }
+
+  _onNextPage(numPages) {
+    if (this.props.currentPage < numPages)
+      this._onPageChange(this.props.currentPage+1);
+  }
+
+  _onPrevPage() {
+    if (this.props.currentPage > 1)
+      this._onPageChange(this.props.currentPage-1);
+  }
 
   render() {
-    if (this.props.total){
-      return (
-        <Header  fixed={true} justify='between'>
-          <span><strong>{this.props.total}</strong> results</span>
+    let num_pages = Math.ceil(this.props.total/this.props.size);
+    return (
+      <Header pad={{horizontal: "small"}} justify='between'>
+        <span>
+          <strong>{this.props.total}</strong> results
+        </span>
 
-          <Box align="center" justify="between" direction="row" >
-            <Button icon={<PreviousIcon/>}/>
-            <span>
-              Page <strong>1</strong> of <strong>15</strong>
-            </span>
-            <Button
-              onClick={() => {return ""}}
-              icon={<NextIcon/>}/>
-          </Box>
-          <Box pad={{horizontal: "small"}}>
-            <Sort options={[]}
-              value='name'
-              direction='asc'
-              onChange={()=>{return ""}}
-              />
-          </Box>
-        </Header>
-      );
-    }
-    else {
-      return <div>No Results</div>
-    }
+        <Box align="center" justify="between" direction="row" >
+          <Button onClick={this._onPrevPage.bind(this)} icon={<PreviousIcon/>} />
+          <span>
+            Page <strong>{this.props.currentPage}</strong> of <strong>{num_pages}</strong>
+          </span>
+          <Button
+            onClick={this._onNextPage.bind(this, num_pages)}
+            icon={<NextIcon/>}/>
+        </Box>
+        <Box pad={{horizontal: "small"}} direction="row">
+          {this.props.loading ? <Spinning pad="small" size="small"/> : null}
+          <Sort options={[]}
+            value='name'
+            direction='asc'
+            onChange={()=>{return ""}}
+            />
+        </Box>
+      </Header>
+    );
   }
 }
 
@@ -75,19 +93,19 @@ SearchUtils.propTypes = {
   // fuelSavings: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
-  return {
-    // fuelSavings: state.fuelSavings
-  };
-}
+// function mapStateToProps(state) {
+//   return {
+//     // fuelSavings: state.fuelSavings
+//   };
+// }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    // actions: bindActionCreators(actions, dispatch)
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     // actions: bindActionCreators(actions, dispatch)
+//   };
+// }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SearchUtils);
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(SearchUtils);
