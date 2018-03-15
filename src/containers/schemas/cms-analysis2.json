@@ -114,9 +114,7 @@
         },
         "n_tuple": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "default": [
-            {}
-          ],
+          "description": "Please provide information about Processing Steps",
           "items": {
             "properties": {
               "datacard": {
@@ -126,7 +124,6 @@
               "input_data": {
                 "properties": {
                   "dataset": {
-                    "enum": [],
                     "title": "Dataset",
                     "type": "string"
                   }

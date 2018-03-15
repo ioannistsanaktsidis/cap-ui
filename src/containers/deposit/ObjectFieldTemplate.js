@@ -10,25 +10,42 @@ import Header from 'grommet/components/Header';
 
 import AccordionFieldTemplate from './AccordionObjectField';
 import LayerObjectFieldTemplate from './LayerObjectFieldTemplate';
+import FieldHeader from './FieldHeader';
 
 let ObjectFieldTemplate = function (props) {
-  console.log("$$$$$$:::",props);
+  if ( props.idSchema.$id == "root" ) {
+    return (
+      <Box>
+        {props.properties.map(prop => prop.content )}
+      </Box>
+    )
+  }
 
-  if (props.idSchema['$id'] == "root" ) {
-    return (<Box>
-      {props.properties.map(prop => prop.content )}</Box>)
+  if ( !('ui:object' in props.uiSchema) ) {
+    return (
+      <Box className="grommetux-form-field">
+        <FieldHeader
+          title={props.title}
+          required={props.required}
+          description={props.description}
+          />
+        {props.properties.map(prop => prop.content )}
+      </Box>
+    )
   }
   else {
     if (props.uiSchema['ui:object'] == 'layerObjectField'){
       return <LayerObjectFieldTemplate {...props} />;
     }
-
+    else if (props.uiSchema['ui:object'] == 'accordionObjectField'){
+      return <AccordionFieldTemplate {...props} />;
+    }
     else {
-      return <AccordionFieldTemplate {...props} />
+      return <div {...props}>This object( <i>{props.title}</i>) can NOT be rendered.. Check implementaion</div>;
     }
   }
 
-  return null
+  return null;
 }
 
 // let ObjectFieldTemplate = function (props) {

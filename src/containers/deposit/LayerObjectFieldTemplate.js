@@ -11,26 +11,22 @@ import Layer from 'grommet/components/Layer';
 import Button from 'grommet/components/Button';
 import Edit from 'grommet/components/icons/base/Edit';
 
+import FormLayer from './FormLayer';
+
 class LayerObjectFieldTemplate extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log("LLLL::::",this.props)
-    // this.props.
     this.state = {
       layerActive: false
     };
-
   }
-
 
   _onClick() {
     this.setState({ layerActive: true })
   }
 
   render() {
-
-    console.log(this.props.idSchema['$id'] == "root")
     if (this.props.idSchema['$id'] == "root" ) {
       return (
         <Box>
@@ -39,38 +35,54 @@ class LayerObjectFieldTemplate extends React.Component {
       )
     }
     else {
-
       return (
-        <Box className="grommetux-form-field" >
-          <div>
+        <Box className="grommetux-form-field" direction="row" wrap={false}>
+          {
+            <FormLayer
+              layerActive={this.state.layerActive}
+              onClose={(()=>{this.setState({layerActive:false})}).bind(this)}
+              properties={this.props.properties.map(prop => prop.content )}
+            />
+          }
+          <Box flex={true}>
             <Title>{this.props.title}{this.props.required ? "*" : null}</Title>
 
             {this.props.description ? <Paragraph size='small'>{this.props.description}</Paragraph> : null}
-
+          </Box>
+          <Box justify="center">
             <Button icon={<Edit />}
               label='Edit'
               onClick={this._onClick.bind(this)}/>
-          </div>
-          {
-            this.state.layerActive ?
-            <Layer
-              closer={true}
-              flush={true}
-              onClose={()=>{this.setState({layerActive:false})}}
-              overlayClose={true}
-              >
-              <Box pad="large" >
-                {this.props.properties.map(prop => prop.content )}
-              </Box>
-            </Layer>
-            :
-            null
-          }
+          </Box>
         </Box>
       );
     }
   }
 }
+
+
+            // <Layer
+            //   styles={{backgroundColor: 'green'}}
+            //   closer={true}
+            //   align="right"
+            //   flush={true}
+            //   onClose={()=>{this.setState({layerActive:false})}}
+            //   overlayClose={true}
+            //   >
+            //   <Box justify="center" align="center" pad="large" >
+            //       <Box pad="large" size="large" >
+            //       <Box>
+            //         {this.props.properties.map(prop => prop.content )}
+            //       </Box>
+            //       </Box>
+            //   </Box>
+            // </Layer>
+
+
+
+
+
+
 
 // let LayerObjectFieldTemplate = function (props) {
 //   console.log(props);

@@ -416,15 +416,11 @@
           },
           "n_tuple": {
             "$schema": "http://json-schema.org/draft-04/schema#",
-            "default": [
-              {}
-            ],
             "items": {
               "properties": {
                 "input_data": {
                   "properties": {
                     "dataset": {
-                      "enum": [],
                       "title": "Dataset",
                       "type": "string"
                     }
@@ -509,9 +505,6 @@
       "type": "object"
     },
     "main_measurements": {
-      "default": [
-        {}
-      ],
       "description": "Please provide information about the main measurements of your analysis",
       "id": "main-measurements",
       "items": {
@@ -560,9 +553,6 @@
           "detector_final_state": {
             "properties": {
               "final_state_particles": {
-                "default": [
-                  {}
-                ],
                 "items": {
                   "properties": {
                     "bjet_discriminator": {
@@ -575,7 +565,6 @@
                           "enum": [
                             "trackCountingHighPurBJetTags",
                             "trackCountingHighEffBJetTags",
-                            "simpleSecondaryVertexHighEffBJetTags",
                             "simpleSecondaryVertexHighEffBJetTags",
                             "combinedSecondaryVertexBJetTags",
                             "jetProbabilityBJetTags",

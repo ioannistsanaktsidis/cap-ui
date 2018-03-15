@@ -2,16 +2,49 @@ import React from 'react';
 
 import Box from 'grommet/components/Box';
 import Title from 'grommet/components/Title';
+import Form from 'grommet/components/Form';
+import FormField from 'grommet/components/FormField';
+import Header from 'grommet/components/Header';
+
+// let FieldTemplate = function (props) {
+//   const {id, classNames, label, help, required, description, rawErrors=[], children} = props;
+
+//   console.log("FieldTemplate::", props)
+//   return (
+//     <div>
+//       {children}
+//       {rawErrors.map(error => <div><h1>{error}</h1></div>)}
+//       {help}
+//     </div>
+//   );
+// }
 
 let FieldTemplate = function (props) {
   const {id, classNames, label, help, required, description, rawErrors=[], children} = props;
+  let _errors = null;
+  let _utils = null;
+
+
+  if (rawErrors.length > 0)
+    _errors = rawErrors.map(error => <span>{error}</span>)
+
+  console.log("FieldTemplate::", id, "::",props)
+
+  if (props.schema.type == "array") {
+    return (
+      <span>{children}</span>
+    )
+  }
+
   return (
-    <div >
+    <FormField
+      help={description ? description : null}
+      label={label}
+      error={_errors}>
       {children}
-      {rawErrors.map(error => <div style={{color: "blue"}}><h1>{error}</h1></div>)}
-      {help}
-    </div>
+    </FormField>
   );
 }
+
 
 export default FieldTemplate;

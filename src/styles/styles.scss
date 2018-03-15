@@ -11,7 +11,7 @@ html, body {
 
 body {
   // font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Work Sans', 'Open Sans', sans-serif;
   font-size: 1em;
   line-height: 1.1;
   // line-height: 1.4em;
@@ -47,4 +47,10 @@ body {
   overflow-y: auto;  /*adds scroll to this container*/
   height: 100%;
   display: flex;
+}
+
+#deposit-page {
+  input {
+    border: 0;
+  }
 }

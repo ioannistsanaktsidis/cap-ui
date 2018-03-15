@@ -11,12 +11,12 @@ import Layer from 'grommet/components/Layer';
 import Button from 'grommet/components/Button';
 import Edit from 'grommet/components/icons/base/Edit';
 
+import FieldHeader from './FieldHeader';
 
 class AccordionObjectField extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log("AccordionObjectField::", this.props)
     this.state = {
       layerActive: false
     };
@@ -30,30 +30,45 @@ class AccordionObjectField extends React.Component {
   }
 
   render() {
-    console.log("render::render::render:::::",this.props);
-
     if (this.props.idSchema['$id'] == "root" ) {
-      return (<Box>
-        {this.props.properties.map(prop => prop.content )}</Box>)
+      return (
+        <Box>
+          {this.props.properties.map(prop => prop.content )}
+        </Box>
+      );
     }
     else {
       return (
-        <Box className="grommetux-form-field" >
+        <Box className="grommetux-form-field">
           <Accordion animate={false} openMulti={true}>
-            <AccordionPanel pad="medium" heading={(
-              <div>
-                <Title>{this.props.title}{this.props.required ? "*" : null}</Title>
-                {this.props.description ? <Paragraph size='small'>{this.props.description}</Paragraph> : null}
-              </div>)}>
-              <Box>
+            <AccordionPanel
+              heading={
+                <FieldHeader
+                  title={this.props.title}
+                  required={this.props.required}
+                  description={this.props.description}
+                  />
+                }
+            >
+              <Box pad="small">
                 {this.props.properties.map(prop => prop.content )}
               </Box>
             </AccordionPanel>
           </Accordion>
-        </Box>
+          </Box>
       );
     }
   }
 }
+
+            // <AccordionPanel heading={(
+            //   <div>
+            //     <Title>{this.props.title}{this.props.required ? "*" : null}</Title>
+            //     {this.props.description ? <Paragraph size='small'>{this.props.description}</Paragraph> : null}
+            //   </div>)}>
+            //   <Box pad="small">
+            //     {this.props.properties.map(prop => prop.content )}
+            //   </Box>
+            // </AccordionPanel>
 
 export default AccordionObjectField;
