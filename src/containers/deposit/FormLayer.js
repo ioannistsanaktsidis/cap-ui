@@ -11,6 +11,7 @@ import Heading from 'grommet/components/Heading';
 import Layer from 'grommet/components/Layer';
 import Button from 'grommet/components/Button';
 import Edit from 'grommet/components/icons/base/Edit';
+import Trash from 'grommet/components/icons/base/Trash';
 
 class FormLayer extends React.Component {
   constructor(props) {
@@ -33,10 +34,33 @@ class FormLayer extends React.Component {
         <Box justify="center" align="center" pad="large" >
           <Box pad="large" size="large" >
             <Header>
-              <Heading tag="h2" strong={true} align="start" margin='none'>Title</Heading>
+              <Heading tag="h2" strong={true} align="start" margin='none'>{this.props.properties.props.schema ? this.props.properties.props.schema.title : null}</Heading>
             </Header>
             <Box>
               { this.props.properties }
+            </Box>
+
+
+            <Box direction="row" justify="between" pad={{vertical: "small"}}>
+              <Box>
+                <Button
+                  label="OK"
+                  primary={true}
+                  onClick={this.props.onClose}
+                />
+              </Box>
+              <Box>
+              {
+                this.props.remove ?
+                <Button
+                  label="Remove"
+                  plain={true}
+                  onClick={this.props.remove ? this.props.remove : null}
+                  icon={<Trash />}
+                /> : null
+
+              }
+              </Box>
             </Box>
           </Box>
         </Box>

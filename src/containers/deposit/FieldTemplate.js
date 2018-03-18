@@ -30,7 +30,7 @@ let FieldTemplate = function (props) {
 
   console.log("FieldTemplate::", id, "::",props)
 
-  if (props.schema.type == "array") {
+  if ( ["array", "object"].indexOf(props.schema.type) > -1) {
     return (
       <span>{children}</span>
     )

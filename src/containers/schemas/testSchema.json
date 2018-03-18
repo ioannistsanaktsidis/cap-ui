@@ -13,6 +13,68 @@
         "$schema": {"type": "string" },
         "general_title": {"type": "string"},
         "_experiment": {"type": "string"},
+        "object_with_nested_objects": {
+            "description": "Object description",
+            "additionalProperties": false,
+            "properties": {
+                "nested_array_of_objects": {
+                    "title": "Array of objects",
+                    "description": "Description Array of objects",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "title": "I am an object!",
+                        "additionalProperties": false,
+                        "properties": {
+                            "first_string": {
+                                "title": "First String",
+                                "type": "string"
+                            },
+                            "second_number": {
+                                "title": "Second Number",
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "nested_object_open": {
+                    "description": "Nested Open Object description",
+                    "additionalProperties": false,
+                    "properties": {
+                        "simple_string": {
+                            "title": "Simple string",
+                            "type": "string"
+                        },
+                        "array_of_strings": {
+                            "title": "Array of strings",
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
+                    },
+                    "title": "Nested objects",
+                    "type": "object"
+                },
+                "nested_object": {
+                    "description": "Nested Object description",
+                    "additionalProperties": false,
+                    "properties": {
+                        "simple_string": {
+                            "title": "Simple string",
+                            "type": "string"
+                        },
+                        "array_of_strings": {
+                            "title": "Array of strings",
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
+                    },
+                    "title": "Nested objects",
+                    "type": "object"
+                }
+            },
+            "title": "Object with nested objects",
+            "type": "object"
+        },
         "simple_number": {
             "title": "Simple number",
             "type": "number"
@@ -93,6 +155,7 @@
         },
         "array_of_objects": {
             "title": "Array of objects",
+            "description": "Description Array of objects",
             "type": "array",
             "items": {
                 "type": "object",

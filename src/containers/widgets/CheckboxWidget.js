@@ -12,10 +12,6 @@ const SelectWidget = function(props) {
   };
 
   return (
-    <Box flex={true}>
-      <FormField
-        label={props.label}
-        help={props.schema.description}>
 
         <Select placeHolder='None'
           inline={false}
@@ -24,8 +20,6 @@ const SelectWidget = function(props) {
           value={props.value}
           onBlur={props.onBlur}
           onChange={_onChange} />
-      </FormField>
-    </Box>
   );
 };
 

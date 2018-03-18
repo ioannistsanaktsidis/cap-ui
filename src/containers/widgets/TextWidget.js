@@ -31,7 +31,9 @@ const TextWidget = function(props) {
   // TOFIX onBlur, onFocus
   let _onChange = function _onChange(_ref) {
     var value = _ref.target.value;
-    return props.onChange( value ? value : "");
+    return props.onChange(value === "" ? props.options.emptyValue : value);
+
+    // return props.onChange( value ? value : "");
   };
 
   return (

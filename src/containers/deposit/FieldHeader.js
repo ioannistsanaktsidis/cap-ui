@@ -11,7 +11,7 @@ let FieldHeader = function (props) {
       <Heading tag='h6' margin="none" strong={true}>
         {title}{required ? "*" : null}
       </Heading>
-      {description ? <Paragraph size='small'>{description}</Paragraph> : null}
+      {description ? <Paragraph margin="small" size='small'>{description}</Paragraph> : null}
     </Box>
   );
 }

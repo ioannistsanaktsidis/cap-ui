@@ -4,6 +4,7 @@ import Box from 'grommet/components/Box';
 import Article from 'grommet/components/Article';
 import Title from 'grommet/components/Title';
 import Header from 'grommet/components/Header';
+import Heading from 'grommet/components/Heading';
 import Paragraph from 'grommet/components/Paragraph';
 import Button from 'grommet/components/Button';
 import AddIcon from 'grommet/components/icons/base/Add';
@@ -82,20 +83,29 @@ class ArrayFieldTemplate extends React.Component {
 
   render() {
     let _label = (
-        <Label size="small">{this.props.title}
-        <Button
-          icon={ <AddCircleIcon /> }
-          onClick={this._onAddClick.bind(this)}
-          href='#'
-          plain={false}
-          critical={false}
-          primary={false}/>
-        </Label>
+        <Heading size="small" tag="h6" margin="none" strong={true}>
+          <Box flex={true} direction="row" alignContent="between" align="center">
+            <Box flex={true} direction="row" alignContent="between" align="center">
+              <span>{this.props.title}</span>
+
+            <Button icon={<AddCircleIcon />}
+              onClick={this._onAddClick.bind(this)}
+              href='#'
+              plain={false}
+              critical={false}
+              accent={false}
+              secondary={false}
+              primary={false}
+              type='submit' />
+
+            </Box>
+          </Box>
+        </Heading>
     );
 
     return (
       <FormField
-        help={this.props.description ? this.props.description : null}
+        help={this.props.schema.description ? this.props.schema.description : null}
         label={_label}
         error={null}>
 

@@ -3,8 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
+import Heading from 'grommet/components/Heading';
+import Title from 'grommet/components/Title';
+
 import Form from "react-jsonschema-form";
 
 import FieldTemplate from './deposit/FieldTemplate';
@@ -13,6 +17,7 @@ import LayerObjectFieldTemplate from './deposit/LayerObjectFieldTemplate';
 import ArrayFieldTemplate from './deposit/ArrayFieldTemplate';
 import ErrorListTemplate from './deposit/ErrorListTemplate';
 import SectionHeader from './deposit/SectionHeader';
+import DepositSidebar from './deposit/DepositSidebar';
 
 import CMSAnalysisSchema from './schemas/cms-analysis';
 import testSchema from './schemas/testSchema';
@@ -32,6 +37,8 @@ import ReactJson from 'react-json-view'
 import DatabaseIcon from 'grommet/components/icons/base/Database';
 import UploadIcon from 'grommet/components/icons/base/Upload';
 import TreeIcon from 'grommet/components/icons/base/Tree';
+
+import CheckBox from 'grommet/components/CheckBox';
 
 import widgets from './widgets';
 
@@ -56,11 +63,36 @@ let schema = testSchema;
 // let schema = zenodoSchema;
 // let schema = physicsObjectsSchema;
 
+let schemas = {
+  CMSAnalysisSchema: CMSAnalysisSchema,
+  testSchema: testSchema,
+  inspireSchema: inspireSchema,
+  zenodoSchema: zenodoSchema
+}
+
 let schemaTitle = schema.title ? schema.title : "Deposit";
 let schemaDescription = schema.description ? schema.description : null;
 
 schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
 schema = { type: schema.type, properties: schema.properties };
+
+const transformSchema = (schema) => {
+  const schemaFieldsToRemove = [
+    "_deposit",
+    "_cap_status",
+    "_buckets",
+    "_files",
+    "$ana_type",
+    "$schema",
+    "general_title",
+    "_experiment"
+  ];
+
+  schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
+  schema = { type: schema.type, properties: schema.properties };
+
+  return schema;
+}
 
 const _TextWidget = function(props) {
   // TOFIX onBlur, onFocus
@@ -129,6 +161,11 @@ const uiSchema = {
   //     // "ui:object": "layerObjectField"
   //   }
   // }
+  "object_with_nested_objects": {
+    "nested_object": {
+      "ui:object": "accordionObjectField"
+    }
+  },
   "basic_object": {
     "simple_number": {
       "ui:widget": "updown"
@@ -141,35 +178,61 @@ export class DepositPage extends React.Component {
     super(props);
 
     this.state = {
-      formData: {}
+      formData: {},
+      auto_validate: false,
+      schema: {}
     };
+  }
+
+  _toggleAutoValidate() {
+    this.setState(prevState => ({
+      auto_validate: !prevState.auto_validate
+    }));
+  }
+
+  _changeSchema(event) {
+    console.log("_changeSchema::", event.value)
+    if (schemas[event.value]){
+      this.setState({schema: transformSchema(schemas[event.value])});
+    }
   }
 
   render() {
     return (
       <Box id="deposit-page" basis="full" flex={true}>
-        <Header pad="small" colorIndex="neutral-4">
-          <Box>{schemaTitle}</Box>
-          <Box>{(schemaDescription)}</Box>
-          <Box></Box>
+        <Header flex={true} size="small" pad="none" colorIndex="neutral-1-t">
+          <Box flex={true} pad={{horizontal: "small"}} direction="row" justify="between" align="center">
+            <Box>{schemaTitle}</Box>
+            <Box align="center" flex={true} >{(schemaDescription)}</Box>
+            <Box>
+              <Select placeHolder='None'
+                options={Object.keys(schemas)}
+                value={undefined}
+                onChange={this._changeSchema.bind(this)}/>
+            </Box>
+            <Box>
+              <CheckBox
+                label='Live Validate'
+                toggle={true}
+                checked={this.state.auto_validate}
+                onChange={this._toggleAutoValidate.bind(this)}
+                />
+            </Box>
+          </Box>
         </Header>
 
         <Box flex={true} wrap={false} direction="row">
           <Box direction="row" full={false} flex={true}>
-            <Sidebar full={false} size="medium" colorIndex='light-2'>
-              <Box flex={true}>
-                <SectionHeader label="Code" icon={<UploadIcon />} />
-              </Box>
-              <Box flex={true}>
-                <SectionHeader label="Form Data" icon={<UploadIcon />} />
-              </Box>
-            </Sidebar>
+            <DepositSidebar formData={this.state.formData} />
+
 
             <Box direction="row" flex={true} wrap={false}>
-              <Box size={{width: {min: "large"}}} flex={true} wrap={false}>
-                <Box alignSelf="center" pad="large" wrap={false}>
+              <Box size={{width: {min: "large"}}} flex={true}  wrap={false}>
+                <SectionHeader label="Submission Form" />
+                <Box alignContent="center" justify="center" align="center" flex={true} wrap={false}>
+                <Box size="xlarge"  pad="large" flex={false} wrap={false}>
                   <Form
-                    schema={schema}
+                    schema={this.state.schema}
                     FieldTemplate={FieldTemplate}
                     ObjectFieldTemplate={ObjectFieldTemplate}
                     ArrayFieldTemplate={ArrayFieldTemplate}
@@ -178,7 +241,7 @@ export class DepositPage extends React.Component {
                     widgets={widgets}
                     fields={fields}
                     uiSchema={uiSchema}
-                    liveValidate={true}
+                    liveValidate={this.state.auto_validate}
                     noValidate={false}
                     onError={log("errors")}
                     formData={this.state.formData}
@@ -193,11 +256,12 @@ export class DepositPage extends React.Component {
                   />
                 </Box>
               </Box>
+              </Box>
 
               <Sidebar full={false} size="large" colorIndex='light-2'>
                 <Box flex={true}>
                   <SectionHeader label="Form Data" icon={<UploadIcon />} />
-                  <Box pad="small">
+                  <Box pad="small" flex={true}>
                     <ReactJson src={this.state.formData} />
                   </Box>
                 </Box>
@@ -209,6 +273,7 @@ export class DepositPage extends React.Component {
     );
   }
 }
+
 
 DepositPage.propTypes = {
   actions: PropTypes.object.isRequired,

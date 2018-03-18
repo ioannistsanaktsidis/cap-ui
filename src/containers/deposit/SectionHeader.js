@@ -7,23 +7,29 @@ import Notification from 'grommet/components/Notification';
 
 
 export default function SectionHeader(props) {
+  let _icon = props.icon ?
+              <Box>
+                <Button plain={true} size="xsmall" icon={props.icon}></Button>
+              </Box>
+              : null;
+
+
   return (
     <Header
       justify="center"
       alignContent="center"
       size="small"
-      colorIndex="grey-3-a"
-      pad="small">
+      colorIndex="neutral-1-a"
+      pad="none">
       <Box flex={true}
         justify='between'
         alignContent='center'
         direction='row'
+        pad={{horizontal: "small"}}
         responsive={false}>
         <span>{props.label}</span>
       </Box>
-      <Box>
-        <Button size="xsmall" icon={props.icon}></Button>
-      </Box>
+      {_icon}
     </Header>
   );
 }

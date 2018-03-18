@@ -56,33 +56,6 @@
           "orcid": {
             "description": "ORCID identifier for creator.",
             "type": "string"
-          },
-          "type": {
-            "enum": [
-              "ContactPerson",
-              "DataCollector",
-              "DataCurator",
-              "DataManager",
-              "Distributor",
-              "Editor",
-              "Funder",
-              "HostingInstitution",
-              "Other",
-              "Producer",
-              "ProjectLeader",
-              "ProjectManager",
-              "ProjectMember",
-              "RegistrationAgency",
-              "RegistrationAuthority",
-              "RelatedPerson",
-              "ResearchGroup",
-              "RightsHolder",
-              "Researcher",
-              "Sponsor",
-              "Supervisor",
-              "WorkPackageLeader"
-            ],
-            "type": "string"
           }
         },
         "type": "object"
@@ -315,7 +288,6 @@
       "additionalProperties": false,
       "default": "publication",
       "description": "Record upload type.",
-      "type": {
         "enum": [
           "publication",
           "poster",
@@ -328,13 +300,11 @@
           "other"
         ],
         "type": "string"
-      }
     },
     "publication_type": {
       "additionalProperties": false,
       "description": "Publication type.",
       "default": "article",
-      "type": {
         "enum": [
           "book",
           "section",
@@ -353,13 +323,11 @@
           "other"
         ],
         "type": "string"
-      }
     },
     "image_type": {
       "additionalProperties": false,
       "default": "figure",
       "description": "Image type.",
-      "type": {
         "enum": [
           "figure",
           "plot",
@@ -369,7 +337,6 @@
           "other"
         ],
         "type": "string"
-      }
     },
     "openaire_type": {
       "type": "string",

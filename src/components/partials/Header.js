@@ -52,9 +52,9 @@ class Header extends React.Component {
     }
 
     return (
-      <GrommetHeader pad="small" size="small" colorIndex="neutral-1">
+      <GrommetHeader pad="none" size="small" colorIndex="neutral-1">
         <Anchor path={{path:"/"}}>
-          <Title>
+          <Title pad={{horizontal: "small"}}>
             { config.project.name || "Project Name"}
           </Title>
         </Anchor>
@@ -66,7 +66,7 @@ class Header extends React.Component {
           <Form plain={true} onSubmit={this._onSearchSubmit.bind(this)} >
             <Search inline={true}
               fill={true}
-              size="medium"
+              size="small"
               placeHolder="Search"
               dropAlign={{"right": "right"}}
               onDOMChange={onSearchInput}/>

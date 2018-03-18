@@ -22,6 +22,7 @@ import Accordion from 'grommet/components/Accordion';
 import AccordionPanel from 'grommet/components/AccordionPanel';
 import FieldHeader from './FieldHeader';
 import FormLayer from './FormLayer';
+import ArrayUtils from './ArrayUtils';
 
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import FormTrashIcon from 'grommet/components/icons/base/FormTrash';
@@ -121,6 +122,14 @@ class AccordionArrayField extends React.Component {
                 <Box flex={true}>
                   {element.children}
                 </Box>
+                <ArrayUtils
+                  hasRemove={element.hasRemove}
+                  hasMoveDown={element.hasMoveDown}
+                  hasMoveUp={element.hasMoveUp}
+                  onDropIndexClick={element.onDropIndexClick}
+                  onReorderClick={element.onReorderClick}
+                  index={element.index}
+                />
               </ListItem>
             )) :
             <ListPlaceholder

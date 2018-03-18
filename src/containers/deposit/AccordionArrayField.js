@@ -57,24 +57,6 @@ class AccordionArrayField extends React.Component {
 
   render() {
     return (
-      <Box className="grommetux-form-field" pad="small">
-        <Header>
-          <FieldHeader
-            title={this.props.title}
-            required={this.props.required}
-            description={this.props.description}
-            />
-          <Button
-            icon={ <AddCircleIcon /> }
-            onClick={this._onAddClick.bind(this)}
-            href='#'
-            plain={false}
-            critical={false}
-            accent={false}
-            secondary={false}
-            primary={false}
-            type='submit'/>
-        </Header>
         <Box size={{height: "small"}} colorIndex="light-2">
           <Accordion animate={false} openMulti={true}>
             { this.props.items.length > 0 ?
@@ -104,13 +86,12 @@ class AccordionArrayField extends React.Component {
                </AccordionPanel>
               )) :
               <ListPlaceholder
-                addControl={<Button onClick={this._onAddClick.bind(this)} icon={<AddIcon />} />}
+                addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
                 emptyMessage='You do not have any items at the moment.'
                 unfilteredTotal={0}/>
             }
           </Accordion>
         </Box>
-      </Box>
     );
   }
 }

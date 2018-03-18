@@ -21,6 +21,7 @@ import Accordion from 'grommet/components/Accordion';
 import AccordionPanel from 'grommet/components/AccordionPanel';
 import FieldHeader from './FieldHeader';
 import FormLayer from './FormLayer';
+import ArrayUtils from './ArrayUtils';
 
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import FormTrashIcon from 'grommet/components/icons/base/FormTrash';
@@ -51,42 +52,26 @@ class ArrayFieldTemplate extends React.Component {
 
   _showLayer(index) {
     const layers = this.state.layers;
+    console.log("LayerArrayField:::", this.props)
     layers[index] = true;
     this.setState({ layers: layers});
   }
 
   render() {
     return (
-      <Box className="grommetux-form-field" pad="small">
-        <Header>
-          <FieldHeader
-            title={this.props.title}
-            required={this.props.required}
-            description={this.props.description}
-            />
-          <Button
-            icon={ <AddCircleIcon /> }
-            onClick={this._onAddClick.bind(this)}
-            href='#'
-            plain={false}
-            critical={false}
-            accent={false}
-            secondary={false}
-            primary={false}
-            type='submit'/>
-        </Header>
         <Box size={{height: "small"}} colorIndex="light-2">
           <List >
             { this.props.items.length > 0 ?
               this.props.items.map(element => (
-                <ListItem onClick={this._showLayer.bind(this, element.index)} key={element.index} flex={true} justify='between'>
+                <ListItem key={element.index} flex={true} justify='between'>
                   <FormLayer
                     layerActive={this.state.layers[element.index]}
                     onClose={this._onFormLayerClose.bind(this, element.index)}
                     properties={element.children}
+                    remove={element.hasRemove ? element.onDropIndexClick(element.index) : null}
                   />
                   <Box flex={true} direction="row" wrap={false}>
-                    <Box flex={true} pad="small">
+                    <Box onClick={this._showLayer.bind(this, element.index)}  flex={true} pad="small">
                       {JSON.stringify(element.children.props.formData)}
                     </Box>
                     <Box direction="row" justify="between">
@@ -107,13 +92,12 @@ class ArrayFieldTemplate extends React.Component {
                 </ListItem>
               )) :
               <ListPlaceholder
-                addControl={<Button onClick={this._onAddClick.bind(this)} icon={<AddIcon />} />}
+                addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
                 emptyMessage='You do not have any items at the moment.'
                 unfilteredTotal={0}/>
             }
           </List>
         </Box>
-      </Box>
     );
   }
 }
