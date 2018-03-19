@@ -1,4 +1,4 @@
-import {Map, List, fromJS} from 'immutable'
+import {Map} from 'immutable';
 
 
 const search = Map({

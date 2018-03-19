@@ -66,15 +66,25 @@ class ArrayFieldTemplate extends React.Component {
     this.props.onAddClick(event)
   }
 
-  _getArrayField() {
+  _getArrayField(_label) {
     if (this.formRenderType == 'default') {
-      return <DefaultArrayField _onAddClick={this._onAddClick.bind(this)} {...this.props} />;
+      return (
+      <Box className="grommetux-form-field">
+        {_label}
+        <DefaultArrayField _onAddClick={this._onAddClick.bind(this)} {...this.props} />
+      </Box>
+      );
     }
     else if (this.formRenderType == 'LayerArrayField') {
-      return <LayerArrayField _onAddClick={this._onAddClick.bind(this)} {...this.props} />;
+      return (
+        <Box className="grommetux-form-field">
+          {_label}
+          <LayerArrayField _onAddClick={this._onAddClick.bind(this)} {...this.props} />
+        </Box>
+      );
     }
     else if (this.formRenderType == 'AccordionArrayField') {
-      return <AccordionArrayField _onAddClick={this._onAddClick.bind(this)} {...this.props} />;
+      return <AccordionArrayField header={_label} _onAddClick={this._onAddClick.bind(this)} {...this.props} />;
     }
     else {
       return <div>{this.props.schema.items.type}</div>;
@@ -83,36 +93,17 @@ class ArrayFieldTemplate extends React.Component {
 
   render() {
     let _label = (
-        <Heading size="small" tag="h6" margin="none" strong={true}>
-          <Box flex={true} direction="row" alignContent="between" align="center">
-            <Box flex={true} direction="row" alignContent="between" align="center">
-              <span>{this.props.title}</span>
+      <FieldHeader
+        title={this.props.title}
+        required={this.props.required}
+        description={this.props.description}
+        onArrayAddClick={this._onAddClick.bind(this)}
+        margin="none"
 
-            <Button icon={<AddCircleIcon />}
-              onClick={this._onAddClick.bind(this)}
-              href='#'
-              plain={false}
-              critical={false}
-              accent={false}
-              secondary={false}
-              primary={false}
-              type='submit' />
-
-            </Box>
-          </Box>
-        </Heading>
+        />
     );
 
-    return (
-      <FormField
-        help={this.props.schema.description ? this.props.schema.description : null}
-        label={_label}
-        error={null}>
-
-        {this._getArrayField()}
-
-      </FormField>
-    );
+    return this._getArrayField(_label);
 
     // if (this.formRenderType == 'default') {
     //   return <DefaultArrayField {...this.props} />;

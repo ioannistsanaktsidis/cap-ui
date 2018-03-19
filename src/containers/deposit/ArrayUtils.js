@@ -17,14 +17,15 @@ let ArrayUtils = function (props) {
   return (
     <Box direction="row" justify="between">
       <Button
+      margin="none" pad="none"
         onClick={hasRemove ? onDropIndexClick(index) : null}
-        icon={<FormTrashIcon />} />
+        icon={<FormTrashIcon margin="none" pad="none" />} />
       <Button
         onClick={hasMoveDown ? onReorderClick(index, index+1) : null}
-        icon={<FormDownIcon />} />
+        icon={<FormDownIcon margin="none" pad="none" />} />
       <Button
         onClick={hasMoveUp ? onReorderClick(index, index-1) : null}
-        icon={<FormUpIcon />} />
+        icon={<FormUpIcon margin="none" pad="none" />} />
     </Box>
   );
 }

@@ -57,87 +57,22 @@ class AccordionArrayField extends React.Component {
 
   render() {
     return (
-        <Box size={{height: "small"}} colorIndex="light-2">
-          <Accordion animate={false} openMulti={true}>
-            { this.props.items.length > 0 ?
-              this.props.items.map(element => (
-                <AccordionPanel heading={(
-                  <div>
-                    <Title>{this.props.title}{this.props.required ? "*" : null}
-                      {
-                        this.props.canAdd ?
-                        <Button
-                          icon={<AddCircleIcon />}
-                          onClick={this.props.onAddClick}
-                          href='#'
-                          plain={false}
-                          critical={false}
-                          accent={false}
-                          secondary={false}
-                          primary={false}
-                          type='submit' /> : null
-                      }
-                    </Title>
-                   {this.props.description ? <Paragraph size='small'>{this.props.description}</Paragraph> : null}
-                 </div>)}>
-                 <Box>
-                   {this.props.items.map(element => element.children)}
-                 </Box>
-               </AccordionPanel>
-              )) :
-              <ListPlaceholder
-                addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
-                emptyMessage='You do not have any items at the moment.'
-                unfilteredTotal={0}/>
-            }
+          <Accordion animate={false} openMulti={false}>
+            <AccordionPanel heading={this.props.header}>
+              {
+                this.props.items.length > 0 ?
+                <Box colorIndex="light-2">
+                  {this.props.items.map(element => element.children)}
+                </Box>:
+                <ListPlaceholder
+                  addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
+                  emptyMessage='You do not have any items at the moment.'
+                  unfilteredTotal={0}/>
+              }
+            </AccordionPanel>
           </Accordion>
-        </Box>
     );
   }
 }
 
 export default AccordionArrayField;
-
-    // <Box className="grommetux-form-field" style={{padding: "10px"}}>
-    //   <Accordion animate={false} openMulti={true}>
-    //     <AccordionPanel pad="large" heading={(
-    //       <div>
-    //         <Title>{props.title}{props.required ? "*" : null}
-    //         {props.canAdd &&
-    //         <Button icon={<AddCircleIcon />}
-    //           onClick={props.onAddClick}
-    //           href='#'
-    //           plain={false}
-    //           critical={false}
-    //           accent={false}
-    //           secondary={false}
-    //           primary={false}
-    //           type='submit' />}</Title>
-    //         {props.description ? <Paragraph size='small'>{props.description}</Paragraph> : null}
-    //       </div>)}>
-    //       <Box>
-    //         {props.items.map(element => element.children)}
-    //       </Box>
-    //     </AccordionPanel>
-    //   </Accordion>
-    // </Box>
-
-
-
-// <div>
-//   <Header>
-//     <Title>{props.title}{props.required ? "*" : null}</Title>
-//     {props.canAdd &&
-//     <Button icon={<AddCircleIcon />}
-//       onClick={props.onAddClick}
-//       href='#'
-//       plain={false}
-//       critical={false}
-//       accent={false}
-//       secondary={false}
-//       primary={false}
-//       type='submit' />}
-//     {props.description ? <Paragraph size='small'>{props.description}</Paragraph> : null}
-//   </Header>
-//   {props.items.map(element => element.children)}
-// </div>

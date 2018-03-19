@@ -39,7 +39,7 @@ class AccordionObjectField extends React.Component {
     }
     else {
       return (
-        <Box className="grommetux-form-field">
+
           <Accordion animate={false} openMulti={true}>
             <AccordionPanel
               heading={
@@ -50,12 +50,12 @@ class AccordionObjectField extends React.Component {
                   />
                 }
             >
-              <Box pad="small">
+              <Box pad="small" colorIndex="light-2">
                 {this.props.properties.map(prop => prop.content )}
               </Box>
             </AccordionPanel>
           </Accordion>
-          </Box>
+
       );
     }
   }

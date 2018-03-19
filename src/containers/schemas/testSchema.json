@@ -47,8 +47,9 @@
                         },
                         "array_of_strings": {
                             "title": "Array of strings",
+                            "description": "Array of strings desc desc desc",
                             "type": "array",
-                            "items": { "type": "string" }
+                            "items": { "type": "string"}
                         }
                     },
                     "title": "Nested objects",
@@ -92,6 +93,22 @@
                 "3",
                 "4"
             ],
+            "description": "This is a select box for enum string options"
+        },
+        "enum_of_strings_multiple": {
+            "title": "Enum of strings (multiple selections)",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ]
+            },
+            "uniqueItems": true,
             "description": "This is a select box for enum string options"
         },
         "enum_of_numbers": {

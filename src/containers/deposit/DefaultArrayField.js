@@ -29,12 +29,14 @@ import FormTrashIcon from 'grommet/components/icons/base/FormTrash';
 import FormUpIcon from 'grommet/components/icons/base/FormUp';
 import FormDownIcon from 'grommet/components/icons/base/FormDown';
 import FormEditIcon from 'grommet/components/icons/base/FormEdit';
-// import AddIcon from 'grommet/components/icons/base/Add';
 
 class AccordionArrayField extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log("---------------")
+    console.log(this.props)
+    console.log("---------------")
     this.state = {
       layers: []
     };
@@ -99,26 +101,35 @@ class AccordionArrayField extends React.Component {
   // }
 
 
+
+        // <Label size="small">{this.props.title}
+        // <Button
+        //   icon={ <AddCircleIcon /> }
+        //   onClick={this._onAddClick.bind(this)}
+        //   href='#'
+        //   plain={false}
+        //   critical={false}
+        //   primary={false}/>
+        // </Label>
+
   render() {
 
     let _label = (
-        <Label size="small">{this.props.title}
-        <Button
-          icon={ <AddCircleIcon /> }
-          onClick={this._onAddClick.bind(this)}
-          href='#'
-          plain={false}
-          critical={false}
-          primary={false}/>
-        </Label>
+      <FieldHeader
+        title={this.props.title}
+        required={this.props.required}
+        description={this.props.description}
+        onArrayAddClick={this._onAddClick.bind(this)}
+
+        />
     );
 
     return (
-      <Box colorIndex="light-2" size={{height: "small"}} >
+      <Box size={{height: {max: "small"}}} >
         <List>
           { this.props.items.length > 0 ?
             this.props.items.map(element => (
-              <ListItem >
+              <ListItem margin="none" pad="none">
                 <Box flex={true}>
                   {element.children}
                 </Box>
@@ -131,11 +142,11 @@ class AccordionArrayField extends React.Component {
                   index={element.index}
                 />
               </ListItem>
-            )) :
-            <ListPlaceholder
-              addControl={<Button onClick={this.props._onAddClick.bind()} icon={<AddIcon />} />}
-              emptyMessage='You do not have any items at the moment.'
-              unfilteredTotal={0}/>
+            )) : null
+            // <ListPlaceholder
+            //   addControl={<Button onClick={this.props._onAddClick.bind()} icon={<AddIcon />} />}
+            //   emptyMessage='You do not have any items at the moment.'
+            //   unfilteredTotal={0}/>
           }
         </List>
       </Box>

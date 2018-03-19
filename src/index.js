@@ -10,6 +10,7 @@ require('./favicon.ico'); // Tell webpack to load favicon.ico
 const store = configureStore();
 
 // import 'grommet/scss/hpinc/index.scss';
+// import 'grommet/scss/grommet-core/index.scss';
 import 'grommet/scss/hpe/index.scss';
 
 render(

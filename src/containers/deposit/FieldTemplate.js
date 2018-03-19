@@ -28,8 +28,6 @@ let FieldTemplate = function (props) {
   if (rawErrors.length > 0)
     _errors = rawErrors.map(error => <span>{error}</span>)
 
-  console.log("FieldTemplate::", id, "::",props)
-
   if ( ["array", "object"].indexOf(props.schema.type) > -1) {
     return (
       <span>{children}</span>
@@ -40,6 +38,7 @@ let FieldTemplate = function (props) {
     <FormField
       help={description ? description : null}
       label={label}
+      key={id}
       error={_errors}>
       {children}
     </FormField>

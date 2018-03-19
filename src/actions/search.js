@@ -1,5 +1,5 @@
 import axios from 'axios';
-import queryString from 'query-string';
+// import queryString from 'query-string';
 
 export const QUERY_CHANGED = 'QUERY_CHANGED';
 export const ADD_AGGS = 'ADD_AGGS';
@@ -14,22 +14,22 @@ export const SEARCH_ERROR = 'SEARCH_ERROR';
 export function searchRequest(){
   return {
     type: SEARCH_REQUEST
-  }
-};
+  };
+}
 
 export function searchSuccess(results) {
   return {
     type: SEARCH_SUCCESS,
     results
-  }
-};
+  };
+}
 
 export function searchError(error) {
   return {
     type: SEARCH_ERROR,
     error
-  }
-};
+  };
+}
 
 export function fetchSearch (query) {
   return function (dispatch) {
@@ -48,15 +48,15 @@ export function fetchSearch (query) {
         results = response.data;
         dispatch(searchSuccess(results));
       });
-  }
-};
+  };
+}
 
 export function toggleAggs(selectedAggs) {
   return {
     type: ADD_AGGS,
     selectedAggs: selectedAggs
   };
-};
+}
 
 export function queryChanged(query) {
     // history.pushState(null, null, `?q=${query}`);
@@ -64,11 +64,11 @@ export function queryChanged(query) {
     // dispatch(setQuery(query));
     dispatch(fetchSearch(query));
   };
-};
+}
 
 export function setQuery(query) {
   return {
     type: QUERY_CHANGED,
     query
   };
-};
+}

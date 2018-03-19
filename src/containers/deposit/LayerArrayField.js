@@ -59,11 +59,11 @@ class ArrayFieldTemplate extends React.Component {
 
   render() {
     return (
-        <Box size={{height: "small"}} colorIndex="light-2">
+        <Box flex={false} size={{"height": {"max": "small"} }}>
           <List >
             { this.props.items.length > 0 ?
               this.props.items.map(element => (
-                <ListItem key={element.index} flex={true} justify='between'>
+                <ListItem key={element.index} flex={true} margin="none" pad="none" justify='between'>
                   <FormLayer
                     layerActive={this.state.layers[element.index]}
                     onClose={this._onFormLayerClose.bind(this, element.index)}
@@ -91,10 +91,11 @@ class ArrayFieldTemplate extends React.Component {
                   </Box>
                 </ListItem>
               )) :
-              <ListPlaceholder
-                addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
-                emptyMessage='You do not have any items at the moment.'
-                unfilteredTotal={0}/>
+              null
+              // <ListPlaceholder
+              //   addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
+              //   emptyMessage='You do not have any items at the moment.'
+              //   unfilteredTotal={0}/>
             }
           </List>
         </Box>

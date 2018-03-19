@@ -7,11 +7,10 @@ import Menu from 'grommet/components/Menu';
 import Form from 'grommet/components/Form';
 import Search from 'grommet/components/Search';
 import Anchor from 'grommet/components/Anchor';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import debounce from 'lodash/debounce';
 import queryString from 'query-string';
 
 import {fetchSearch} from '../../actions/search';
@@ -58,19 +57,22 @@ class Header extends React.Component {
             { config.project.name || "Project Name"}
           </Title>
         </Anchor>
-        <Box flex={true}
+        <Box
+          flex={true}
           pad={{horizontal: "small"}}
           justify='end'
           direction='row'
           responsive={false}>
+            <Box flex={true} justify="center">
           <Form plain={true} onSubmit={this._onSearchSubmit.bind(this)} >
             <Search inline={true}
-              fill={true}
               size="small"
+              flex="true"
               placeHolder="Search"
               dropAlign={{"right": "right"}}
               onDOMChange={onSearchInput}/>
           </Form>
+            </Box>
         <Menu pad={{horizontal: "small"}} direction="row" responsive={true}>
           <Anchor path={{path:"/deposit"}}>Deposit</Anchor>
           <Anchor path={{path:"/search"}}>Search</Anchor>
@@ -80,24 +82,18 @@ class Header extends React.Component {
     );
   }
 }
-              // onDOMChange={debounce(onSearchInput, 250)} />
-//
-Header.propTypes = {
-  // actions: PropTypes.object.isRequired,
-  // fuelSavings: PropTypes.object.isRequired
-};
+
+Header.propTypes = {};
 
 function mapStateToProps(state) {
-  return {
-    // fuelSavings: "state.fuelSavings"
-  };
-}
+  return {};
+};
 
 function mapDispatchToProps(dispatch) {
   return {
     fetchSearch: (query) => { dispatch(fetchSearch(query)) }
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,

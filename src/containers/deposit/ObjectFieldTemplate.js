@@ -57,13 +57,7 @@ let ObjectFieldTemplate = function (props) {
       </Heading>
   );
 
-  return (
-    <FormField>
-
-      {_getObjectField()}
-
-    </FormField>
-  );
+  return _getObjectField();
 }
 
 // let ObjectFieldTemplate = function (props) {

@@ -30,7 +30,7 @@ function configureStoreProd(initialState) {
 
 function configureStoreDev(initialState) {
   const reactRouterMiddleware = routerMiddleware(history);
-  const loggerMiddleware = createLogger()
+  const loggerMiddleware = createLogger();
 
   const middlewares = [
     // Add other middleware on this line...

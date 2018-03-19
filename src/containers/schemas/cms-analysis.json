@@ -486,19 +486,28 @@
           "description": "Please list all Monte Carlo Background datasets",
           "id": "mc_bg_dataset",
           "title": "Monte Carlo Background Datasets",
-          "type": "string"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "mc_sig_dataset": {
           "description": "Please list all Monte Carlo Signal datasets",
           "id": "mc_sig_dataset",
           "title": "Monte Carlo Signal Datasets",
-          "type": "string"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "primary_dataset": {
           "description": "Please list all primary datasets here",
           "id": "primary-datasets",
           "title": "Primary Datasets",
-          "type": "string"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "title": "Input Data",
