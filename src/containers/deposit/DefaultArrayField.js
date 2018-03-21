@@ -33,103 +33,15 @@ import FormEditIcon from 'grommet/components/icons/base/FormEdit';
 class AccordionArrayField extends React.Component {
   constructor(props) {
     super(props);
-
-    console.log("---------------")
-    console.log(this.props)
-    console.log("---------------")
-    this.state = {
-      layers: []
-    };
   }
-
-  _onAddClick(event) {
-    this.setState({ layers: this.state.layers.concat([true])});
-    this.props.onAddClick(event)
-  }
-
-  _onFormLayerClose(index) {
-    console.log("_onFormLayerClose::", index)
-    const layers = this.state.layers;
-    layers[index] = false;
-    this.setState({ layers: layers});
-  }
-
-  _showLayer(index) {
-    const layers = this.state.layers;
-    layers[index] = true;
-    this.setState({ layers: layers});
-  }
-
-  // render() {
-  //   return (
-  //     <Box pad="large" className="grommetux-form-field" >
-  //       <Header flex={true} alignContent="between">
-  //         <FieldHeader
-  //           title={this.props.title}
-  //           required={this.props.required}
-  //           description={this.props.description}
-  //           />
-  //         <Box flex={false}>
-  //           <Button
-  //             icon={ <AddCircleIcon /> }
-  //             onClick={this._onAddClick.bind(this)}
-  //             href='#'
-  //             plain={false}
-  //             critical={false}
-  //             primary={false}/>
-  //         </Box>
-  //       </Header>
-  //       <Box size={{height: "small"}} >
-  //         <List>
-  //           { this.props.items.length > 0 ?
-  //             this.props.items.map(element => (
-  //               <ListItem >
-  //                 <Box flex={true}>
-  //                   {element.children}
-  //                 </Box>
-  //               </ListItem>
-  //             )) :
-  //             <ListPlaceholder
-  //               addControl={<Button onClick={this._onAddClick.bind(this)} icon={<AddIcon />} />}
-  //               emptyMessage='You do not have any items at the moment.'
-  //               unfilteredTotal={0}/>
-  //           }
-  //         </List>
-  //       </Box>
-  //     </Box>
-  //   );
-  // }
-
-
-
-        // <Label size="small">{this.props.title}
-        // <Button
-        //   icon={ <AddCircleIcon /> }
-        //   onClick={this._onAddClick.bind(this)}
-        //   href='#'
-        //   plain={false}
-        //   critical={false}
-        //   primary={false}/>
-        // </Label>
 
   render() {
-
-    let _label = (
-      <FieldHeader
-        title={this.props.title}
-        required={this.props.required}
-        description={this.props.description}
-        onArrayAddClick={this._onAddClick.bind(this)}
-
-        />
-    );
-
     return (
       <Box size={{height: {max: "small"}}} >
         <List>
           { this.props.items.length > 0 ?
             this.props.items.map(element => (
-              <ListItem margin="none" pad="none">
+              <ListItem key={element.index} margin="none" pad="none">
                 <Box flex={true}>
                   {element.children}
                 </Box>
@@ -143,10 +55,6 @@ class AccordionArrayField extends React.Component {
                 />
               </ListItem>
             )) : null
-            // <ListPlaceholder
-            //   addControl={<Button onClick={this.props._onAddClick.bind()} icon={<AddIcon />} />}
-            //   emptyMessage='You do not have any items at the moment.'
-            //   unfilteredTotal={0}/>
           }
         </List>
       </Box>
@@ -155,47 +63,3 @@ class AccordionArrayField extends React.Component {
 }
 
 export default AccordionArrayField;
-
-    // <Box className="grommetux-form-field" style={{padding: "10px"}}>
-    //   <Accordion animate={false} openMulti={true}>
-    //     <AccordionPanel pad="large" heading={(
-    //       <div>
-    //         <Title>{props.title}{props.required ? "*" : null}
-    //         {props.canAdd &&
-    //         <Button icon={<AddCircleIcon />}
-    //           onClick={props.onAddClick}
-    //           href='#'
-    //           plain={false}
-    //           critical={false}
-    //           accent={false}
-    //           secondary={false}
-    //           primary={false}
-    //           type='submit' />}</Title>
-    //         {props.description ? <Paragraph size='small'>{props.description}</Paragraph> : null}
-    //       </div>)}>
-    //       <Box>
-    //         {props.items.map(element => element.children)}
-    //       </Box>
-    //     </AccordionPanel>
-    //   </Accordion>
-    // </Box>
-
-
-
-// <div>
-//   <Header>
-//     <Title>{props.title}{props.required ? "*" : null}</Title>
-//     {props.canAdd &&
-//     <Button icon={<AddCircleIcon />}
-//       onClick={props.onAddClick}
-//       href='#'
-//       plain={false}
-//       critical={false}
-//       accent={false}
-//       secondary={false}
-//       primary={false}
-//       type='submit' />}
-//     {props.description ? <Paragraph size='small'>{props.description}</Paragraph> : null}
-//   </Header>
-//   {props.items.map(element => element.children)}
-// </div>

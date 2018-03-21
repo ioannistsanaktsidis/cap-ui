@@ -16,9 +16,10 @@ const UpDownWidget = function(props) {
       step={null}
       min={null}
       max={null}
-      onChange={_onChange}
+      onChange={_onChange.bind(this)}
       onBlur={props.onBlur}
-      value={props.value}/>
+      defaultValue={props.value}
+      />
   );
 };
 

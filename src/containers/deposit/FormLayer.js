@@ -21,6 +21,7 @@ class FormLayer extends React.Component {
   }
 
   render() {
+    console.log("LAYER::", this.props)
     return (
       this.props.layerActive ?
       <Layer

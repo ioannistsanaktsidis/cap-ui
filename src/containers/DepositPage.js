@@ -195,7 +195,7 @@ export class DepositPage extends React.Component {
   render() {
     return (
       <Box id="deposit-page" basis="full" flex={true}>
-        <Header flex={true} size="small" pad="none" colorIndex="neutral-1-t">
+        <Header flex={true} size="small" pad="none" colorIndex="neutral-1-a">
           <Box flex={true}  direction="row" justify="between" align="center">
             <Box pad="small">{schemaTitle}</Box>
             <Box align="center" flex={true} >{(schemaDescription)}</Box>
@@ -289,19 +289,19 @@ export class DepositPage extends React.Component {
 
 
 DepositPage.propTypes = {
-  actions: PropTypes.object.isRequired,
-  fuelSavings: PropTypes.object.isRequired
+  // actions: PropTypes.object.isRequired,
+  // fuelSavings: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    fuelSavings: state.fuelSavings
+    // fuelSavings: state.fuelSavings
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actions, dispatch)
+    // actions: bindActionCreators(actions, dispatch)
   };
 }
 

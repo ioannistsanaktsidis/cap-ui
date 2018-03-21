@@ -4,17 +4,45 @@ import Box from 'grommet/components/Box';
 import FormField from 'grommet/components/FormField';
 import CheckBox from 'grommet/components/CheckBox';
 
+function selectValue(value, selected, all) {
+  const at = all.indexOf(value);
+  const updated = selected.slice(0, at).concat(value, selected.slice(at));
+  // As inserting values at predefined index positions doesn't work with empty
+  // arrays, we need to reorder the updated selection to match the initial order
+  return updated.sort((a, b) => all.indexOf(a) > all.indexOf(b));
+}
+
+function deselectValue(value, selected) {
+  return selected.filter(v => v !== value);
+}
+
 const CheckBoxWidget = function(props) {
   // TOFIX onBlur, onFocus
-  let _onChange = function _onChange(_ref) {
-    var value = _ref.currentTarget.value;
-    return props.onChange(value === "" ? props.options.emptyValue : value);
-  };
-  let _errors = null;
-  // if (props.rawErrors.length > 0)
-  //   _errors = props.rawErrors.map(error => <span>{error}</span>)
+  let _onChange = event => {
+    const all = props.options.enumOptions.map(({ value }) => value);
+    if (event.target.checked) {
+      props.onChange(selectValue(event.target.value, props.value, all));
+    } else {
+      props.onChange(deselectValue(event.target.value, props.value));
+    }
+  }
 
-  console.log("CheckBox::::::", props)
+
+  // let _onChange = function _onChange(_ref) {
+  //   var value = _ref.currentTarget.value;
+    console.log("CheckBox::::::_onChange::", props)
+
+  //   if (props.multiple) {
+
+  //     return props.onChange(value === "" ? props.options.emptyValue : value);
+  //   }
+  //   else
+  //     return props.onChange(value === "" ? props.options.emptyValue : value);
+  // };
+  let _errors = null;
+  if (props.rawErrors && props.rawErrors.length > 0)
+    _errors = props.rawErrors.map(error => <span>{error}</span>)
+
   return (
     <FormField
       help={props.schema.description ? props.schema.description : null}
@@ -24,13 +52,11 @@ const CheckBoxWidget = function(props) {
         props.options.enumOptions.length > 0 ?
         props.options.enumOptions.map( item => (
           <CheckBox
-            key={item.value}
-            id={item.value}
+            key={item.label}
             inline="true"
             name={item.label}
-            label={item.value}
+            label={item.value }
             value={item.value}
-            checked={(props.value == item.value)}
             onChange={_onChange} />
         )) : null
       }

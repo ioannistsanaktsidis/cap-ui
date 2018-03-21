@@ -1,5 +1,12 @@
 import {Map} from 'immutable';
 
+// const auth = Map({
+//   isLoggedIn: false,
+//   currenUser: Map({}),
+//   token: localStorage.getItem('token'),
+//   error: null,
+//   loading: false
+// });
 
 const search = Map({
   query: '',
@@ -32,6 +39,7 @@ const fuelSavings = Map({
 
 export default {
   fuelSavings: fuelSavings,
-  search: search
+  search: search,
+  // auth: auth
 };
 

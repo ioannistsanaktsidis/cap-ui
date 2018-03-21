@@ -12,9 +12,11 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import queryString from 'query-string';
+import UserIcon from 'grommet/components/icons/base/User';
 
 import {fetchSearch} from '../../actions/search';
 import config from '../../config';
+import {login, logout} from '../../actions/auth';
 
 class Header extends React.Component {
   constructor(props, context) {
@@ -22,15 +24,16 @@ class Header extends React.Component {
   }
 
   _onSearchSubmit(event) {
-    event.preventDefault();
-
+    // event.preventDefault();
+    console.log("event:::", event)
     let query = event.target.value;
     let q = queryString.parse(window.location.search);
     q["q"] = query;
 
     const search_location = {
       pathname: `search`,
-      search: `${queryString.stringify(q)}`
+      search: `${queryString.stringify(q)}`,
+      from: this.props.match.path
     }
     this.props.history.push(search_location);
   }
@@ -45,37 +48,49 @@ class Header extends React.Component {
         search: `${queryString.stringify(q)}`
       }
       // history.pushState(null, null, `?${queryString.stringify(q)}`);
-      this.props.history.push(location);
+      // this.props.history.push(location);
 
       this.props.fetchSearch(query)
     }
 
     return (
-      <GrommetHeader pad="none" size="small" colorIndex="neutral-1">
-        <Anchor path={{path:"/"}}>
-          <Title pad={{horizontal: "small"}}>
-            { config.project.name || "Project Name"}
-          </Title>
-        </Anchor>
+      <GrommetHeader fixed={true}  size="small" colorIndex="neutral-1" >
+
+
         <Box
           flex={true}
           pad={{horizontal: "small"}}
           justify='end'
           direction='row'
           responsive={false}>
-            <Box flex={true} justify="center">
-          <Form plain={true} onSubmit={this._onSearchSubmit.bind(this)} >
+        <Title>
+          <Anchor
+            path="/"
+            label={ config.project.name || "Project Name" }
+            />
+        </Title>
+        <Box flex={true} justify="center">
             <Search inline={true}
-              size="small"
               flex="true"
               placeHolder="Search"
               dropAlign={{"right": "right"}}
-              onDOMChange={onSearchInput}/>
-          </Form>
+              onDOMChange={onSearchInput}
+              onSelect={this._onSearchSubmit.bind(this)}
+              />
+
             </Box>
         <Menu pad={{horizontal: "small"}} direction="row" responsive={true}>
           <Anchor path={{path:"/deposit"}}>Deposit</Anchor>
           <Anchor path={{path:"/search"}}>Search</Anchor>
+          <Menu responsive={true}
+
+            icon={<UserIcon />}>
+            <Anchor
+              className='active'
+              label="Logout"
+              animateIcon={false}
+              onClick={this.props.logout} />
+          </Menu>
         </Menu>
         </Box>
       </GrommetHeader>
@@ -91,7 +106,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSearch: (query) => { dispatch(fetchSearch(query)) }
+    fetchSearch: (query) => { dispatch(fetchSearch(query)) },
+    logout: () => dispatch(logout())
   };
 };
 

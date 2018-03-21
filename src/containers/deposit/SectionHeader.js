@@ -3,7 +3,6 @@ import React from 'react';
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
 import Button from 'grommet/components/Button';
-import Notification from 'grommet/components/Notification';
 
 
 export default function SectionHeader(props) {
@@ -19,7 +18,7 @@ export default function SectionHeader(props) {
       justify="center"
       alignContent="center"
       size="small"
-      colorIndex="neutral-1-a"
+      colorIndex="neutral-1-t"
       pad="none">
       <Box flex={true}
         justify='between'
