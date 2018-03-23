@@ -2,17 +2,10 @@ import React from 'react';
 
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
-import Button from 'grommet/components/Button';
+import Anchor from 'grommet/components/Anchor';
 
 
 export default function SectionHeader(props) {
-  let _icon = props.icon ?
-              <Box>
-                <Button plain={true} size="xsmall" icon={props.icon}></Button>
-              </Box>
-              : null;
-
-
   return (
     <Header
       justify="center"
@@ -28,7 +21,7 @@ export default function SectionHeader(props) {
         responsive={false}>
         <span>{props.label}</span>
       </Box>
-      {_icon}
+      { props.icon ? props.icon : null}
     </Header>
   );
 }

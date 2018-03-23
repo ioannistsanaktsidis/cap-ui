@@ -29,7 +29,7 @@ import MoreIcon from 'grommet/components/icons/base/More';
 
 import prettyBytes from 'pretty-bytes';
 
-class DepositFilesList extends React.Component {
+class FileList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -70,6 +70,7 @@ class DepositFilesList extends React.Component {
 
   _getIcon(type) {
     const catToIcon = {
+      default: <ArchiveIcon type="status" size="xsmall"/>,
       archive: <ArchiveIcon type="status" size="xsmall"/>,
       configuration: <DocumentConfigIcon type="status" size="xsmall"/>,
       dataset: <PieChartIcon type="status" size="xsmall"/>,
@@ -83,10 +84,7 @@ class DepositFilesList extends React.Component {
   render() {
     return (
       <List basis="full" flex="true">
-        {[
-          <FileManager
-            activeLayer={this.props.fileManagerLayerActive}
-             key="_file_manager"/>,
+        {
           this.files.length > 0 ?
           this.files.map(file => (
             <ListItem key={file.filename} justify="between" pad="none"  flex={true} >
@@ -121,11 +119,10 @@ class DepositFilesList extends React.Component {
             addControl={<Button icon={<AddIcon />} />}
             emptyMessage='No files have been attached to this deposit.'
             unfilteredTotal={0}/>
-        ]}
-
+        }
       </List>
     );
   }
 }
 
-export default DepositFilesList;
+export default FileList;

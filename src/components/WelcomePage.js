@@ -48,9 +48,9 @@ export class WelcomePage extends React.Component {
             </Box>
             <Sidebar size="medium" justify="center" full={true}>
               <Box flex={true} justify="center" margin="medium">
-                <Header fixed={true}>
-                  { this.props.authLoading ? <Spinning /> : null }
-                </Header>
+                  <Header pad="small" justify="end" alignContent="end" align="end" textAlign="right">
+                    { this.props.authLoading ? <Spinning /> :  null }
+                  </Header>
                 <Box flex={true} justify="center">
                   <Button
                     icon={<LoginIcon/>}

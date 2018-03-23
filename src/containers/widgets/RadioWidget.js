@@ -1,30 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import Box from 'grommet/components/Box';
-import FormField from 'grommet/components/FormField';
-import Select from 'grommet/components/Select';
-import RadioButton from 'grommet/components/RadioButton';
+import { Box, RadioButton } from 'grommet';
 
 const RadioWidget = function(props) {
+  let { onChange, options, value } = props;
   // TOFIX onBlur, onFocus
   let _onChange = function _onChange(_ref) {
-    var value = _ref.currentTarget.value;
-    return props.onChange(value === "" ? props.options.emptyValue : value);
+    let _value = _ref.currentTarget.value;
+    return onChange(value === "" ? options.emptyValue : _value);
   };
 
   return (
     <Box direction="row" pad={{horizontal: "medium"}} flex={false}>
       {
-        props.options.enumOptions.length > 0 ?
-        props.options.enumOptions.map( item => (
+        options.enumOptions.length > 0 ?
+        options.enumOptions.map( item => (
           <RadioButton
             key={item.value}
             id={item.value}
-            inline="true"
+
             name={item.label}
             label={item.value}
             value={item.value}
-            checked={(props.value == item.value)}
+            checked={(value == item.value)}
             onChange={_onChange} />
         )) : null
       }
@@ -32,5 +31,11 @@ const RadioWidget = function(props) {
   );
 };
 
+
+RadioWidget.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.object.isRequired,
+  value: PropTypes.string.isRequired
+};
 
 export default RadioWidget;

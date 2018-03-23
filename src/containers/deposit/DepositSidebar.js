@@ -1,8 +1,11 @@
 import React from 'react';
 
+import {connect} from 'react-redux';
+
 import Box from 'grommet/components/Box';
 import FormField from 'grommet/components/FormField';
 
+import Anchor from 'grommet/components/Anchor';
 import Button from 'grommet/components/Button';
 import CheckBox from 'grommet/components/CheckBox';
 import Sidebar from 'grommet/components/Sidebar';
@@ -10,6 +13,8 @@ import Select from 'grommet/components/Select';
 import UploadIcon from 'grommet/components/icons/base/Upload';
 
 import ReactJson from 'react-json-view'
+
+import {toggleFilemanagerLayer} from '../../actions/deposit';
 
 import SectionHeader from './SectionHeader';
 import DepositFilesList from './DepositFilesList';
@@ -21,9 +26,19 @@ class DepositSidebar extends React.Component {
 
   render() {
     return (
+      this.props.showSidebar ?
       <Sidebar full={false} size="medium" colorIndex='light-2'>
         <Box flex={true}>
-          <SectionHeader label="Files | Data | Source Code" icon={<UploadIcon />} />
+          <SectionHeader
+            label="Files | Data | Source Code"
+            icon={
+              <Box>
+                <Anchor
+                  onClick={this.props.toggleFilemanagerLayer}
+                  size="xsmall"
+                  icon={<UploadIcon />}></Anchor>
+              </Box>
+            } />
           <DepositFilesList />
         </Box>
         <Box flex={true}>
@@ -54,9 +69,24 @@ class DepositSidebar extends React.Component {
             </FormField>
           </Box>
         </Box>
-      </Sidebar>
+      </Sidebar> : null
     );
   }
 }
 
-export default DepositSidebar;
+function mapStateToProps(state) {
+  return {
+    showSidebar: state.deposit.get('showSidebar')
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DepositSidebar);

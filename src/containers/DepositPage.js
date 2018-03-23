@@ -18,8 +18,13 @@ import ObjectFieldTemplate from './deposit/ObjectFieldTemplate';
 import LayerObjectFieldTemplate from './deposit/LayerObjectFieldTemplate';
 import ArrayFieldTemplate from './deposit/ArrayFieldTemplate';
 import ErrorListTemplate from './deposit/ErrorListTemplate';
+
 import SectionHeader from './deposit/SectionHeader';
 import DepositSidebar from './deposit/DepositSidebar';
+import DepositHeader from './deposit/DepositHeader';
+import DepositPreviewer from './deposit/DepositPreviewer';
+import DepositForm from './deposit/Form';
+import AvailableDeposits from './deposit/AvailableDeposits';
 
 import CMSAnalysisUISchema from './uiSchemas/cms-analysis';
 import testUISchema from './uiSchemas/testSchema';
@@ -42,9 +47,7 @@ import ReactJson from 'react-json-view'
 import DatabaseIcon from 'grommet/components/icons/base/Database';
 import UploadIcon from 'grommet/components/icons/base/Upload';
 import TreeIcon from 'grommet/components/icons/base/Tree';
-import SplitIcon from 'grommet/components/icons/base/Split';
-import SplitsIcon from 'grommet/components/icons/base/Splits';
-import SaveIcon from 'grommet/components/icons/base/Save';
+
 
 import CheckBox from 'grommet/components/CheckBox';
 
@@ -144,6 +147,7 @@ export class DepositPage extends React.Component {
       formData: {},
       liveValidate: false,
       validate: true,
+      selectSchema: null,
       schema: {},
       uiSchema: {},
       layout: [true, true]
@@ -163,12 +167,15 @@ export class DepositPage extends React.Component {
   }
 
   _changeSchema(event) {
-    console.log("_changeSchema::", event.value)
-    if (schemas[event.value]){
+    let schema = event.value ? event.value : event;
+
+    console.log("_changeSchema::", schema)
+    if (schemas[schema]){
       this.setState({
         formData: {},
-        schema: transformSchema(schemas[event.value]),
-        uiSchema: uiSchemas[event.value] ?  uiSchemas[event.value] : {}
+        selectSchema: schemas[schema],
+        schema: transformSchema(schemas[schema]),
+        uiSchema: uiSchemas[schema] ?  uiSchemas[schema] : {}
       });
     }
   }
@@ -195,90 +202,34 @@ export class DepositPage extends React.Component {
   render() {
     return (
       <Box id="deposit-page" basis="full" flex={true}>
-        <Header flex={true} size="small" pad="none" colorIndex="neutral-1-a">
-          <Box flex={true}  direction="row" justify="between" align="center">
-            <Box pad="small">{schemaTitle}</Box>
-            <Box align="center" flex={true} >{(schemaDescription)}</Box>
-            <Box direction="row">
-              <Menu responsive={true}
-                label='Layout'
-                size='small'
-                inline={false}>
-                <Anchor icon={<SplitIcon/>} onClick={() => this.setState({layout: [true, false]})} />
-                <Anchor icon={<SplitsIcon/>} onClick={() => this.setState({layout: [true, true]})} />
-              </Menu>
-              <Button
-                icon={<SaveIcon/>}
-                plain={true}
-                primary={true}
-                label="Save"
-                onClick={this._saveData.bind(this)}
-              />
-            </Box>
-          </Box>
-        </Header>
+        <DepositHeader saveData={this._saveData.bind(this)}/>
 
         <Box flex={true} wrap={false} direction="row">
           <Box direction="row" full={false} flex={true}>
-            {
-              this.state.layout[0] ?
-              <DepositSidebar
-                files={[]}
-                schemas={schemas}
-                validate={this.state.validate}
-                liveValidate={this.state.liveValidate}
-                onChangeSchema={this._changeSchema.bind(this)}
-                onValidateChange={this._toggleValidate.bind(this)}
-                onLiveValidateChange={this._toggleAutoValidate.bind(this)}
-              /> : null
-            }
+            <DepositSidebar
+              files={[]}
+              schemas={schemas}
+              validate={this.state.validate}
+              liveValidate={this.state.liveValidate}
+              onChangeSchema={this._changeSchema.bind(this)}
+              onValidateChange={this._toggleValidate.bind(this)}
+              onLiveValidateChange={this._toggleAutoValidate.bind(this)} />
 
 
             <Box direction="row" flex={true} wrap={false}>
-              <Box size={{width: {min: "large"}}} flex={true}  wrap={false}>
-                <SectionHeader label="Submission Form" />
-                <Box alignContent="center" justify="center" align="center" flex={true} wrap={false}>
-                <Box size="xlarge"  pad="large" flex={false} wrap={false}>
-                  <Form
-                    ref={(form) => {this.form=form;}}
-                    schema={this.state.schema}
-                    FieldTemplate={FieldTemplate}
-                    ObjectFieldTemplate={ObjectFieldTemplate}
-                    ArrayFieldTemplate={ArrayFieldTemplate}
-                    showErrorList={true}
-                    ErrorList={ErrorListTemplate}
-                    widgets={widgets}
-                    fields={fields}
-                    uiSchema={this.state.uiSchema}
-                    liveValidate={this.state.liveValidate}
-                    noValidate={!this.state.validate}
-                    onError={log("errors")}
-                    formData={this.state.formData}
-                    onBlur={(type) => {
-                      console.log("onBlur::::",type);
-                      // this.setState({formData: change.formData})
-                    }}
-                    onChange={(change) => {
-                      console.log("CHANGE::",change);
-                      this.setState({formData: change.formData})
-                    }}
-                  >
-                    <Box></Box>
-                  </Form>
-                </Box>
-              </Box>
-              </Box>
-            {
-              this.state.layout[1] ?
-              <Sidebar full={false} size="large" colorIndex='light-2'>
-                <Box flex={true}>
-                  <SectionHeader label="Form Data" icon={<UploadIcon />} />
-                  <Box pad="small" flex={true}>
-                    <ReactJson src={this.state.formData} />
-                  </Box>
-                </Box>
-              </Sidebar> : null
-            }
+              <DepositForm
+                formData={this.state.formData}
+                selectSchema={this.state.selectSchema}
+                schema={this.state.schema}
+                uiSchema={this.state.uiSchema}
+                schemas={schemas}
+                changeSchema={this._changeSchema.bind(this)}
+                onChange={(change) => {
+                  console.log("CHANGE::",change);
+                  this.setState({formData: change.formData})
+                }}
+              />
+              <DepositPreviewer data={this.state.formData} />
             </Box>
           </Box>
         </Box>
@@ -295,13 +246,13 @@ DepositPage.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    // fuelSavings: state.fuelSavings
+    showSidebar: state.deposit.get('showSidebar')
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    // actions: bindActionCreators(actions, dispatch)
+    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
   };
 }
 
