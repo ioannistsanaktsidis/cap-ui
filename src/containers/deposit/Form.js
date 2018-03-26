@@ -46,14 +46,11 @@ class DepositForm extends React.Component {
   }
 
   _validate(formData, errors) {
-    // console.log("_validate")
-    // console.log(formData, errors);
 
     errors["simple_number"].addError("I don't like it");
     errors["object_with_nested_objects"]["nested_array_of_objects"][0]["second_number"].addError("I don't like it 2");
 
     return errors;
-
   }
 
   render() {

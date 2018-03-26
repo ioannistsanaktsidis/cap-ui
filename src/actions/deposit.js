@@ -72,13 +72,3 @@ export function startDeposit(schema, initialData=null) {
     dispatch(changeSchema(schema));
   };
 }
-
-
-// export function logout() {
-//   return function (dispatch) {
-//     dispatch(logoutRequest());
-
-//     localStorage.clear();
-//     dispatch(logoutSuccess());
-//   };
-// }

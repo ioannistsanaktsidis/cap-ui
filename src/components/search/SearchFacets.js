@@ -21,9 +21,7 @@ export default class SearchFacets extends React.Component {
     };
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   componentWillUnmount() {}
 
@@ -57,44 +55,12 @@ export default class SearchFacets extends React.Component {
     queryString.stringify
     let query = "?"
 
-    // Object.keys(_selectedAggregations).map((_category) => {
-    //   _selectedAggregations[_category].map((st) => {query += _category+"="+st+"&"})
-    // })
-
-    // history.pushState(null, null, query)
-
     return _selectedAggregations;
   }
-  // onSubtypeChange(type) {
-  //   const target = type.target;
-  //   const value = target.type === 'checkbox' ? target.checked : target.value;
-  //   const name = target.name;
-
-  //   console.log("typetypetype::::::::", target);
-  //   console.log("typetypetype::::::::", value);
-  //   console.log("typetypetype::::::::", name);
-
-  //   let _type = type.target.value;
-  //   let index = this.selectedAggregations.subtype.indexOf(_type);
-  //   if ( index == -1 )
-  //     this.selectedAggregations.subtype.push(_type)
-  //   else
-  //     this.selectedAggregations.subtype.splice(index, 1)
-
-  //   let query = "?"
-  //   this.selectedAggregations.subtype.map((st) => {query += "subtype="+st+"&"})
-
-  //   history.pushState("", "", query)
-  //   this.aggregationsChange.emit(this.selectedAggregations);
-  //  }
 
 
 
   render() {
-
-    // if (this.props.onChange){
-    //   this._onChange = this.props.onChange;
-    // }
     if (this.props.aggs){
       let _aggs = this.props.aggs;
       let categories = Object.keys(_aggs);
@@ -155,21 +121,14 @@ export default class SearchFacets extends React.Component {
   }
 }
 
-SearchFacets.propTypes = {
-  // actions: PropTypes.object.isRequired,
-  // fuelSavings: PropTypes.object.isRequired
-};
+SearchFacets.propTypes = {};
 
 // function mapStateToProps(state) {
-//   return {
-//     fuelSavings: "state.fuelSavings"
-//   };
+//   return {};
 // }
 
 // function mapDispatchToProps(dispatch) {
-//   return {
-//     actions: bindActionCreators(actions, dispatch)
-//   };
+//   return {};
 // }
 
 // export default connect(

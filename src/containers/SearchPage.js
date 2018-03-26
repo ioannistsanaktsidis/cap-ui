@@ -22,9 +22,7 @@ class SearchPage extends React.Component {
     this.props.fetchSearch()
   }
 
-  componentWillUnmount() {
-
-  }
+  componentWillUnmount() {}
 
   _toggleAggs = (selectedAggs) => {
     let currentParams = this.getSearchParams()
@@ -117,10 +115,7 @@ class SearchPage extends React.Component {
   }
 }
 
-SearchPage.propTypes = {
-  // actions: PropTypes.object.isRequired,
-  // fuelSavings: PropTypes.object.isRequired
-};
+SearchPage.propTypes = {};
 
 function mapStateToProps(state) {
   return {

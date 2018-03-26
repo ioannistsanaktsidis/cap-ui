@@ -19,10 +19,9 @@ import testSchema from './schemas/testSchema';
 import zenodoSchema from './schemas/zenodo';
 import inspireSchema from './schemas/inspire';
 
-import {startDeposit} from '../actions/deposit'
-const log = (type) => console.log.bind(console, type);
+import {startDeposit} from '../actions/deposit';
 
-let actions = {};
+const log = (type) => console.log.bind(console, type);
 
 const schemaFieldsToRemove = [
   "_deposit",
@@ -35,31 +34,17 @@ const schemaFieldsToRemove = [
   "_experiment"
 ];
 
-// let schema = CMSAnalysisSchema;
-let schema = testSchema;
-// let schema = inspireSchema;
-// let schema = zenodoSchema;
-// let schema = physicsObjectsSchema;
-
 let schemas = {
   CMSAnalysisSchema: CMSAnalysisSchema,
   testSchema: testSchema,
   inspireSchema: inspireSchema,
-  zenodoSchema: zenodoSchema
+  // zenodoSchema: zenodoSchema
 }
 
 let uiSchemas = {
   CMSAnalysisSchema: CMSAnalysisUISchema,
   testSchema: testUISchema,
-  // inspireSchema: inspireUISchema,
-  // zenodoSchema: zenodoUISchema
 }
-
-let schemaTitle = schema.title ? schema.title : "Deposit";
-let schemaDescription = schema.description ? schema.description : null;
-
-schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
-schema = { type: schema.type, properties: schema.properties };
 
 const transformSchema = (schema) => {
   const schemaFieldsToRemove = [
@@ -79,63 +64,19 @@ const transformSchema = (schema) => {
   return schema;
 }
 
-
-
-// const fields = {
-//   'layerObjectField': LayerObjectFieldTemplate
-// };
-
-const uiSchema = {
-  // "ui:order": ["basic_info", "*"],
-  // "basic_info": {
-  //   "ui:object": "layerObjectField",
-  //   os: {
-  //     // "ui:object": "layerObjectField"
-  //   }
-  // }
-  "object_with_nested_objects": {
-    "nested_object": {
-      "ui:object": "accordionObjectField"
-    }
-  },
-  "basic_object": {
-    "simple_number": {
-      "ui:widget": "updown"
-    }
-  }
-};
-
 export class DepositPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       formData: {},
-      liveValidate: false,
-      validate: true,
       selectSchema: null,
-      schema: {},
-      uiSchema: {},
-      layout: [true, true]
     };
-  }
-
-  _toggleAutoValidate() {
-    this.setState(prevState => ({
-      liveValidate: !prevState.liveValidate
-    }));
-  }
-
-  _toggleValidate() {
-    this.setState(prevState => ({
-      validate: !prevState.validate
-    }));
   }
 
   _changeSchema(event) {
     let schema = event.value ? event.value : event;
 
-    console.log("_changeSchema::", schema)
     if (schemas[schema]){
       const _schema = transformSchema(schemas[schema]);
       const uiSchema = uiSchemas[schema] ?  uiSchemas[schema] : {};
@@ -144,9 +85,7 @@ export class DepositPage extends React.Component {
 
       this.setState({
         formData: {},
-        selectSchema: schemas[schema],
-        schema: transformSchema(schemas[schema]),
-        uiSchema: uiSchemas[schema] ?  uiSchemas[schema] : {}
+        selectSchema: schemas[schema]
       });
     }
   }
@@ -155,19 +94,6 @@ export class DepositPage extends React.Component {
     console.log("--------_saveData-----------")
     console.log(this.state.formData);
     console.log("--------_saveData-----------")
-
-    // this.form.submitButton.click();
-  }
-
-  _validate(formData, errors) {
-    // console.log("_validate")
-    // // errors.object_with_nested_objects.addError("BAM BOOOOM");
-    // console.log(formData, errors);
-    // console.log("_validate")
-
-    return errors;
-
-    // this.form.submitButton.click();
   }
 
   render() {
@@ -204,10 +130,7 @@ export class DepositPage extends React.Component {
 }
 
 
-DepositPage.propTypes = {
-  // actions: PropTypes.object.isRequired,
-  // fuelSavings: PropTypes.object.isRequired
-};
+DepositPage.propTypes = {};
 
 function mapStateToProps(state) {
   return {
