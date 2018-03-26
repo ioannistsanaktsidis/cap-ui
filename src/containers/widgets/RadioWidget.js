@@ -31,11 +31,10 @@ const RadioWidget = function(props) {
   );
 };
 
-
 RadioWidget.propTypes = {
   onChange: PropTypes.func.isRequired,
   options: PropTypes.object.isRequired,
-  value: PropTypes.string.isRequired
+  value: PropTypes.string
 };
 
 export default RadioWidget;

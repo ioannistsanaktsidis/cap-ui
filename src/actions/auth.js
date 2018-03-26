@@ -58,7 +58,7 @@ export function login({...rest}, history) {
   return function (dispatch) {
     dispatch(loginRequest());
 
-    console.log("LOGIN_SUCCESS go", rest, history)
+    // console.log("LOGIN_SUCCESS go", rest, history)
     setTimeout(() => {
       // Saving JWT to localStorage
       let token = '12345';
@@ -72,7 +72,7 @@ export function login({...rest}, history) {
           email: "john.doe@cern.ch"
         }
       }))
-    }, 3000);
+    }, 1500);
   };
 }
 

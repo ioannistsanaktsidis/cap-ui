@@ -73,7 +73,9 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.auth.get('isLoggedIn'),
     token: state.auth.get('token'),
-    authLoading: state.auth.get('loading')
+    authLoading: state.auth.get('loading'),
+    liveValidate: state.auth.get('liveValidate'),
+    validate: state.auth.get('validate')
   };
 }
 

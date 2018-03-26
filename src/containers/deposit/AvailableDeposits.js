@@ -17,7 +17,7 @@ const AvailableDeposits = (props) => {
       <Tiles flush={false} fill={false} size="large" justify="center">
         {
           Object.keys(schemas).map((schema) => (
-            <Tile size="small" pad="small" colorIndex="light-2" onClick={selectSchema.bind(this, schema)}>
+            <Tile key={schema} size="small" pad="small" colorIndex="light-2" onClick={selectSchema.bind(this, schema)}>
               <Paragraph align="center">{schemas[schema].title}</Paragraph>
             </Tile>
           ))

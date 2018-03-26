@@ -2,14 +2,16 @@ import React from 'react';
 
 import {connect} from 'react-redux';
 
-import Box from 'grommet/components/Box';
-import FormField from 'grommet/components/FormField';
+import {
+  Box,
+  FormField,
+  Anchor,
+  Button,
+  CheckBox,
+  Sidebar,
+  Select,
+} from 'grommet';
 
-import Anchor from 'grommet/components/Anchor';
-import Button from 'grommet/components/Button';
-import CheckBox from 'grommet/components/CheckBox';
-import Sidebar from 'grommet/components/Sidebar';
-import Select from 'grommet/components/Select';
 import UploadIcon from 'grommet/components/icons/base/Upload';
 
 import ReactJson from 'react-json-view'
@@ -19,6 +21,7 @@ import {toggleFilemanagerLayer} from '../../actions/deposit';
 import SectionHeader from './SectionHeader';
 import DepositFilesList from './DepositFilesList';
 
+// Customized RJSF component ( Grommet )
 import FieldTemplate from './FieldTemplate';
 import ObjectFieldTemplate from './ObjectFieldTemplate';
 import LayerObjectFieldTemplate from './LayerObjectFieldTemplate';
@@ -38,23 +41,19 @@ class DepositForm extends React.Component {
     super(props);
 
     this.state = {
-      liveValidate: false,
-      validate: true,
-      uiSchema: {},
-      layout: [true, true]
+      formData: {}
     };
   }
 
-  _toggleAutoValidate() {
-    this.setState(prevState => ({
-      liveValidate: !prevState.liveValidate
-    }));
-  }
+  _validate(formData, errors) {
+    // console.log("_validate")
+    // console.log(formData, errors);
 
-  _toggleValidate() {
-    this.setState(prevState => ({
-      validate: !prevState.validate
-    }));
+    errors["simple_number"].addError("I don't like it");
+    errors["object_with_nested_objects"]["nested_array_of_objects"][0]["second_number"].addError("I don't like it 2");
+
+    return errors;
+
   }
 
   render() {
@@ -76,9 +75,10 @@ class DepositForm extends React.Component {
                 widgets={widgets}
                 fields={fields}
                 uiSchema={this.props.uiSchema}
-                liveValidate={this.state.liveValidate}
-                noValidate={!this.state.validate}
-                onError={console.log("errors")}
+                liveValidate={this.props.liveValidate}
+                noValidate={!this.props.validate}
+                validate={this.props.customValidation ? this._validate : null}
+                onError={(e) => console.log("errors", e)}
                 formData={this.props.formData}
                 onBlur={(type) => {
                   console.log("onBlur::::",type);
@@ -98,7 +98,14 @@ class DepositForm extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    showSidebar: state.deposit.get('showSidebar')
+    showSidebar: state.deposit.get('showSidebar'),
+    customValidation: state.deposit.get('customValidation'),
+    liveValidate: state.deposit.get('liveValidate'),
+    validate: state.deposit.get('validate'),
+    schema: state.deposit.get('schema'),
+    uiSchema: state.deposit.get('uiSchema'),
+    data: state.deposit.get('data'),
+    selectedSchema: state.deposit.get('selectedSchema')
   };
 }
 

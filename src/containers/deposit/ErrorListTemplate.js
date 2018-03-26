@@ -11,6 +11,7 @@ import ListItem from 'grommet/components/ListItem';
 export default function ErrorListTemplate(props) {
   const {errors} = props;
 
+  console.log("ERROR_LIST:::", errors, props)
   return (
     <Box flex={true}>
     <Notification state={null}
@@ -27,10 +28,7 @@ export default function ErrorListTemplate(props) {
           return (
             <ListItem key={i}  >
               <Box flex={true}>
-                {error.property}
-              </Box>
-              <Box size="small" align="end" className='secondary'>
-                {error.message}
+                {error.stack}
               </Box>
             </ListItem>
           );
@@ -41,29 +39,3 @@ export default function ErrorListTemplate(props) {
     </Box>
   );
 }
-
-
-// export default function ErrorListTemplate(props) {
-//   const {errors} = props;
-//   return (
-//     <Notification state={null}
-//       message='Information proved are not correct'
-//       timestamp={null}
-//       status='critical' >
-//     <List flex={false} size={{height: 10}}>
-//       {errors.map((error, i) => {
-//         return (
-//           <ListItem key={i} justify='between'>
-//             <span>
-//               {error.property}
-//             </span>
-//             <span className='secondary'>
-//               {error.message}
-//             </span>
-//           </ListItem>
-//         );
-//       })}
-//     </List>
-//     </Notification>
-//   );
-// }

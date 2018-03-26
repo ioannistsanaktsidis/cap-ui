@@ -28,7 +28,7 @@ UpDownWidget.propTypes = {
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func.isRequired,
   options: PropTypes.object.isRequired,
-  value: PropTypes.string.isRequired
+  value: PropTypes.number
 };
 
 export default UpDownWidget;

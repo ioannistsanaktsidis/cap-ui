@@ -2,24 +2,9 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 
 import Box from 'grommet/components/Box';
-import Header from 'grommet/components/Header';
-import Heading from 'grommet/components/Heading';
-import Title from 'grommet/components/Title';
-import Anchor from 'grommet/components/Anchor';
-import Menu from 'grommet/components/Menu';
 
-import Form from "react-jsonschema-form";
-
-import FieldTemplate from './deposit/FieldTemplate';
-import ObjectFieldTemplate from './deposit/ObjectFieldTemplate';
-import LayerObjectFieldTemplate from './deposit/LayerObjectFieldTemplate';
-import ArrayFieldTemplate from './deposit/ArrayFieldTemplate';
-import ErrorListTemplate from './deposit/ErrorListTemplate';
-
-import SectionHeader from './deposit/SectionHeader';
 import DepositSidebar from './deposit/DepositSidebar';
 import DepositHeader from './deposit/DepositHeader';
 import DepositPreviewer from './deposit/DepositPreviewer';
@@ -34,26 +19,7 @@ import testSchema from './schemas/testSchema';
 import zenodoSchema from './schemas/zenodo';
 import inspireSchema from './schemas/inspire';
 
-import TextInput from 'grommet/components/TextInput';
-import Select from 'grommet/components/Select';
-
-import FormField from 'grommet/components/FormField';
-import _Form from 'grommet/components/Form';
-import Sidebar from 'grommet/components/Sidebar';
-import Button from 'grommet/components/Button';
-
-import ReactJson from 'react-json-view'
-
-import DatabaseIcon from 'grommet/components/icons/base/Database';
-import UploadIcon from 'grommet/components/icons/base/Upload';
-import TreeIcon from 'grommet/components/icons/base/Tree';
-
-
-import CheckBox from 'grommet/components/CheckBox';
-
-import widgets from './widgets';
-import fields from './fields';
-
+import {startDeposit} from '../actions/deposit'
 const log = (type) => console.log.bind(console, type);
 
 let actions = {};
@@ -171,6 +137,11 @@ export class DepositPage extends React.Component {
 
     console.log("_changeSchema::", schema)
     if (schemas[schema]){
+      const _schema = transformSchema(schemas[schema]);
+      const uiSchema = uiSchemas[schema] ?  uiSchemas[schema] : {};
+
+      this.props.startDeposit({ selectedSchema: schema, schema: _schema, uiSchema: uiSchema });
+
       this.setState({
         formData: {},
         selectSchema: schemas[schema],
@@ -209,19 +180,13 @@ export class DepositPage extends React.Component {
             <DepositSidebar
               files={[]}
               schemas={schemas}
-              validate={this.state.validate}
-              liveValidate={this.state.liveValidate}
-              onChangeSchema={this._changeSchema.bind(this)}
-              onValidateChange={this._toggleValidate.bind(this)}
-              onLiveValidateChange={this._toggleAutoValidate.bind(this)} />
+              onChangeSchema={this._changeSchema.bind(this)} />
 
 
             <Box direction="row" flex={true} wrap={false}>
               <DepositForm
                 formData={this.state.formData}
                 selectSchema={this.state.selectSchema}
-                schema={this.state.schema}
-                uiSchema={this.state.uiSchema}
                 schemas={schemas}
                 changeSchema={this._changeSchema.bind(this)}
                 onChange={(change) => {
@@ -252,7 +217,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
+    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
+    startDeposit: (schema, data) => dispatch(startDeposit(schema, data))
   };
 }
 

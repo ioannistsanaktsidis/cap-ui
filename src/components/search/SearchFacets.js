@@ -100,7 +100,7 @@ export default class SearchFacets extends React.Component {
       let categories = Object.keys(_aggs);
       return (
         <Sidebar full={false}>
-          <Box flex={true} justify='start'  colorIndex='neutral-3'>
+          <Box flex={true} justify='start'>
             <Menu primary={true}>
               {
                 categories.map((category) => {

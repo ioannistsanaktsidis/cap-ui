@@ -119,9 +119,6 @@
           "type": "object"
         },
         "documentations": {
-          "default": [
-            {}
-          ],
           "description": "Please provide all documentation",
           "id": "documentations",
           "items": {
@@ -152,9 +149,6 @@
           "type": "array"
         },
         "internal_discussions": {
-          "default": [
-            {}
-          ],
           "description": "Please add all internal discussions",
           "id": "internal-discussions",
           "items": {
@@ -178,9 +172,6 @@
           "type": "string"
         },
         "presentations": {
-          "default": [
-            {}
-          ],
           "description": "Please add all presentations",
           "id": "presentations",
           "items": {
@@ -198,9 +189,6 @@
           "type": "array"
         },
         "publications": {
-          "default": [
-            {}
-          ],
           "description": "Please add all publications",
           "id": "publications",
           "items": {
@@ -259,9 +247,6 @@
       "type": "object"
     },
     "auxiliary_measurements": {
-      "default": [
-        {}
-      ],
       "description": "Please provide information about the additional measurements included in your analysis concerning e.g. Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
       "items": {
         "properties": {
@@ -375,7 +360,6 @@
       "type": "object"
     },
     "cms_questionnaire": {
-      "default": {},
       "properties": {
         "$ref": {
           "type": "string"
@@ -388,9 +372,6 @@
       "type": "string"
     },
     "input_code_output": {
-      "default": [
-        {}
-      ],
       "description": "Please provide the n-tuples you used for your measurements",
       "items": {
         "properties": {
@@ -621,7 +602,6 @@
                       "type": "string"
                     },
                     "eta_cut": {
-                      "default": [],
                       "items": {
                         "properties": {
                           "number": {
@@ -906,7 +886,6 @@
                       "type": "string"
                     },
                     "pt_cut": {
-                      "default": [],
                       "items": {
                         "properties": {
                           "number": {
@@ -1016,7 +995,7 @@
                       "type": "object"
                     },
                     "physics_objects": {
-                      "enum": [],
+                      "enum": ["TOADD"],
                       "title": "Physics Objects Available",
                       "type": "string"
                     },
@@ -1100,15 +1079,12 @@
             "type": "string"
           },
           "n_tuple": {
-            "default": [
-              {}
-            ],
             "items": {
               "properties": {
                 "input_data": {
                   "properties": {
                     "dataset": {
-                      "enum": [],
+                      "enum": ["TOADD"],
                       "title": "Dataset",
                       "type": "string"
                     }
@@ -1206,9 +1182,6 @@
         },
         "n_tuple": {
           "$schema": "http://json-schema.org/draft-04/schema#",
-          "default": [
-            {}
-          ],
           "items": {
             "properties": {
               "datacard": {
@@ -1218,7 +1191,7 @@
               "input_data": {
                 "properties": {
                   "dataset": {
-                    "enum": [],
+                    "enum": ["TOADD"],
                     "title": "Dataset",
                     "type": "string"
                   }

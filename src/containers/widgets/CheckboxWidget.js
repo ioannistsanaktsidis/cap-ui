@@ -27,18 +27,6 @@ const CheckBoxWidget = function(props) {
     }
   }
 
-
-  // let _onChange = function _onChange(_ref) {
-  //   var value = _ref.currentTarget.value;
-    console.log("CheckBox::::::_onChange::", props)
-
-  //   if (props.multiple) {
-
-  //     return props.onChange(value === "" ? props.options.emptyValue : value);
-  //   }
-  //   else
-  //     return props.onChange(value === "" ? props.options.emptyValue : value);
-  // };
   let _errors = null;
   if (props.rawErrors && props.rawErrors.length > 0)
     _errors = props.rawErrors.map(error => <span>{error}</span>)

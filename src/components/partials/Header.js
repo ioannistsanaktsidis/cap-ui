@@ -54,7 +54,7 @@ class Header extends React.Component {
     }
 
     return (
-      <GrommetHeader fixed={true}  size="small" colorIndex="neutral-1" >
+      <GrommetHeader fixed={false}  size="small" colorIndex="neutral-1" >
 
 
         <Box
