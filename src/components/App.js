@@ -4,12 +4,12 @@ import {Switch, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import WelcomePage from './WelcomePage';
-import AboutPage from './AboutPage';
-import IndexPage from './IndexPage';
+import WelcomePage from './welcome/WelcomePage';
+import AboutPage from './about/AboutPage';
+import IndexPage from './index/IndexPage';
 import NotFoundPage from './NotFoundPage';
-import SearchPage from '../containers/SearchPage';
-import DepositPage from '../containers/DepositPage';
+import SearchPage from './search/SearchPage';
+import DepositPage from './deposit/DepositPage';
 
 import requireAuth from './auth/AuthorizationRequired';
 import noRequireAuth from './auth/NoAuthorizationRequired';
