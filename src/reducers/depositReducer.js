@@ -46,9 +46,9 @@ export default function depositReducer(state = initialState, action) {
       return state
               .set('selectedSchema', action.schema.selectedSchema )
               .set('schema', action.schema.schema )
-              .set('uiSchema', action.schema.uiSchema )
+              .set('uiSchema', action.schema.uiSchema );
     case UPDATE_FORM_DATA:
-      return state.set('data', action.data)
+      return state.set('data', action.data);
     default:
       return state;
   }

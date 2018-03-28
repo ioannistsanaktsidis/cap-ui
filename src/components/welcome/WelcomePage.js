@@ -1,27 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import App from 'grommet/components/App';
-import Box from 'grommet/components/Box';
-import Sidebar from 'grommet/components/Sidebar';
-import Split from 'grommet/components/Split';
-import Button from 'grommet/components/Button';
-import Heading from 'grommet/components/Heading';
-import Header from 'grommet/components/Header';
-import Section from 'grommet/components/Section';
-import Spinning from 'grommet/components/icons/Spinning';
-import { Switch, Route } from 'react-router-dom';
 
+import {
+  Box,
+  Sidebar,
+  Button,
+  Heading,
+  Header,
+  Section
+} from 'grommet';
+
+import Spinning from 'grommet/components/icons/Spinning';
 
 import {login} from '../../actions/auth';
 
 import LoginIcon from 'grommet/components/icons/base/Login';
-// import HomeImage from '../imgs/home_image';
-// import SVGIcon from 'grommet/components/SVGIcon'
-
-import { Link } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
 
 export class WelcomePage extends React.Component {
   constructor(props) {
@@ -66,7 +60,9 @@ export class WelcomePage extends React.Component {
 }
 
 WelcomePage.propTypes = {
-  // isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
+  authLoading: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
