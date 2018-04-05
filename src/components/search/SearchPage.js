@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import axios from 'axios';
 
 import Box from 'grommet/components/Box';
+
 import SearchFacets from './SearchFacets';
 import SearchUtils from './SearchUtils';
 import SearchResults from './SearchResults';
-let actions = {};
-import {fetchSearch, toggleAggs} from '../../actions/search';
+
+import {fetchSearch} from '../../actions/search';
 import queryString from 'query-string';
 
 class SearchPage extends React.Component {
@@ -19,37 +18,40 @@ class SearchPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchSearch()
+    this.props.fetchSearch();
   }
 
   componentWillUnmount() {}
 
   _toggleAggs = (selectedAggs) => {
-    let currentParams = this.getSearchParams()
+    let currentParams = this.getSearchParams();
     const location = {
       search: `${queryString.stringify(Object.assign(currentParams,selectedAggs))}`
-    }
+    };
+
     this.props.history.push(location);
-    this.props.fetchSearch()
+    this.props.fetchSearch();
   }
 
   _changePage = (page) => {
-    let currentParams = this.getSearchParams()
+    let currentParams = this.getSearchParams();
 
     const location = {
       search: `${queryString.stringify(Object.assign(currentParams,{page: page}))}`
-    }
+    };
+
     this.props.history.push(location);
-    this.props.fetchSearch()
+    this.props.fetchSearch();
   }
 
   _changePageSize = (size) => {
-    let currentParams = this.getSearchParams()
+    let currentParams = this.getSearchParams();
     const location = {
       search: `${queryString.stringify(Object.assign(currentParams,{size: size}))}`
-    }
+    };
+
     this.props.history.push(location);
-    this.props.fetchSearch()
+    this.props.fetchSearch();
   }
 
   getSearchParams = () => {
@@ -64,9 +66,7 @@ class SearchPage extends React.Component {
     let aggs = null;
 
     let _results = {};
-    let _total = 0;
-    let _hits = [];
-    let _aggs = {};
+    let _aggs;
 
     let _location = queryString.parse(this.props.location.search);
 
@@ -74,8 +74,8 @@ class SearchPage extends React.Component {
 
     if (this.props.results) {
       _results = this.props.results.toJS();
-      _total = _results.hits.total;
-      _hits = _results.hits.hits;
+      // let _total = _results.hits.total;
+      // let _hits = _results.hits.hits;
       _aggs = _results.aggregations;
     }
 
@@ -115,7 +115,15 @@ class SearchPage extends React.Component {
   }
 }
 
-SearchPage.propTypes = {};
+SearchPage.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  total: PropTypes.number.isRequired,
+  size: PropTypes.number.isRequired,
+  fetchSearch: PropTypes.func,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  results: PropTypes.object.isRequired,
+};
 
 function mapStateToProps(state) {
   return {

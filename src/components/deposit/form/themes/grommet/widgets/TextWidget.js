@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Box from 'grommet/components/Box';
 import TextInput from 'grommet/components/TextInput';
@@ -23,6 +24,12 @@ const TextWidget = function(props) {
   );
 };
 
+TextWidget.propTypes = {
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  id: PropTypes.string,
+  placeholder: PropTypes.string,
 
+};
 
 export default TextWidget;

@@ -29,8 +29,8 @@ class DepositHeader extends React.Component {
           <Box align="center" flex={true} >{(this.props.selectedSchema)}</Box>
           <Box direction="row">
             <Menu responsive={true}
-              label='Layout'
-              size='small'
+              label="Layout"
+              size="small"
               inline={false}>
               <Anchor icon={<SplitIcon/>} onClick={this.props.showPreviewer} />
               <Anchor icon={<SplitsIcon/>} onClick={this.props.showSidebar} />
@@ -45,38 +45,22 @@ class DepositHeader extends React.Component {
           </Box>
         </Box>
       </Header>
-    )
-  }
-}
-
-let styles = {
-  default: {
-    borderWidth: 2,
-    height: 100,
-    padding: 20,
-    display: 'flex',
-    borderColor: '#e6e6e6',
-    borderStyle: 'dashed',
-    borderRadius: 5,
-    justify: 'center',
-    align: 'center',
-    alignContent: 'center'
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
-
-    selectedSchema: state.deposit.get('selectedSchema')
+    selectedSchema: state.deposit.get("selectedSchema")
   };
-};
+}
 
 function mapDispatchToProps(dispatch) {
   return {
     showPreviewer: () => dispatch(togglePreviewer()),
     showSidebar: () => dispatch(toggleSidebar())
   };
-};
+}
 
 export default connect(
   mapStateToProps,

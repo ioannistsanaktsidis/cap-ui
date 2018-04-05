@@ -1,14 +1,5 @@
 import React from 'react';
 
-const schema = {
-  type: "object",
-  required: ["lat", "lon"],
-  properties: {
-    lat: {type: "number"},
-    lon: {type: "number"}
-  }
-};
-
 // Define a custom component for handling the root position object
 class GeoPosition extends React.Component {
   constructor(props) {
@@ -34,6 +25,8 @@ class GeoPosition extends React.Component {
     );
   }
 }
+
+export default GeoPosition;
 
 // // Define the custom field component to use for the root object
 // const uiSchema = {"ui:field": "geo"};

@@ -1,8 +1,9 @@
 import React from 'react';
 
-import Box from 'grommet/components/Box';
-import Header from 'grommet/components/Header';
-import Anchor from 'grommet/components/Anchor';
+import {
+  Box,
+  Header
+} from 'grommet';
 
 
 export default function SectionHeader(props) {
@@ -14,9 +15,9 @@ export default function SectionHeader(props) {
       colorIndex="neutral-1-t"
       pad="none">
       <Box flex={true}
-        justify='between'
-        alignContent='center'
-        direction='row'
+        justify="between"
+        alignContent="center"
+        direction="row"
         pad={{horizontal: "small"}}
         responsive={false}>
         <span>{props.label}</span>

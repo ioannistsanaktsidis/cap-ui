@@ -1,31 +1,17 @@
 import React from 'react';
+// import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import axios from 'axios';
 
-let actions = {};
-import Legend from 'grommet/components/Legend';
 import Button from 'grommet/components/Button';
 import Header from 'grommet/components/Header';
-import Sidebar from 'grommet/components/Sidebar';
 import Box from 'grommet/components/Box';
-import Menu from 'grommet/components/Menu';
-import Anchor from 'grommet/components/Anchor';
-import Title from 'grommet/components/Title';
-import Paragraph from 'grommet/components/Paragraph';
+
 import Spinning from 'grommet/components/icons/Spinning';
 
-
-import List from 'grommet/components/List';
-import ListItem from 'grommet/components/ListItem';
 
 import NextIcon from 'grommet/components/icons/base/Next';
 import PreviousIcon from 'grommet/components/icons/base/Previous';
 import Sort from 'grommet-addons/components/Sort';
-
-
-import "searchkit/theming/theme.scss";
 
 export default class SearchUtils extends React.Component {
   constructor(props) {
@@ -35,7 +21,6 @@ export default class SearchUtils extends React.Component {
   componentDidMount() {
     this.props.total;
     this.props.size;
-    let current
   }
 
   componentWillUnmount() {}
@@ -61,7 +46,7 @@ export default class SearchUtils extends React.Component {
   render() {
     let num_pages = Math.ceil(this.props.total/this.props.size);
     return (
-      <Header pad={{horizontal: "small"}} justify='between'>
+      <Header pad={{horizontal: "small"}} justify="between">
         <span>
           <strong>{this.props.total}</strong> results
         </span>
@@ -78,9 +63,9 @@ export default class SearchUtils extends React.Component {
         <Box pad={{horizontal: "small"}} direction="row">
           {this.props.loading ? <Spinning pad="small" size="small"/> : null}
           <Sort options={[]}
-            value='name'
-            direction='asc'
-            onChange={()=>{return ""}}
+            value="name"
+            direction="asc"
+            onChange={()=>{ return ""; }}
             />
         </Box>
       </Header>
@@ -89,8 +74,12 @@ export default class SearchUtils extends React.Component {
 }
 
 SearchUtils.propTypes = {
-  // actions: PropTypes.object.isRequired,
-  // fuelSavings: PropTypes.object.isRequired
+  loading: PropTypes.bool.isRequired,
+  total: PropTypes.number.isRequired,
+  size: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func,
+  onPageSizeChange: PropTypes.func
 };
 
 // function mapStateToProps(state) {

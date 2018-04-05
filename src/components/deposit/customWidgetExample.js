@@ -1,3 +1,5 @@
+import React from 'react';
+
 const MyCustomWidget = (props) => {
   return (
     <input type="text"
@@ -7,6 +9,8 @@ const MyCustomWidget = (props) => {
       onChange={(event) => props.onChange(event.target.value)} />
   );
 };
+
+export default MyCustomWidget;
 
 // //////////// Usage ////////////////
 //
@@ -24,3 +28,5 @@ const MyCustomWidget = (props) => {
 //     uiSchema={uiSchema}
 //     widgets={widgets} />
 // ), document.getElementById("app"));
+
+// export default MyCustomWidget;

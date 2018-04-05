@@ -31,7 +31,7 @@ export function searchError(error) {
   };
 }
 
-export function fetchSearch (query) {
+export function fetchSearch () {
   return function (dispatch) {
     let searchApiUrl = 'https://videos.cern.ch/api/records';
     let results;
@@ -43,8 +43,6 @@ export function fetchSearch (query) {
     axios
       .get(searchUrl)
       .then((response) => {
-
-        console.log("response", response);
         results = response.data;
         dispatch(searchSuccess(results));
       });

@@ -1,4 +1,4 @@
-import {Map, fromJS} from 'immutable';
+import { Map } from 'immutable';
 
 import {
   TOGGLE_FILEMANAGER_LAYER,

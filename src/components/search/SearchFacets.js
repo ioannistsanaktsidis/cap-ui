@@ -1,15 +1,11 @@
 import React from 'react';
-import {connect} from 'react-redux';
-
-import axios from 'axios';
+// import {connect} from 'react-redux';
 
 import Heading from 'grommet/components/Heading';
 import Sidebar from 'grommet/components/Sidebar';
 import Box from 'grommet/components/Box';
 import Menu from 'grommet/components/Menu';
 import CheckBox from 'grommet/components/CheckBox';
-
-import queryString from 'query-string';
 
 import "searchkit/theming/theme.scss";
 
@@ -31,9 +27,8 @@ export default class SearchFacets extends React.Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    let selected = this.onAggsChange(category, name, this.props.selectedAggs)
-    if (this.props.onChange)
-      return this.props.onChange(selected);
+    let selected = this.onAggsChange(category, name, this.props.selectedAggs);
+    if (this.props.onChange) return this.props.onChange(selected);
     else console.log("event::", target, value, name);
   }
 
@@ -47,13 +42,8 @@ export default class SearchFacets extends React.Component {
 
     let index = _selectedAggregations[category].indexOf(_type);
 
-    if ( index == -1 )
-      _selectedAggregations[category].push(_type)
-    else
-      _selectedAggregations[category].splice(index, 1)
-
-    queryString.stringify
-    let query = "?"
+    if ( index == -1 ) _selectedAggregations[category].push(_type);
+    else _selectedAggregations[category].splice(index, 1);
 
     return _selectedAggregations;
   }
@@ -66,20 +56,20 @@ export default class SearchFacets extends React.Component {
       let categories = Object.keys(_aggs);
       return (
         <Sidebar full={false}>
-          <Box flex={true} justify='start'>
+          <Box flex={true} justify="start">
             <Menu primary={true}>
               {
                 categories.map((category) => {
                   return (
-                    <Box pad="small" colorIndex='neutral-1-t' key={category}>
+                    <Box pad="small" colorIndex="neutral-1-t" key={category}>
                       <Heading
                         pad="small"
-                        tag='h5'
+                        tag="h5"
                         strong={false}
                         uppercase={true}
                         truncate={true}
-                        href='#'
-                        className='active'
+                        href="#"
+                        className="active"
                         label={category}
                         id={category}
                         value={category}
@@ -107,7 +97,7 @@ export default class SearchFacets extends React.Component {
                         }
                       </Box>
                     </Box>
-                  )
+                  );
               })
             }
             </Menu>

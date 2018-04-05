@@ -23,39 +23,39 @@ export class WelcomePage extends React.Component {
   }
 
   render() {
-      return (
-        <Box flex={true} direction="row">
-            <Box flex={true} colorIndex="neutral-1-a" justify="center" align="center">
-              <Section>
-                <Box size="large">
-                  <Heading tag="h2">
-                    Welcome to the CERN
-                    Analysis Preservation Portal.
-                  </Heading>
-                  <Heading tag="h3">
-                    Our mission is to preserve the analyses
-                    across all CERN experiments for years
-                    to come...
-                  </Heading>
-                </Box>
-              </Section>
-            </Box>
-            <Sidebar size="medium" justify="center" full={true}>
-              <Box flex={true} justify="center" margin="medium">
-                  <Header pad="small" justify="end" alignContent="end" align="end" textAlign="right">
-                    { this.props.authLoading ? <Spinning /> :  null }
-                  </Header>
-                <Box flex={true} justify="center">
-                  <Button
-                    icon={<LoginIcon/>}
-                    label="Log in with CERN"
-                    onClick={this.props.login}
-                  />
-                </Box>
+    return (
+      <Box flex={true} direction="row">
+          <Box flex={true} colorIndex="neutral-1-a" justify="center" align="center">
+            <Section>
+              <Box size="large">
+                <Heading tag="h2">
+                  Welcome to the CERN
+                  Analysis Preservation Portal.
+                </Heading>
+                <Heading tag="h3">
+                  Our mission is to preserve the analyses
+                  across all CERN experiments for years
+                  to come...
+                </Heading>
               </Box>
-            </Sidebar>
-        </Box>
-      );
+            </Section>
+          </Box>
+          <Sidebar size="medium" justify="center" full={true}>
+            <Box flex={true} justify="center" margin="medium">
+                <Header pad="small" justify="end" alignContent="end" align="end" textAlign="right">
+                  { this.props.authLoading ? <Spinning /> :  null }
+                </Header>
+              <Box flex={true} justify="center">
+                <Button
+                  icon={<LoginIcon/>}
+                  label="Log in with CERN"
+                  onClick={this.props.login}
+                />
+              </Box>
+            </Box>
+          </Sidebar>
+      </Box>
+    );
   }
 }
 

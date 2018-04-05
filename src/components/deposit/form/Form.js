@@ -3,31 +3,18 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {
-  Box,
-  FormField,
-  Anchor,
-  Button,
-  CheckBox,
-  Sidebar,
-  Select,
+  Box
 } from 'grommet';
 
-import UploadIcon from 'grommet/components/icons/base/Upload';
-
-import ReactJson from 'react-json-view'
-
 import {toggleFilemanagerLayer} from '../../../actions/deposit';
-
-import SectionHeader from '../components/SectionHeader';
-import DepositFilesList from '../components/DepositFilesList';
 
 // Customized RJSF component ( Grommet )
 import FieldTemplate from './themes/grommet/templates/FieldTemplate';
 import ObjectFieldTemplate from './themes/grommet/templates/ObjectFieldTemplate';
-import LayerObjectFieldTemplate from './themes/grommet/templates/LayerObjectFieldTemplate';
 import ArrayFieldTemplate from './themes/grommet/templates/ArrayFieldTemplate';
 import ErrorListTemplate from './themes/grommet/templates/ErrorListTemplate';
 
+import SectionHeader from '../components/SectionHeader';
 
 import widgets from './themes/grommet/widgets';
 import fields from './themes/grommet/fields';
@@ -46,9 +33,12 @@ class DepositForm extends React.Component {
   }
 
   _validate(formData, errors) {
-
-    errors["simple_number"].addError("I don't like it");
-    errors["object_with_nested_objects"]["nested_array_of_objects"][0]["second_number"].addError("I don't like it 2");
+    // Example for custom validation
+    // desc: traverse the error path in the 'errors' object
+    // and add custom errors as below
+    //
+    // errors["simple_number"].addError("I don't like it");
+    // errors["object_with_nested_objects"]["nested_array_of_objects"][0]["second_number"].addError("I don't like it 2");
 
     return errors;
   }
@@ -75,14 +65,11 @@ class DepositForm extends React.Component {
                 liveValidate={this.props.liveValidate}
                 noValidate={!this.props.validate}
                 validate={this.props.customValidation ? this._validate : null}
-                onError={(e) => console.log("errors", e)}
+                onError={({e}) => console.log("onError::::", e)}
                 formData={this.props.formData}
-                onBlur={(type) => {
-                  console.log("onBlur::::",type);
-                  // this.setState({formData: change.formData})
-                }}
+                onBlur={({type}) => console.log("onBlur::::", type)}
                 onChange={this.props.onChange}>
-                <Box></Box>
+                <span />
               </Form> :
               <AvailableDeposits schemas={this.props.schemas} selectSchema={this.props.changeSchema}/>
             }
@@ -110,7 +97,7 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
   };
-};
+}
 
 export default connect(
   mapStateToProps,

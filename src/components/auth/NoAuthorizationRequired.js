@@ -12,7 +12,6 @@ export default function (ComposedComponent) {
 
     componentWillUpdate(nextProps) {
       if (nextProps.isLoggedIn) {
-        console.log("UNMOUNTING === CHANGE LOCATION '/'")
         this.props.history.push('/');
       }
     }

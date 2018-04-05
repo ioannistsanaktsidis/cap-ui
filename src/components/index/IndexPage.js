@@ -1,36 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import App from 'grommet/components/App';
-import Box from 'grommet/components/Box';
-import Sidebar from 'grommet/components/Sidebar';
-import Split from 'grommet/components/Split';
-import Button from 'grommet/components/Button';
-import Heading from 'grommet/components/Heading';
-import Header from 'grommet/components/Header';
-import Section from 'grommet/components/Section';
-import Spinning from 'grommet/components/icons/Spinning';
 
+import Box from 'grommet/components/Box';
+import Heading from 'grommet/components/Heading';
+import Section from 'grommet/components/Section';
 
 import {login, logout} from '../../actions/auth';
-
-import LoginIcon from 'grommet/components/icons/base/Login';
-// import HomeImage from '../imgs/home_image';
-// import SVGIcon from 'grommet/components/SVGIcon'
-
-import { Link } from 'react-router-dom';
+import {getRecords} from '../../actions/records';
 
 export class IndexPage extends React.Component {
   constructor(props) {
     super(props);
-    console.log("inde page")
-    // if (!this.props.isLoggedIn) this.props.history.push('/welcome')
   }
 
-  // _login() {
-  //   this.props.login();
-  // }
+  componentDidMount() {
+    this.props.getRecords();
+  }
 
   render() {
     return (
@@ -39,18 +25,6 @@ export class IndexPage extends React.Component {
           <Section>
             <Box size="large">
               <Heading tag="h2"> HELLOOOOO </Heading>
-              {
-                this.props.isLoggedIn ?
-                <Button
-                  label="Logout"
-                  onClick={this.props.logout} /> : null
-              }
-              {
-                !this.props.isLoggedIn ?
-                <Button
-                  label="Login"
-                  onClick={this.props.login} /> : null
-              }
             </Box>
           </Section>
         </Box>
@@ -60,7 +34,7 @@ export class IndexPage extends React.Component {
 }
 
 IndexPage.propTypes = {
-  // isLoggedIn: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
@@ -74,7 +48,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     login: () => dispatch(login()),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    getRecords: () => dispatch(getRecords())
   };
 }
 

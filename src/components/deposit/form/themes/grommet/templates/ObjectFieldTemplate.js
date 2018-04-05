@@ -1,16 +1,6 @@
 import React from 'react';
 
-import Box from 'grommet/components/Box';
-import Title from 'grommet/components/Title';
-import Paragraph from 'grommet/components/Paragraph';
-
-import Accordion from 'grommet/components/Accordion';
-import AccordionPanel from 'grommet/components/AccordionPanel';
-import Header from 'grommet/components/Header';
-import Heading from 'grommet/components/Heading';
-import FormField from 'grommet/components/FormField';
-import Label from 'grommet/components/Label';
-import Button from 'grommet/components/Button';
+import { Box } from 'grommet';
 
 import AccordionFieldTemplate from './AccordionObjectField';
 import LayerObjectFieldTemplate from './LayerObjectFieldTemplate';
@@ -22,7 +12,7 @@ let ObjectFieldTemplate = function (props) {
       <Box>
         {props.properties.map(prop => prop.content )}
       </Box>
-    )
+    );
   }
 
   function _getObjectField() {
@@ -36,7 +26,7 @@ let ObjectFieldTemplate = function (props) {
             />
           {props.properties.map(prop => prop.content )}
         </Box>
-      )
+      );
     }
     else {
       if (props.uiSchema['ui:object'] == 'layerObjectField'){
@@ -51,13 +41,7 @@ let ObjectFieldTemplate = function (props) {
     }
   }
 
-  let _label = (
-      <Heading size="small" tag="h6" margin="none" strong={true} >
-        <span>{props.title}</span>
-      </Heading>
-  );
-
   return _getObjectField();
-}
+};
 
 export default ObjectFieldTemplate;

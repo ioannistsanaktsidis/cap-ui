@@ -24,7 +24,7 @@ const AvailableDeposits = (props) => {
         }
       </Tiles>
     </Box>
-  )
-}
+  );
+};
 
 export default AvailableDeposits;

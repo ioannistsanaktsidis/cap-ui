@@ -8,7 +8,6 @@ export default (ComposedComponent, header=false) => {
   class Authentication extends Component {
     componentWillMount() {
       if (!this.props.isLoggedIn) {
-        console.log("componentWillMount:::Auth", this.props)
         this.props.history.push({
           pathname: '/login',
           from: this.props.match.path
@@ -17,7 +16,6 @@ export default (ComposedComponent, header=false) => {
     }
 
     componentWillUpdate(nextProps) {
-        console.log("componentWillUpdate:::Auth")
       if (!nextProps.isLoggedIn) {
         this.props.history.push('/login');
       }
@@ -31,11 +29,10 @@ export default (ComposedComponent, header=false) => {
       let cc = <ComposedComponent {...this.props} />;
 
       return header ?
-            <Box flex={true}>
-              <AppHeader />
-              {cc}
-            </Box> : cc;
-
+        <Box flex={true}>
+          <AppHeader />
+          {cc}
+        </Box> : cc;
     }
   }
 
@@ -44,4 +41,4 @@ export default (ComposedComponent, header=false) => {
   }
 
   return connect(mapStateToProps)(Authentication);
-}
+};

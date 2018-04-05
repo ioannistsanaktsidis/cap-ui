@@ -1,7 +1,3 @@
-import axios from 'axios';
-// import queryString from 'query-string';
-import { push } from 'react-router-redux';
-
 export const TOGGLE_FILEMANAGER_LAYER = 'TOGGLE_FILEMANAGER_LAYER';
 export const TOGGLE_PREVIEWER = 'TOGGLE_PREVIEWER';
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
@@ -11,8 +7,6 @@ export const TOGGLE_VALIDATE = 'TOGGLE_VALIDATE';
 
 export const CHANGE_SCHEMA = 'CHANGE_SCHEMA';
 export const UPDATE_FORM_DATA = 'UPDATE_FORM_DATA';
-
-
 
 export function toggleFilemanagerLayer() {
   return {

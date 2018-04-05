@@ -1,11 +1,9 @@
 import React from 'react';
 
 import Box from 'grommet/components/Box';
-import FormField from 'grommet/components/FormField';
 import Button from 'grommet/components/Button';
 import Heading from 'grommet/components/Heading';
 import Anchor from 'grommet/components/Anchor';
-import TextInput from 'grommet/components/TextInput';
 import Layer from 'grommet/components/Layer';
 import Label from 'grommet/components/Label';
 import List from 'grommet/components/List';
@@ -13,22 +11,10 @@ import ListItem from 'grommet/components/ListItem';
 
 import FieldHeader from '../components/FieldHeader';
 import Edit from 'grommet/components/icons/base/Edit';
-import Link from 'grommet/components/icons/base/Link';
-
-const schema = {
-  type: "object",
-  required: ["lat", "lon"],
-  properties: {
-    lat: {type: "number"},
-    lon: {type: "number"}
-  }
-};
-
 
 class importDataField extends React.Component {
   constructor(props) {
     super(props);
-
 
     this._userRecords = [
       { "title": "XXXXX CMS Questionnaire 11/03/18" , "$ref": "recid:54323"},
@@ -57,16 +43,8 @@ class importDataField extends React.Component {
       () => this.props.onChange(this.state.selected)
     );
   }
-  // onChange(name) {
-  //   return (event) => {
-  //     this.setState({
-  //       [name]: parseFloat(event.target.value)
-  //     }, () => this.props.onChange(this.state));
-  //   };
-  // }
 
   render() {
-    // const {lat, lon} = this.state;
     return (
       <Box flex={true} pad="small">
       {
@@ -82,8 +60,8 @@ class importDataField extends React.Component {
             </Label>
             <List>
             {
-              this._userRecords.map(r => (
-                <ListItem onClick={this._selectItem.bind(this, r)}>
+              this._userRecords.map((r, index) => (
+                <ListItem key={index} onClick={this._selectItem.bind(this, r)}>
                   <span>{r.title}</span>
                 </ListItem>
               ))
@@ -92,8 +70,8 @@ class importDataField extends React.Component {
              <Label>
               <span>You have selected {this.props.schema.title}: <strong>{this.state.selected.title}</strong>, with reference to </span>
                <Anchor
-                href='#'
-                target='_blank'
+                href="#"
+                target="_blank"
                 label={this.state.selected.$ref}/>
             </Label>
             <Box flex={true} pad="small" justify="between" direction="row">

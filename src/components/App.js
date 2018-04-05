@@ -1,7 +1,5 @@
-/* eslint-disable import/no-named-as-default */
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import WelcomePage from './welcome/WelcomePage';

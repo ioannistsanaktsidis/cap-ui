@@ -1,6 +1,8 @@
 import axios from 'axios';
-// import queryString from 'query-string';
-import { push } from 'react-router-redux';
+
+import config from '../config';
+
+const API_URI = config.project.api;
 
 export const AUTHENTICATED = 'AUTHENTICATED';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
@@ -54,25 +56,47 @@ export function unauthenticated() {
   };
 }
 
-export function login({...rest}, history) {
+export function login() {
   return function (dispatch) {
     dispatch(loginRequest());
 
-    // console.log("LOGIN_SUCCESS go", rest, history)
-    setTimeout(() => {
-      // Saving JWT to localStorage
+    let uri = API_URI+'/login_app';
+
+    axios.post(uri, {})
+      .then(function (response) {
+        console.log("loginResp::", response)
       let token = '12345';
-      localStorage.setItem('token', token);
-      dispatch(loginSuccess({
-        userId: 7777777,
-        token: token,
-        profile: {
-          name: "John",
-          lastname: "Doe",
-          email: "john.doe@cern.ch"
-        }
-      }))
-    }, 1500);
+
+        console.log(response);
+        dispatch(loginSuccess({
+          userId: response.data,
+          token: token,
+          profile: {
+            name: "John",
+            lastname: "Doe",
+            email: "john.doe@cern.ch"
+          }
+        }));
+      })
+      .catch(function (error) {
+        console.log(error);
+        dispatch(loginError(error));
+      });
+
+    // setTimeout(() => {
+    //   // Saving JWT to localStorage
+    //   let token = '12345';
+    //   localStorage.setItem('token', token);
+    //   dispatch(loginSuccess({
+    //     userId: 7777777,
+    //     token: token,
+    //     profile: {
+    //       name: "John",
+    //       lastname: "Doe",
+    //       email: "john.doe@cern.ch"
+    //     }
+    //   }));
+    // }, 1500);
   };
 }
 

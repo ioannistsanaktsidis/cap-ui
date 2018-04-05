@@ -1,9 +1,12 @@
 import React from 'react';
 
-import Box from 'grommet/components/Box';
-import Heading from 'grommet/components/Heading';
-import Paragraph from 'grommet/components/Paragraph';
-import Button from 'grommet/components/Button';
+import {
+  Box,
+  Heading,
+  Paragraph,
+  Button
+} from 'grommet';
+
 import AddIcon from 'grommet/components/icons/base/Add';
 
 let FieldHeader = function (props) {
@@ -12,29 +15,26 @@ let FieldHeader = function (props) {
     <Box flex={true} margin={props.margin ? props.margin : {vertical: "small"}}>
           <Box direction="row" align="center" justify="between">
           <Box>
-      <Heading tag='h4' margin="none" strong={false}>
+      <Heading tag="h4" margin="none" strong={false}>
         {title}{required ? "*" : null}
       </Heading>
-          </Box>
-
+      </Box>
         {
           props.onArrayAddClick ?
           <Box>
-          <Button
-            icon={ <AddIcon /> }
-            onClick={props.onArrayAddClick}
-            href='#'
-            plain={false}
-            critical={false}
-            primary={false}/>
-          </Box>
-            : null
+            <Button
+              icon={<AddIcon />}
+              onClick={props.onArrayAddClick}
+              href="#"
+              plain={false}
+              critical={false}
+              primary={false}/>
+          </Box> : null
         }
-
-          </Box>
-      {description ? <Paragraph margin="none" size='small'>{description}</Paragraph> : null}
+      </Box>
+      {description ? <Paragraph margin="none" size="small">{description}</Paragraph> : null}
     </Box>
   );
-}
+};
 
 export default FieldHeader;

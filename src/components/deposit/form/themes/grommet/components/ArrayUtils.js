@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Box from 'grommet/components/Box';
-import Heading from 'grommet/components/Heading';
-import Paragraph from 'grommet/components/Paragraph';
-import Button from 'grommet/components/Button';
+import {
+  Box,
+  Button
+} from 'grommet';
 
 import FormTrashIcon from 'grommet/components/icons/base/FormTrash';
 import FormUpIcon from 'grommet/components/icons/base/FormUp';
@@ -28,6 +28,6 @@ let ArrayUtils = function (props) {
         icon={<FormUpIcon margin="none" pad="none" />} />
     </Box>
   );
-}
+};
 
 export default ArrayUtils;

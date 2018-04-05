@@ -8,9 +8,6 @@ import Tabs from 'grommet/components/Tabs';
 import Title from 'grommet/components/Title';
 import Tab from 'grommet/components/Tab';
 import Header from 'grommet/components/Header';
-import Paragraph from 'grommet/components/Paragraph';
-import Accordion from 'grommet/components/Accordion';
-import AccordionPanel from 'grommet/components/AccordionPanel';
 import Layer from 'grommet/components/Layer';
 import Sidebar from 'grommet/components/Sidebar';
 import Form from 'grommet/components/Form';
@@ -26,23 +23,22 @@ import FileList from './FileList';
 
 import Dropzone from 'react-dropzone';
 
-const FileManagerDropzone = (props) => {
+const FileManagerDropzone = () => {
   return (
     <Box flex={true} >
       <Dropzone
-        style={styles.default}
         onDrop={(acceptedFiles, rejectedFiles) => {
-          console.log("Dropped some files:::")
-          console.log(acceptedFiles)
-          console.log(rejectedFiles)
-          console.log(":::::::::::::::::::::")
+          console.log("Dropped some files:::");
+          console.log(acceptedFiles);
+          console.log(rejectedFiles);
+          console.log(":::::::::::::::::::::");
         }}
       >
         Try dropping some files here, or click to select files to upload.
       </Dropzone>
     </Box>
-  )
-}
+  );
+};
 
 class FileManager extends React.Component {
   constructor(props) {
@@ -75,7 +71,7 @@ class FileManager extends React.Component {
 
             <Box size="large" flex={true}>
               <Tabs>
-                <Tab title='Upload File'>
+                <Tab title="Upload File">
                   <Box pad="medium">
                     <Heading tag="h5" strong={true}>Upload from Local</Heading>
                     <Box margin={{bottom: "small"}}>
@@ -90,7 +86,7 @@ class FileManager extends React.Component {
                     </Box>
                   </Box>
                 </Tab>
-                <Tab title='Repo Upload'>
+                <Tab title="Repo Upload">
                   <Box pad="medium">
                     <Heading tag="h5" strong={true}>Upload from Gitlab CERN/Github</Heading>
                     <Box direction="row">
@@ -98,8 +94,8 @@ class FileManager extends React.Component {
                       <FormField
                         label="Location">
                         <Select
-                          placeHolder='None'
-                          options={['CERN Gitlab', 'Github']}
+                          placeHolder="None"
+                          options={["CERN Gitlab", "Github"]}
                           value={undefined}
                         />
                       </FormField>
@@ -119,7 +115,7 @@ class FileManager extends React.Component {
                     </Box>
                   </Box>
                 </Tab>
-                <Tab title='Image Upload'>
+                <Tab title="Image Upload">
                   <Box pad="medium">
                     <Heading tag="h5" strong={true}>Upload your image container from CERN Gitlab</Heading>
                     <Box direction="row">
@@ -127,8 +123,8 @@ class FileManager extends React.Component {
                       <FormField
                         label="Location">
                         <Select
-                          placeHolder='None'
-                          options={['CERN Gitlab', 'Github']}
+                          placeHolder="None"
+                          options={["CERN Gitlab", "Github"]}
                           value={undefined}
                         />
                       </FormField>
@@ -153,36 +149,21 @@ class FileManager extends React.Component {
         </Article>
       </Layer>
       : null
-    )
-  }
-}
-
-let styles = {
-  default: {
-    borderWidth: 2,
-    height: 100,
-    padding: 20,
-    display: 'flex',
-    borderColor: '#e6e6e6',
-    borderStyle: 'dashed',
-    borderRadius: 5,
-    justify: 'center',
-    align: 'center',
-    alignContent: 'center'
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    activeLayer: state.deposit.get('fileManagerActiveLayer')
+    activeLayer: state.deposit.get("fileManagerActiveLayer")
   };
-};
+}
 
 function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
   };
-};
+}
 
 export default connect(
   mapStateToProps,

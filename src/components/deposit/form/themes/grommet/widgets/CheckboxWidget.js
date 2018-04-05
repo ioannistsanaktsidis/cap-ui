@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Box from 'grommet/components/Box';
 import FormField from 'grommet/components/FormField';
 import CheckBox from 'grommet/components/CheckBox';
 
@@ -25,11 +24,11 @@ const CheckBoxWidget = function(props) {
     } else {
       props.onChange(deselectValue(event.target.value, props.value));
     }
-  }
+  };
 
   let _errors = null;
   if (props.rawErrors && props.rawErrors.length > 0)
-    _errors = props.rawErrors.map(error => <span>{error}</span>)
+    _errors = props.rawErrors.map((error, index) => <span key={index}>{error}</span>);
 
   return (
     <FormField
@@ -43,7 +42,7 @@ const CheckBoxWidget = function(props) {
             key={item.label}
             inline="true"
             name={item.label}
-            label={item.value }
+            label={item.value}
             value={item.value}
             onChange={_onChange} />
         )) : null
