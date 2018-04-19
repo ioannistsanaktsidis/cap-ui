@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import config from '../config';
 
-const API_URI = config.project.api;
+// const API_URI = config.project.api;
 
 export const AUTHENTICATED = 'AUTHENTICATED';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
@@ -60,7 +60,7 @@ export function login() {
   return function (dispatch) {
     dispatch(loginRequest());
 
-    let uri = API_URI+'/login_app';
+    let uri = '/api/login_app';
 
     axios.post(uri, {})
       .then(function (response) {
