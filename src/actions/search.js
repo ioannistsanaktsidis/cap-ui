@@ -33,7 +33,7 @@ export function searchError(error) {
 
 export function fetchSearch () {
   return function (dispatch) {
-    let searchApiUrl = 'https://videos.cern.ch/api/records';
+    let searchApiUrl = '/api/deposits';
     let results;
     let location = window.location.search;
     const searchUrl = `${searchApiUrl}/${location}`;

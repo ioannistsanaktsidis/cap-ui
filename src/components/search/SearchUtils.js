@@ -46,10 +46,17 @@ export default class SearchUtils extends React.Component {
   render() {
     let num_pages = Math.ceil(this.props.total/this.props.size);
     return (
-      <Header pad={{horizontal: "small"}} justify="between">
-        <span>
-          <strong>{this.props.total}</strong> results
-        </span>
+      <Box
+        colorIndex="neutral-1-a"
+        direction="row"
+        pad={{horizontal: "small"}}
+        justify="between"
+        alignContent="center">
+        <Box justify="center">
+          <span>
+            <strong>{this.props.total}</strong> results
+          </span>
+        </Box>
 
         <Box align="center" justify="between" direction="row" >
           <Button onClick={this._onPrevPage.bind(this)} icon={<PreviousIcon/>} />
@@ -68,7 +75,7 @@ export default class SearchUtils extends React.Component {
             onChange={()=>{ return ""; }}
             />
         </Box>
-      </Header>
+      </Box>
     );
   }
 }

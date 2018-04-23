@@ -11,10 +11,9 @@ import './styles/styles.scss'; // Yep, that's right. You can import SASS/CSS fil
 require('./favicon.ico'); // Tell webpack to load favicon.ico
 const store = configureStore();
 
-// import 'grommet/scss/hpinc/index.scss';
-// import 'grommet/scss/grommet-core/index.scss';
-// import 'grommet/scss/hpe/index.scss';
-import 'grommet/scss/aruba/index.scss';
+import 'grommet/scss/hpinc/index.scss';
+// import 'grommet/scss/vanilla/index.scss';
+// import 'grommet/scss/aruba/index.scss';
 
 const user = localStorage.getItem('token');
 

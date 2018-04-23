@@ -1,5 +1,6 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
+import {withRouter} from 'react-router';
 import PropTypes from 'prop-types';
 
 import WelcomePage from './welcome/WelcomePage';
@@ -12,16 +13,29 @@ import DepositPage from './deposit/DepositPage';
 import requireAuth from './auth/AuthorizationRequired';
 import noRequireAuth from './auth/NoAuthorizationRequired';
 
+import GrommetApp from 'grommet/components/App';
+
+import {initCurrentUser} from '../actions/auth';
+import {connect} from 'react-redux';
+
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
 // component at the top-level.
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.initCurrentUser();
+  }
+
   render() {
     return (
-      <div id="app-main">
+      <GrommetApp centered={false} id="app-main">
         <div id="main-container">
-         <Switch id="main-container">
+          <Switch id="main-container">
             <Route exact path="/" component={requireAuth(IndexPage, true)} />
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
             <Route path="/about" component={AboutPage} />
@@ -30,7 +44,7 @@ class App extends React.Component {
             <Route component={NotFoundPage} />
           </Switch>
         </div>
-      </div>
+      </GrommetApp>
     );
   }
 }
@@ -39,4 +53,17 @@ App.propTypes = {
   children: PropTypes.element
 };
 
-export default App;
+function mapStateToProps(state) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    initCurrentUser: () => dispatch(initCurrentUser()),
+  };
+}
+
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App));

@@ -14,17 +14,13 @@ export class IndexPage extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.props.getRecords();
-  }
-
   render() {
     return (
       <Box flex={true}>
         <Box flex={true} colorIndex="neutral-1-a" justify="center" align="center">
           <Section>
             <Box size="large">
-              <Heading tag="h2"> HELLOOOOO </Heading>
+              <Heading tag="h2"> Hello, {this.props.currentUser.get('email')}</Heading>
             </Box>
           </Section>
         </Box>
@@ -41,15 +37,15 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.auth.get('isLoggedIn'),
     token: state.auth.get('token'),
-    authLoading: state.auth.get('loading')
+    authLoading: state.auth.get('loading'),
+    currentUser: state.auth.getIn(['currentUser', 'profile'])
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     login: () => dispatch(login()),
-    logout: () => dispatch(logout()),
-    getRecords: () => dispatch(getRecords())
+    logout: () => dispatch(logout())
   };
 }
 

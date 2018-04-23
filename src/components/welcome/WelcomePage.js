@@ -8,12 +8,13 @@ import {
   Button,
   Heading,
   Header,
-  Section
+  Section,
+  LoginForm
 } from 'grommet';
 
 import Spinning from 'grommet/components/icons/Spinning';
 
-import {login} from '../../actions/auth';
+import {loginLocalUser} from '../../actions/auth';
 
 import LoginIcon from 'grommet/components/icons/base/Login';
 
@@ -49,8 +50,13 @@ export class WelcomePage extends React.Component {
                 <Button
                   icon={<LoginIcon/>}
                   label="Log in with CERN"
-                  onClick={this.props.login}
+                  href="/api/oauth/login/cern"
                 />
+                <hr/>
+                {
+                  process.env.NODE_ENV === 'development' ?
+                  <LoginForm onSubmit={this.props.loginLocalUser} /> : null
+                }
               </Box>
             </Box>
           </Sidebar>
@@ -61,23 +67,20 @@ export class WelcomePage extends React.Component {
 
 WelcomePage.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
+  loginLocalUser: PropTypes.func.isRequired,
   authLoading: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.auth.get('isLoggedIn'),
-    token: state.auth.get('token'),
     authLoading: state.auth.get('loading'),
-    liveValidate: state.auth.get('liveValidate'),
-    validate: state.auth.get('validate')
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: () => dispatch(login())
+    loginLocalUser: () => dispatch(loginLocalUser())
   };
 }
 

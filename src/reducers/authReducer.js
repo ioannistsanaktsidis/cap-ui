@@ -1,18 +1,18 @@
 import {Map, fromJS} from 'immutable';
 
 import {
-AUTHENTICATED,
-UNAUTHENTICATED,
-LOGIN_REQUEST,
-LOGIN_SUCCESS,
-LOGOUT_REQUEST,
-LOGOUT_SUCCESS,
-LOGIN_ERROR
+  AUTHENTICATED,
+  UNAUTHENTICATED,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGIN_ERROR
 } from '../actions/auth';
 
 const initialState = Map({
   isLoggedIn: false,
-  currenUser: Map({}),
+  currentUser: Map({}),
   token: localStorage.getItem('token'),
   error: null,
   loading: false
@@ -42,7 +42,6 @@ export default function authReducer(state = initialState, action) {
               .set('isLoggedIn', false)
               .set('currentUser', null)
               .set('loading', false);
-              // .set('aggs', fromJS(action.results.aggregations))
     case LOGIN_ERROR:
       return state;
 

@@ -23,7 +23,7 @@ class SearchResults extends React.Component {
 
   render() {
     if (this.props.results){
-      // console.log("results::", this.props.results);
+      console.log("results::", this.props.results);
       return (
         <Box flex={true} colorIndex="light-2">
           <List >
@@ -32,13 +32,13 @@ class SearchResults extends React.Component {
                 <ListItem key={item.id} >
                   <Box flex={true}>
                     <Header justify="between">
-                      <Title>{item.metadata.title.title}</Title>
+                      <Title>{item.metadata.general_title}</Title>
                       <span>
                         {item.created}
                       </span>
                     </Header>
                     <Paragraph size="medium">
-                      {item.metadata.title.title}
+                      {item.metadata.general_title}
                     </Paragraph>
                   </Box>
                 </ListItem>

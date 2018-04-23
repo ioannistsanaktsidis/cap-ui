@@ -29,7 +29,7 @@ export function getRecords() {
   return function (dispatch) {
     dispatch(recordsRequest());
 
-    let uri = '/api/records';
+    let uri = '/api/records/';
     axios.get(uri)
       .then(function (response) {
         console.log(response);
