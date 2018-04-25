@@ -20,10 +20,7 @@ import testSchema from './schemas/testSchema';
 
 import {startDeposit} from '../../actions/drafts';
 
-let schemas = {
-  CMSAnalysisSchema: CMSAnalysisSchema,
-  testSchema: testSchema
-};
+let schemas = {};
 
 let uiSchemas = {
   CMSAnalysisSchema: CMSAnalysisUISchema,
@@ -51,7 +48,7 @@ const transformSchema = (schema) => {
 class DepositPage extends React.Component {
   constructor(props) {
     super(props);
-
+  
     this.state = {
       formData: {},
       selectSchema: null,
@@ -60,7 +57,8 @@ class DepositPage extends React.Component {
 
   _changeSchema(event) {
     let schema = event.value ? event.value : event;
-
+    // this.props.fetchSchema(schema);
+    // console.log("FETCHED", this.state)
     if (schemas[schema]){
       const _schema = transformSchema(schemas[schema]);
       const uiSchema = uiSchemas[schema] ?  uiSchemas[schema] : {};
@@ -116,13 +114,16 @@ DepositPage.propTypes = {
   startDeposit: PropTypes.func
 };
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {
+    depositGroups: state.auth.getIn(['currentUser', 'profile']),
+    pay: state.deposit.payload
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    startDeposit: (schema, data) => dispatch(startDeposit(schema, data))
+    startDeposit: (schema, data) => dispatch(startDeposit(schema, data)),
   };
 }
 

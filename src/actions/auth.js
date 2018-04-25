@@ -85,21 +85,23 @@ export function initCurrentUser() {
 
     axios.get('/api/me')
       .then(function (response) {
-        let {id} = response.data;
-
+        let {id, deposit_groups} = response.data;
+                
         localStorage.setItem('token', id);
         dispatch(loginSuccess({
           userId: id,
           token: id,
-          profile: response.data
+          profile: response.data,
+          depositGroups: deposit_groups
         }));
 
       })
       .catch(function () {
         dispatch(clearAuth());
       });
-  };
+  }
 }
+
 
 export function clearAuth() {
   return function (dispatch) {

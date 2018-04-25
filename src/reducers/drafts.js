@@ -7,7 +7,11 @@ import {
   TOGGLE_CUSTOM_VALIDATION,
   TOGGLE_VALIDATE,
   TOGGLE_SIDEBAR,
+  FETCH_SCHEMA_BEGIN,
+  FETCH_SCHEMA_SUCCESS,
+  FETCH_SCHEMA_ERROR,
   CHANGE_SCHEMA,
+  SELECT_SCHEMA,
   UPDATE_FORM_DATA,
   DRAFTS_ITEM_REQUEST,
   DRAFTS_ITEM_SUCCESS,
@@ -16,6 +20,7 @@ import {
 
 const initialState = Map({
   schema: null,
+  schemaToFetch: null,
   uiSchema: Map(),
   data: {},
   selectedSchema: null,
@@ -30,7 +35,8 @@ const initialState = Map({
     data: null,
     loading: false,
     error: null
-  })
+  }),
+  payload: {}
 });
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
 // State is considered immutable. Instead,
@@ -51,6 +57,21 @@ export default function depositReducer(state = initialState, action) {
       return state.set('customValidation', !state.get('customValidation'));
     case TOGGLE_VALIDATE:
       return state.set('validate', !state.get('validate'));
+    case FETCH_SCHEMA_BEGIN:
+      return state
+              .set('loading', true)
+              .set('error', null)
+    case FETCH_SCHEMA_SUCCESS:
+      return state
+              .set('loading', false)
+              .set('payload', action.payload)
+    case FETCH_SCHEMA_ERROR:
+      return state
+              .set('loading', false)
+              .set('error', action.error)
+    case SELECT_SCHEMA:
+      return state
+              .set('schemaToFetch', action.schema)
     case CHANGE_SCHEMA:
       return state
               .set('selectedSchema', action.schema.selectedSchema )

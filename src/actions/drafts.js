@@ -7,6 +7,10 @@ export const TOGGLE_LIVE_VALIDATE = 'TOGGLE_LIVE_VALIDATE';
 export const TOGGLE_CUSTOM_VALIDATION = 'TOGGLE_CUSTOM_VALIDATION';
 export const TOGGLE_VALIDATE = 'TOGGLE_VALIDATE';
 
+export const FETCH_SCHEMA_BEGIN = 'FETCH_SCHEMA_BEGIN';
+export const FETCH_SCHEMA_SUCCESS = 'FETCH_SCHEMA_SUCCESS';
+export const FETCH_SCHEMA_ERROR = 'FETCH_SCHEMA_ERROR';
+export const SELECT_SCHEMA = 'SELECT_SCHEMA';
 export const CHANGE_SCHEMA = 'CHANGE_SCHEMA';
 export const UPDATE_FORM_DATA = 'UPDATE_FORM_DATA';
 
@@ -94,6 +98,27 @@ export function toggleValidate() {
   };
 }
 
+export const fetchSchemaBegin = () => ({
+  type: FETCH_SCHEMA_BEGIN
+});
+
+export const fetchSchemaSuccess = payload => ({
+  type: FETCH_SCHEMA_SUCCESS,
+  payload
+});
+
+export const fetchSchemaError = error => ({
+  type: FETCH_SCHEMA_ERROR,
+  error
+});
+
+export function selectSchema(schemaToFetch) {
+  return {
+    type: SELECT_SCHEMA,
+    schema: schemaToFetch
+  }
+}
+
 export function changeSchema(newSchema) {
   return {
     type: CHANGE_SCHEMA,
@@ -106,6 +131,28 @@ export function updateFormData(data) {
     type: UPDATE_FORM_DATA,
     schema: data
   };
+}
+
+export function fetchSchema(schema) {
+  return dispatch => {
+    dispatch(fetchSchemaBegin());
+      return getSchema(schema)
+        .then(([response, json]) =>{
+          if(response.status === 200){
+            dispatch(fetchSchemaSuccess({json}))
+          }
+          else{
+            dispatch(fetchSchemaError())
+          }
+    })
+
+  };
+}
+
+function getSchema(schema) {
+  const URL = "/api/schemas/deposits/records/" + schema + "-v0.0.1.json";
+  return fetch(URL, { method: 'GET'})
+     .then( response => Promise.all([response, response.json()]));
 }
 
 export function startDeposit(schema, initialData=null) {

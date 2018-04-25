@@ -34,13 +34,6 @@ class DepositForm extends React.Component {
   }
 
   _validate(formData, errors) {
-    // Example for custom validation
-    // desc: traverse the error path in the 'errors' object
-    // and add custom errors as below
-    //
-    // errors["simple_number"].addError("I don't like it");
-    // errors["object_with_nested_objects"]["nested_array_of_objects"][0]["second_number"].addError("I don't like it 2");
-
     return errors;
   }
 
@@ -50,8 +43,6 @@ class DepositForm extends React.Component {
         <SectionHeader label="Submission Form" />
         <Box alignContent="center" justify="center" align="center" flex={true} wrap={false}>
           <Box size="xlarge"  pad="large" flex={false} wrap={false}>
-            {
-              this.props.selectSchema ?
               <Form
                 ref={(form) => {this.form=form;}}
                 schema={this.props.schema}
@@ -71,9 +62,7 @@ class DepositForm extends React.Component {
                 onBlur={({type}) => console.log("onBlur::::", type)}
                 onChange={this.props.onChange}>
                 <span />
-              </Form> :
-              <AvailableDeposits schemas={this.props.schemas} selectSchema={this.props.changeSchema}/>
-            }
+              </Form> 
           </Box>
         </Box>
       </Box>
@@ -84,7 +73,7 @@ class DepositForm extends React.Component {
 DepositForm.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  schema: PropTypes.string,
+  schema: PropTypes.object,
   selectSchema: PropTypes.string,
   validate: PropTypes.bool,
   liveValidate: PropTypes.bool,
@@ -104,8 +93,6 @@ function mapStateToProps(state) {
     customValidation: state.drafts.get('customValidation'),
     liveValidate: state.drafts.get('liveValidate'),
     validate: state.drafts.get('validate'),
-    schema: state.drafts.get('schema'),
-    uiSchema: state.drafts.get('uiSchema'),
     data: state.drafts.get('data'),
   };
 }

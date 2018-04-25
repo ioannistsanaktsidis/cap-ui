@@ -69,7 +69,7 @@ class Header extends React.Component {
             />
         </Box>
         <Menu pad={{horizontal: "small"}} direction="row" responsive={true}>
-          <Anchor path={{path:"/deposit"}}>Deposit</Anchor>
+          <Anchor path={{path:"/deposit/create"}}>Deposit</Anchor>
           <Anchor path={{path:"/search"}}>Search</Anchor>
           <Menu responsive={true} icon={<UserIcon />} >
             <Anchor
