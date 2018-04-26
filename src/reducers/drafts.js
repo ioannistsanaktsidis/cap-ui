@@ -8,8 +8,12 @@ import {
   TOGGLE_VALIDATE,
   TOGGLE_SIDEBAR,
   CHANGE_SCHEMA,
-  UPDATE_FORM_DATA
-} from '../actions/deposit';
+  UPDATE_FORM_DATA,
+
+  DRAFTS_ITEM_REQUEST,
+  DRAFTS_ITEM_SUCCESS,
+  DRAFTS_ITEM_ERROR,
+} from '../actions/drafts';
 
 const initialState = Map({
   schema: null,
@@ -21,7 +25,13 @@ const initialState = Map({
   showSidebar: true,
   liveValidate: true,
   validate: true,
-  customValidation: false
+  customValidation: false,
+  current_item: Map({
+    id: null,
+    data: null,
+    loading: false,
+    error: null
+  })
 });
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
 // State is considered immutable. Instead,
@@ -49,6 +59,18 @@ export default function depositReducer(state = initialState, action) {
               .set('uiSchema', action.schema.uiSchema );
     case UPDATE_FORM_DATA:
       return state.set('data', action.data);
+    case DRAFTS_ITEM_REQUEST:
+      return state
+              .setIn(['current_item', 'loading'], true)
+              .setIn(['current_item', 'error'], null);
+    case DRAFTS_ITEM_SUCCESS:
+      return state
+              .setIn(['current_item', 'loading'], false)
+              .setIn(['current_item', 'data'], action.draft);
+    case DRAFTS_ITEM_ERROR:
+      return state
+              .setIn(['current_item', 'loading'], false)
+              .setIn(['current_item', 'error'], action.error);
     default:
       return state;
   }

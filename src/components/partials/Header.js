@@ -28,7 +28,7 @@ class Header extends React.Component {
     q["q"] = query;
 
     const search_location = {
-      pathname: `search`,
+      pathname: `/search`,
       search: `${queryString.stringify(q)}`,
       from: this.props.match.path
     };
@@ -60,15 +60,14 @@ class Header extends React.Component {
             />
         </Title>
         <Box flex={true} justify="center">
-            <Search inline={true}
-              flex="true"
-              placeHolder="Search"
-              dropAlign={{"right": "right"}}
-              onDOMChange={onSearchInput}
-              onSelect={this._onSearchSubmit.bind(this)}
-              />
-
-            </Box>
+          <Search inline={true}
+            flex="true"
+            placeHolder="Search"
+            dropAlign={{"right": "right"}}
+            onDOMChange={onSearchInput}
+            onSelect={this._onSearchSubmit.bind(this)}
+            />
+        </Box>
         <Menu pad={{horizontal: "small"}} direction="row" responsive={true}>
           <Anchor path={{path:"/deposit"}}>Deposit</Anchor>
           <Anchor path={{path:"/search"}}>Search</Anchor>

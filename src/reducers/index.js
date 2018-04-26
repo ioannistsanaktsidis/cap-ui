@@ -2,14 +2,16 @@ import { combineReducers } from 'redux';
 // import fuelSavings from './fuelSavingsReducer';
 import search from './searchReducer';
 import auth from './authReducer';
-import deposit from './depositReducer';
+import drafts from './drafts';
+import published from './published';
 import { routerReducer } from 'react-router-redux';
 
 const rootReducer = combineReducers({
   // fuelSavings,
   auth,
-  deposit,
+  drafts,
   search,
+  published,
   routing: routerReducer
 });
 

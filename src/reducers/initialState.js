@@ -8,18 +8,6 @@ import {Map} from 'immutable';
 //   loading: false
 // });
 
-const search = Map({
-  query: '',
-  aggs: Map({}),
-  selectedAggs: Map({}),
-  results: Map({
-    hits: [],
-    total: 0
-  }),
-  error: Map({}),
-  loading: false
-});
-
 const fuelSavings = Map({
   newMpg: '',
   tradeMpg: '',

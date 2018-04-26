@@ -15,25 +15,20 @@ class SearchPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {results: {}, selectedAggs: {}};
+
+    const currentParams = this.getSearchParams();
+    console.log("**********************")
+    console.log("**********************")
+    console.log("currentParams:", currentParams)
+    console.log("**********************")
+    console.log("**********************")
   }
 
   componentDidMount() {
     this.props.fetchSearch();
   }
 
-  componentWillUnmount() {}
-
-  _toggleAggs = (selectedAggs) => {
-    let currentParams = this.getSearchParams();
-    const location = {
-      search: `${queryString.stringify(Object.assign(currentParams,selectedAggs))}`
-    };
-
-    this.props.history.push(location);
-    this.props.fetchSearch();
-  }
-
-  _changePage = (page) => {
+  _changePage(page){
     let currentParams = this.getSearchParams();
 
     const location = {
@@ -44,7 +39,7 @@ class SearchPage extends React.Component {
     this.props.fetchSearch();
   }
 
-  _changePageSize = (size) => {
+  _changePageSize(size){
     let currentParams = this.getSearchParams();
     const location = {
       search: `${queryString.stringify(Object.assign(currentParams,{size: size}))}`
@@ -54,7 +49,7 @@ class SearchPage extends React.Component {
     this.props.fetchSearch();
   }
 
-  getSearchParams = () => {
+  getSearchParams() {
     let params = queryString.parse(this.props.location.search);
     return params;
   }
@@ -68,14 +63,10 @@ class SearchPage extends React.Component {
     let _results = {};
     let _aggs;
 
-    let _location = queryString.parse(this.props.location.search);
-
-    this.getSearchParams();
-
     if (this.props.results) {
       _results = this.props.results.toJS();
-      // let _total = _results.hits.total;
-      // let _hits = _results.hits.hits;
+      // let _total = _d.hits.total;
+      // let _hits = _d.hits.hits;
       _aggs = _results.aggregations;
     }
 
@@ -83,7 +74,7 @@ class SearchPage extends React.Component {
       aggs = (
         <SearchFacets
           aggs={_aggs}
-          selectedAggs={this.state.selectedAggs}
+          selectedAggs={this.props.selectedAggs}
           onChange={this._toggleAggs}/>
       );
     }
@@ -93,8 +84,8 @@ class SearchPage extends React.Component {
       utils = (
         <SearchUtils
           loading={this.props.loading}
-          currentPage={_location.page ? parseInt(_location.page) : 1}
-          size={_location.size ? parseInt(_location.size) : 10}
+          currentPage={this.props.selectedAggs.page ? parseInt(this.props.selectedAggs.page) : 1}
+          size={this.props.selectedAggs.size ? parseInt(this.props.selectedAggs.size) : 10}
           total={total}
           onPageChange={this._changePage}
           onPageSizeChange={this._changePageSize}
@@ -120,28 +111,23 @@ SearchPage.propTypes = {
   total: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
   fetchSearch: PropTypes.func,
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
+  // history: PropTypes.object.isRequired,
+  // location: PropTypes.object.isRequired,
   results: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    // total: state.search.getIn(['results', 'total']),
-    // hits: state.search.getIn(['results', 'hits']),
-    // aggs: state.search.getIn(['aggs']),
     results: state.search.getIn(['results']),
     loading: state.search.getIn(['loading']),
-    // selectedAggs: state.search.getIn(['selectedAggs'])
+    selectedAggs: state.search.getIn(['selectedAggs'])
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    // fetchSearch,
     fetchSearch: () => dispatch(fetchSearch()),
-    // toggleAggs
-    // toggleAggs: (name, value, category) => dispatch(toggleAggs(name, value, category))
+    toggleAggs: () => dispatch(toggleAggs()),
   };
 }
 

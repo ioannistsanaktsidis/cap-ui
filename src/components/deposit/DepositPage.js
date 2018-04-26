@@ -16,7 +16,7 @@ import testUISchema from './uiSchemas/testSchema';
 import CMSAnalysisSchema from './schemas/cms-analysis';
 import testSchema from './schemas/testSchema';
 
-import {startDeposit} from '../../actions/deposit';
+import {startDeposit} from '../../actions/drafts';
 
 let schemas = {
   CMSAnalysisSchema: CMSAnalysisSchema,

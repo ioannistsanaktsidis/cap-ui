@@ -7,7 +7,6 @@ import Heading from 'grommet/components/Heading';
 import Section from 'grommet/components/Section';
 
 import {login, logout} from '../../actions/auth';
-import {getRecords} from '../../actions/records';
 
 export class IndexPage extends React.Component {
   constructor(props) {
@@ -20,7 +19,11 @@ export class IndexPage extends React.Component {
         <Box flex={true} colorIndex="neutral-1-a" justify="center" align="center">
           <Section>
             <Box size="large">
-              <Heading tag="h2"> Hello, {this.props.currentUser.get('email')}</Heading>
+              {
+                this.props.currentUser ?
+                <Heading tag="h2"> Hello, {this.props.currentUser.get('email')}</Heading> :
+                null
+              }
             </Box>
           </Section>
         </Box>

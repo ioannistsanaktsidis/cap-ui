@@ -17,7 +17,7 @@ import Article from 'grommet/components/Article';
 import Heading from 'grommet/components/Heading';
 import Select from 'grommet/components/Select';
 
-import {toggleFilemanagerLayer} from '../../../actions/deposit';
+import {toggleFilemanagerLayer} from '../../../actions/drafts';
 
 import FileList from './FileList';
 
@@ -155,7 +155,7 @@ class FileManager extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    activeLayer: state.deposit.get("fileManagerActiveLayer")
+    activeLayer: state.drafts.get("fileManagerActiveLayer")
   };
 }
 

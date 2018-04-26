@@ -1,5 +1,7 @@
 import React from 'react';
-// import {connect} from 'react-redux';
+import queryString from 'query-string';
+import {connect} from 'react-redux';
+import { withRouter } from 'react-router'
 
 import Heading from 'grommet/components/Heading';
 import Sidebar from 'grommet/components/Sidebar';
@@ -9,7 +11,9 @@ import CheckBox from 'grommet/components/CheckBox';
 
 import "searchkit/theming/theme.scss";
 
-export default class SearchFacets extends React.Component {
+import {toggleAggs} from '../../actions/search';
+
+class SearchFacets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,51 +21,74 @@ export default class SearchFacets extends React.Component {
     };
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
   _onChange(category, event) {
-
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    let selected = this.onAggsChange(category, name, this.props.selectedAggs);
-    if (this.props.onChange) return this.props.onChange(selected);
-    else console.log("event::", target, value, name);
+    const name = event.target ? event.target.name : null;
+    let currentParams = queryString.parse(this.props.location.search);
+    this._toggleAggs(category, name, currentParams);
   }
 
-  onAggsChange(category, name,selectedAggregations) {
-    let _type = name;
+  _toggleAggs(category, name, selectedAggregations) {
+    console.log(".>>>>>>>:::", selectedAggregations)
+    let _selectedAggregations = Object.assign({},selectedAggregations);
 
-    let _selectedAggregations = selectedAggregations;
     if (!_selectedAggregations[category]) {
-      _selectedAggregations[category] = [];
+        _selectedAggregations[category] = [];
     }
 
-    let index = _selectedAggregations[category].indexOf(_type);
+    if (typeof _selectedAggregations[category] =='string')
+        _selectedAggregations[category] = [_selectedAggregations[category]];
 
-    if ( index == -1 ) _selectedAggregations[category].push(_type);
+    let index = _selectedAggregations[category].indexOf(name);
+
+    if ( index == -1 ) _selectedAggregations[category].push(name);
     else _selectedAggregations[category].splice(index, 1);
 
-    return _selectedAggregations;
+    // this.setState({selected: _selectedAggregations});
+    // this.props.onChange(_selectedAggregations);
+
+    // this.updateAggs(_selectedAggregations);
+    console.log("--->",_selectedAggregations)
+    this.updateHistory(_selectedAggregations);
   }
 
+  updateHistory(selectedAggs) {
+    let currentParams = queryString.parse(this.props.location.search);
+    const location = {
+      search: `${queryString.stringify(Object.assign(currentParams,selectedAggs))}`
+    };
 
+    this.props.history.replace(location);
+  }
+
+  updateAggs(selectedAggs) {
+    let currentParams = queryString.parse(this.props.location.search);
+    const location = {
+      search: `${queryString.stringify(Object.assign(currentParams,selectedAggs))}`
+    };
+
+    this.props.history.replace(location);
+    this.props.toggleAggs(selectedAggs);
+  }
 
   render() {
     if (this.props.aggs){
       let _aggs = this.props.aggs;
+      console.log("rerenderinggggg....", this.state.selected)
       let categories = Object.keys(_aggs);
       return (
-        <Sidebar full={false}>
+        <Sidebar full={false} colorIndex="neutral-1-t">
           <Box flex={true} justify="start">
+            <Box pad="small">
+              Filters
+              <Box>
+                {JSON.stringify(this.props.selectedAggs)}
+              </Box>
+            </Box>
             <Menu primary={true}>
               {
                 categories.map((category) => {
                   return (
-                    <Box pad="small" colorIndex="neutral-1-t" key={category}>
+                    <Box pad="small" key={category}>
                       <Heading
                         pad="small"
                         tag="h5"
@@ -76,22 +103,24 @@ export default class SearchFacets extends React.Component {
                         >
                         {category}
                       </Heading>
-                      <Box size="medium" styles={{maxHeight: "100px"}} pad="small">
+                      <Box size="medium" styles={{maxHeight: "100px"}} pad="none">
                         {
                           _aggs[category].buckets
                             .map((cat_fields) => (
-
-                                <Box size="medium" key={String(cat_fields.key)} direction="row" justify="between" align="center" wrap={false}>
-                                  <Box direction="row" justify="between" align="center" wrap={false}>
-                                    <CheckBox
-                                      label={cat_fields.key}
-                                      key={cat_fields.key}
-                                      name={String(cat_fields.key)}
-                                      pad={{horizontal: "small"}}
-                                      onChange={this._onChange.bind(this, category)}/>
-                                  </Box>
-                                  <Box alignSelf="end">{cat_fields.doc_count}</Box>
+                              <Box size="medium" key={String(cat_fields.key)} direction="row" justify="between" align="center" wrap={false}>
+                                <Box direction="row" justify="between" align="center" wrap={false}>
+                                  <CheckBox
+                                    label={cat_fields.key}
+                                    key={cat_fields.key}
+                                    name={String(cat_fields.key)}
+                                    pad={{horizontal: "small"}}
+                                    checked={
+                                      this.props.selectedAggs[category] && this.props.selectedAggs[category].indexOf(cat_fields.key) > -1 ? true : false
+                                    }
+                                    onChange={this._onChange.bind(this, category)}/>
                                 </Box>
+                                <Box alignSelf="end">{cat_fields.doc_count}</Box>
+                              </Box>
                             )
                           )
                         }
@@ -105,23 +134,27 @@ export default class SearchFacets extends React.Component {
         </Sidebar>
       );
     }
-    // else {
-      return (<div>None</div>);
-    // }
+
+    return (<div>None</div>);
   }
 }
 
 SearchFacets.propTypes = {};
 
-// function mapStateToProps(state) {
-//   return {};
-// }
 
-// function mapDispatchToProps(dispatch) {
-//   return {};
-// }
+function mapStateToProps(state) {
+  return {
+    selectedAggs: state.search.getIn(['selectedAggs'])
+  };
+}
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(SearchFacets);
+function mapDispatchToProps(dispatch) {
+  return {
+    toggleAggs: (selectedAggs) => dispatch(toggleAggs(selectedAggs))
+  };
+}
+
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchFacets));

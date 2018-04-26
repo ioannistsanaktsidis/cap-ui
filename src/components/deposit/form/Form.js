@@ -6,7 +6,7 @@ import {
   Box
 } from 'grommet';
 
-import {toggleFilemanagerLayer} from '../../../actions/deposit';
+import {toggleFilemanagerLayer} from '../../../actions/drafts';
 
 // Customized RJSF component ( Grommet )
 import FieldTemplate from './themes/grommet/templates/FieldTemplate';
@@ -82,14 +82,14 @@ class DepositForm extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    showSidebar: state.deposit.get('showSidebar'),
-    customValidation: state.deposit.get('customValidation'),
-    liveValidate: state.deposit.get('liveValidate'),
-    validate: state.deposit.get('validate'),
-    schema: state.deposit.get('schema'),
-    uiSchema: state.deposit.get('uiSchema'),
-    data: state.deposit.get('data'),
-    selectedSchema: state.deposit.get('selectedSchema')
+    showSidebar: state.drafts.get('showSidebar'),
+    customValidation: state.drafts.get('customValidation'),
+    liveValidate: state.drafts.get('liveValidate'),
+    validate: state.drafts.get('validate'),
+    schema: state.drafts.get('schema'),
+    uiSchema: state.drafts.get('uiSchema'),
+    data: state.drafts.get('data'),
+    selectedSchema: state.drafts.get('selectedSchema')
   };
 }
 

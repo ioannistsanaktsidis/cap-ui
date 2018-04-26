@@ -10,7 +10,7 @@ import UploadIcon from 'grommet/components/icons/base/Upload';
 
 import ReactJson from 'react-json-view';
 
-import {toggleFilemanagerLayer} from '../../../actions/deposit';
+import {toggleFilemanagerLayer} from '../../../actions/drafts';
 
 import SectionHeader from './SectionHeader';
 
@@ -34,7 +34,7 @@ class DepositPreviewer extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    showPreviewer: state.deposit.get("showPreviewer")
+    showPreviewer: state.drafts.get("showPreviewer")
   };
 }
 

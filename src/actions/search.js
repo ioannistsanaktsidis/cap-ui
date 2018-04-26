@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import queryString from 'query-string';
+import queryString from 'query-string';
 
 export const QUERY_CHANGED = 'QUERY_CHANGED';
 export const ADD_AGGS = 'ADD_AGGS';
@@ -32,18 +32,20 @@ export function searchError(error) {
 }
 
 export function fetchSearch () {
-  return function (dispatch) {
+  return function (dispatch, getState) {
     let searchApiUrl = '/api/deposits';
-    let results;
-    let location = window.location.search;
-    const searchUrl = `${searchApiUrl}/${location}`;
-
+    let location_search = getState().routing.location.search;
+    const searchUrl = `${searchApiUrl}/${location_search}`;
+    let params = queryString.parse(location_search);
+    console.log("fetchSearch::::::", location_search)
+    console.log("fetchSearch::::::", params)
+    dispatch(toggleAggs(params));
     dispatch(searchRequest());
 
     axios
       .get(searchUrl)
       .then((response) => {
-        results = response.data;
+        let results = response.data;
         dispatch(searchSuccess(results));
       });
   };
@@ -57,9 +59,7 @@ export function toggleAggs(selectedAggs) {
 }
 
 export function queryChanged(query) {
-    // history.pushState(null, null, `?q=${query}`);
   return function (dispatch) {
-    // dispatch(setQuery(query));
     dispatch(fetchSearch(query));
   };
 }

@@ -14,7 +14,7 @@ import SplitIcon from 'grommet/components/icons/base/Split';
 import SplitsIcon from 'grommet/components/icons/base/Splits';
 import SaveIcon from 'grommet/components/icons/base/Save';
 
-import { togglePreviewer, toggleSidebar } from '../../../actions/deposit';
+import { togglePreviewer, toggleSidebar } from '../../../actions/drafts';
 
 class DepositHeader extends React.Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class DepositHeader extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    selectedSchema: state.deposit.get("selectedSchema")
+    selectedSchema: state.drafts.get("selectedSchema")
   };
 }
 

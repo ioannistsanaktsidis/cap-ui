@@ -17,7 +17,7 @@ import {
   toggleCustomValidation,
   toggleLiveValidate,
   toggleValidate
-} from '../../../actions/deposit';
+} from '../../../actions/drafts';
 
 import SectionHeader from './SectionHeader';
 import DepositFilesList from './DepositFilesList';
@@ -87,11 +87,11 @@ class DepositSidebar extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    showSidebar: state.deposit.get('showSidebar'),
-    customValidation: state.deposit.get('customValidation'),
-    liveValidate: state.deposit.get('liveValidate'),
-    validate: state.deposit.get('validate'),
-    selectedSchema: state.deposit.get('selectedSchema')
+    showSidebar: state.drafts.get('showSidebar'),
+    customValidation: state.drafts.get('customValidation'),
+    liveValidate: state.drafts.get('liveValidate'),
+    validate: state.drafts.get('validate'),
+    selectedSchema: state.drafts.get('selectedSchema')
   };
 }
 

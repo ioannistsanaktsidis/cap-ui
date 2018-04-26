@@ -9,6 +9,8 @@ import IndexPage from './index/IndexPage';
 import NotFoundPage from './NotFoundPage';
 import SearchPage from './search/SearchPage';
 import DepositPage from './deposit/DepositPage';
+import PublishedItem from './published/PublishedItem';
+import DraftsItem from './drafts/DraftsItem';
 
 import requireAuth from './auth/AuthorizationRequired';
 import noRequireAuth from './auth/NoAuthorizationRequired';
@@ -41,6 +43,8 @@ class App extends React.Component {
             <Route path="/about" component={AboutPage} />
             <Route path="/search" component={requireAuth(SearchPage, true)} />
             <Route path="/deposit" component={requireAuth(DepositPage, true)} />
+            <Route path="/drafts/:id" component={requireAuth(DraftsItem, true)} />
+            <Route path="/published/:id" component={requireAuth(PublishedItem, true)} />
             <Route component={NotFoundPage} />
           </Switch>
         </div>
