@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Box from 'grommet/components/Box';
-import TextInput from 'grommet/components/TextInput';
+import { Box, TextInput } from 'grommet';
 
 const TextWidget = function(props) {
   // TOFIX onBlur, onFocus
@@ -28,8 +27,9 @@ TextWidget.propTypes = {
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
   id: PropTypes.string,
-  placeholder: PropTypes.string,
-
+  value: PropTypes.string,
+  options: PropTypes.object,
+  placeholder: PropTypes.string
 };
 
 export default TextWidget;

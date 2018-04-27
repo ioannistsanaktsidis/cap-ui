@@ -37,8 +37,7 @@ export function fetchSearch () {
     let location_search = getState().routing.location.search;
     const searchUrl = `${searchApiUrl}/${location_search}`;
     let params = queryString.parse(location_search);
-    console.log("fetchSearch::::::", location_search)
-    console.log("fetchSearch::::::", params)
+
     dispatch(toggleAggs(params));
     dispatch(searchRequest());
 

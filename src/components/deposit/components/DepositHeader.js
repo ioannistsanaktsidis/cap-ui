@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {connect} from 'react-redux';
 
@@ -48,6 +49,13 @@ class DepositHeader extends React.Component {
     );
   }
 }
+
+DepositHeader.propTypes = {
+  selectedSchema: PropTypes.string,
+  showPreviewer: PropTypes.func,
+  saveData: PropTypes.func,
+  showSidebar: PropTypes.func
+};
 
 function mapStateToProps(state) {
   return {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Anchor,
@@ -122,5 +123,9 @@ class DepositFilesList extends React.Component {
     );
   }
 }
+
+DepositFilesList.propTypes = {
+  fileManagerLayerActive: PropTypes.bool
+};
 
 export default DepositFilesList;

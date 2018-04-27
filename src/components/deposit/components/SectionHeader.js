@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Box,
@@ -27,4 +28,7 @@ export default function SectionHeader(props) {
   );
 }
 
-
+SectionHeader.propTypes = {
+  label: PropTypes.string,
+  icon: PropTypes.element
+};

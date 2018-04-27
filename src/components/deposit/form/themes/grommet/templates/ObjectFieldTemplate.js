@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Box } from 'grommet';
 
@@ -15,33 +16,39 @@ let ObjectFieldTemplate = function (props) {
     );
   }
 
-  function _getObjectField() {
-    if ( !('ui:object' in props.uiSchema) ) {
-      return (
-        <Box className="grommetux-form-field">
-          <FieldHeader
-            title={props.title}
-            required={props.required}
-            description={props.description}
-            />
-          {props.properties.map(prop => prop.content )}
-        </Box>
-      );
+
+  if ( !('ui:object' in props.uiSchema) ) {
+    return (
+      <Box className="grommetux-form-field">
+        <FieldHeader
+          title={props.title}
+          required={props.required}
+          description={props.description}
+          />
+        {props.properties.map(prop => prop.content )}
+      </Box>
+    );
+  }
+  else {
+    if (props.uiSchema['ui:object'] == 'layerObjectField'){
+      return <LayerObjectFieldTemplate {...props} />;
+    }
+    else if (props.uiSchema['ui:object'] == 'accordionObjectField'){
+      return <AccordionFieldTemplate {...props} />;
     }
     else {
-      if (props.uiSchema['ui:object'] == 'layerObjectField'){
-        return <LayerObjectFieldTemplate {...props} />;
-      }
-      else if (props.uiSchema['ui:object'] == 'accordionObjectField'){
-        return <AccordionFieldTemplate {...props} />;
-      }
-      else {
-        return <div {...props}>This object( <i>{props.title}</i>) can NOT be rendered.. Check implementaion</div>;
-      }
+      return <div {...props}>This object( <i>{props.title}</i>) can NOT be rendered.. Check implementaion</div>;
     }
   }
+};
 
-  return _getObjectField();
+ObjectFieldTemplate.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  required: PropTypes.boolean,
+  idSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  properties: PropTypes.object
 };
 
 export default ObjectFieldTemplate;

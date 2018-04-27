@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import config from '../config';
-
 export const AUTHENTICATED = 'AUTHENTICATED';
 export const UNAUTHENTICATED = 'UNAUTHENTICATED';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -61,28 +59,24 @@ export function loginLocalUser() {
 
     let uri = '/api/login_app';
 
-    // axios.post(uri, {})
-    //   .then(function (response) {
-    //     console.log("loginResp::", response)
-    //     let token = '12345';
+    axios.post(uri, {})
+      .then(function (response) {
+        let token = '12345';
+        localStorage.setItem('token', token);
 
-    //     console.log(response);
-    //     localStorage.setItem('token', token);
-
-    //     dispatch(loginSuccess({
-    //       userId: response.data,
-    //       token: token,
-    //       profile: {
-    //         name: "John",
-    //         lastname: "Doe",
-    //         email: "john.doe@cern.ch"
-    //       }
-    //     }));
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //     dispatch(loginError(error));
-    //   });
+        dispatch(loginSuccess({
+          userId: response.data,
+          token: token,
+          profile: {
+            name: "John",
+            lastname: "Doe",
+            email: "john.doe@cern.ch"
+          }
+        }));
+      })
+      .catch(function (error) {
+        dispatch(loginError(error));
+      });
   };
 }
 
@@ -92,7 +86,6 @@ export function initCurrentUser() {
     axios.get('/api/me')
       .then(function (response) {
         let {id} = response.data;
-        console.log(response.data);
 
         localStorage.setItem('token', id);
         dispatch(loginSuccess({
@@ -102,41 +95,9 @@ export function initCurrentUser() {
         }));
 
       })
-      .catch(function (error) {
-        // console.log(error);
+      .catch(function () {
         dispatch(clearAuth());
       });
-  }
-}
-
-export function loginWithCERN() {
-  return function (dispatch) {
-    dispatch(loginRequest());
-
-    let uri = '/api/login_app';
-
-    // axios.post(uri, {})
-    //   .then(function (response) {
-    //     console.log("loginResp::", response)
-    //     let token = '12345';
-
-    //     console.log(response);
-    //     localStorage.setItem('token', token);
-
-    //     dispatch(loginSuccess({
-    //       userId: response.data,
-    //       token: token,
-    //       profile: {
-    //         name: "John",
-    //         lastname: "Doe",
-    //         email: "john.doe@cern.ch"
-    //       }
-    //     }));
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //     dispatch(loginError(error));
-    //   });
   };
 }
 
@@ -153,12 +114,9 @@ export function logout() {
     dispatch(logoutRequest());
 
     axios.get('/api/logout/')
-      .then(function (response) {
+      .then(function () {
         localStorage.clear();
         dispatch(logoutSuccess());
-      })
-      .catch(function (error) {
-        console.log(error);
       });
   };
 }

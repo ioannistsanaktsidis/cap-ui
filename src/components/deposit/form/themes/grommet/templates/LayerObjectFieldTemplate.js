@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Box,
@@ -57,5 +58,14 @@ class LayerObjectFieldTemplate extends React.Component {
     }
   }
 }
+
+LayerObjectFieldTemplate.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  required: PropTypes.bool,
+  idSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  properties: PropTypes.object,
+};
 
 export default LayerObjectFieldTemplate;

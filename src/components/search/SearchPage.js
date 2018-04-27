@@ -15,13 +15,6 @@ class SearchPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {results: {}, selectedAggs: {}};
-
-    const currentParams = this.getSearchParams();
-    console.log("**********************")
-    console.log("**********************")
-    console.log("currentParams:", currentParams)
-    console.log("**********************")
-    console.log("**********************")
   }
 
   componentDidMount() {
@@ -65,8 +58,6 @@ class SearchPage extends React.Component {
 
     if (this.props.results) {
       _results = this.props.results.toJS();
-      // let _total = _d.hits.total;
-      // let _hits = _d.hits.hits;
       _aggs = _results.aggregations;
     }
 
@@ -111,8 +102,9 @@ SearchPage.propTypes = {
   total: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
   fetchSearch: PropTypes.func,
-  // history: PropTypes.object.isRequired,
-  // location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  selectedAggs: PropTypes.object.isRequired,
   results: PropTypes.object.isRequired,
 };
 
@@ -127,7 +119,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchSearch: () => dispatch(fetchSearch()),
-    toggleAggs: () => dispatch(toggleAggs()),
   };
 }
 

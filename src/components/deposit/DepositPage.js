@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+
 import React from 'react';
 
 import {connect} from 'react-redux';
@@ -46,7 +48,7 @@ const transformSchema = (schema) => {
   return schema;
 };
 
-export class DepositPage extends React.Component {
+class DepositPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -110,7 +112,9 @@ export class DepositPage extends React.Component {
   }
 }
 
-DepositPage.propTypes = {};
+DepositPage.propTypes = {
+  startDeposit: PropTypes.func
+};
 
 function mapStateToProps() {
   return {};

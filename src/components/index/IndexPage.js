@@ -6,9 +6,7 @@ import Box from 'grommet/components/Box';
 import Heading from 'grommet/components/Heading';
 import Section from 'grommet/components/Section';
 
-import {login, logout} from '../../actions/auth';
-
-export class IndexPage extends React.Component {
+class IndexPage extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -33,26 +31,15 @@ export class IndexPage extends React.Component {
 }
 
 IndexPage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired
+  currentUser: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    isLoggedIn: state.auth.get('isLoggedIn'),
-    token: state.auth.get('token'),
-    authLoading: state.auth.get('loading'),
     currentUser: state.auth.getIn(['currentUser', 'profile'])
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    login: () => dispatch(login()),
-    logout: () => dispatch(logout())
-  };
-}
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(IndexPage);

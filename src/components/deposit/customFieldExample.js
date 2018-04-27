@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // Define a custom component for handling the root position object
 class GeoPosition extends React.Component {
@@ -25,6 +26,17 @@ class GeoPosition extends React.Component {
     );
   }
 }
+
+GeoPosition.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  required: PropTypes.boolean,
+  idSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  formData: PropTypes.object,
+  onChange: PropTypes.func,
+  properties: PropTypes.object,
+};
 
 export default GeoPosition;
 

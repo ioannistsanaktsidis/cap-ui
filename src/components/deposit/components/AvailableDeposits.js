@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Box,
@@ -25,6 +26,11 @@ const AvailableDeposits = (props) => {
       </Tiles>
     </Box>
   );
+};
+
+AvailableDeposits.propTypes = {
+  schemas: PropTypes.object,
+  selectSchema: PropTypes.func
 };
 
 export default AvailableDeposits;

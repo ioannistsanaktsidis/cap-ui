@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Box,
@@ -28,6 +29,15 @@ let ArrayUtils = function (props) {
         icon={<FormUpIcon margin="none" pad="none" />} />
     </Box>
   );
+};
+
+ArrayUtils.propTypes = {
+  hasRemove: PropTypes.boolean,
+  hasMoveDown: PropTypes.boolean,
+  hasMoveUp: PropTypes.boolean,
+  onDropIndexClick: PropTypes.func,
+  onReorderClick: PropTypes.func,
+  index: PropTypes.string,
 };
 
 export default ArrayUtils;

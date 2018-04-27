@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Box, Select } from 'grommet';
 
@@ -12,7 +13,7 @@ const SelectWidget = function(props) {
   return (
     <Box flex={true} pad={{"horizontal": "medium"}}>
       <Select
-        placeHolder="None"
+        placeHolder={props.placeholder}
         inline={false}
         multiple={false}
         options={props.options.enumOptions}
@@ -23,22 +24,13 @@ const SelectWidget = function(props) {
   );
 };
 
+SelectWidget.propTypes = {
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  id: PropTypes.string,
+  value: PropTypes.string,
+  options: PropTypes.object,
+  placeholder: PropTypes.string
+};
 
 export default SelectWidget;
-
-// return (
-//   <Box flex={true}>
-//     <FormField
-//       label={props.label}
-//       help={props.schema.description}>
-
-//       <Select placeHolder='None'
-//         inline={false}
-//         multiple={false}
-//         options={props.options.enumOptions}
-//         value={props.value}
-//         onBlur={props.onBlur}
-//         onChange={_onChange} />
-//     </FormField>
-//   </Box>
-// );

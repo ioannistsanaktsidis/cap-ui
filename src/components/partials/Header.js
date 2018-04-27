@@ -24,7 +24,7 @@ class Header extends React.Component {
 
   _onSearchSubmit(event) {
     let query = event.target.value;
-    let q = queryString.parse(window.location.search);
+    let q = queryString.parse(this.props.history.location.search);
     q["q"] = query;
 
     const search_location = {
@@ -86,7 +86,10 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  fetchSearch: PropTypes.func.isRequired
+  fetchSearch: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired
 };
 
 function mapStateToProps() {

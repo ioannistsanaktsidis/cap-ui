@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {Box} from 'grommet';
 
@@ -78,5 +79,15 @@ class ArrayFieldTemplate extends React.Component {
     return this._getArrayField(_label);
   }
 }
+
+
+ArrayFieldTemplate.propTypes = {
+  uiSchema: PropTypes.object,
+  schema: PropTypes.object,
+  onAddClick: PropTypes.func,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  required: PropTypes.boolean
+};
 
 export default ArrayFieldTemplate;

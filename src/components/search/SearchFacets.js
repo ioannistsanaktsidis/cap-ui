@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+
 import queryString from 'query-string';
-import {connect} from 'react-redux';
-import { withRouter } from 'react-router'
 
 import Heading from 'grommet/components/Heading';
 import Sidebar from 'grommet/components/Sidebar';
@@ -9,16 +11,11 @@ import Box from 'grommet/components/Box';
 import Menu from 'grommet/components/Menu';
 import CheckBox from 'grommet/components/CheckBox';
 
-import "searchkit/theming/theme.scss";
-
-import {toggleAggs} from '../../actions/search';
+import FiltersPreview from './components/FiltersPreview';
 
 class SearchFacets extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selected: {}
-    };
   }
 
   _onChange(category, event) {
@@ -28,7 +25,6 @@ class SearchFacets extends React.Component {
   }
 
   _toggleAggs(category, name, selectedAggregations) {
-    console.log(".>>>>>>>:::", selectedAggregations)
     let _selectedAggregations = Object.assign({},selectedAggregations);
 
     if (!_selectedAggregations[category]) {
@@ -43,11 +39,6 @@ class SearchFacets extends React.Component {
     if ( index == -1 ) _selectedAggregations[category].push(name);
     else _selectedAggregations[category].splice(index, 1);
 
-    // this.setState({selected: _selectedAggregations});
-    // this.props.onChange(_selectedAggregations);
-
-    // this.updateAggs(_selectedAggregations);
-    console.log("--->",_selectedAggregations)
     this.updateHistory(_selectedAggregations);
   }
 
@@ -60,31 +51,16 @@ class SearchFacets extends React.Component {
     this.props.history.replace(location);
   }
 
-  updateAggs(selectedAggs) {
-    let currentParams = queryString.parse(this.props.location.search);
-    const location = {
-      search: `${queryString.stringify(Object.assign(currentParams,selectedAggs))}`
-    };
-
-    this.props.history.replace(location);
-    this.props.toggleAggs(selectedAggs);
-  }
-
   render() {
     if (this.props.aggs){
       let _aggs = this.props.aggs;
-      console.log("rerenderinggggg....", this.state.selected)
+
       let categories = Object.keys(_aggs);
       return (
         <Sidebar full={false} colorIndex="neutral-1-t">
           <Box flex={true} justify="start">
-            <Box pad="small">
-              Filters
-              <Box>
-                {JSON.stringify(this.props.selectedAggs)}
-              </Box>
-            </Box>
-            <Menu primary={true}>
+            <FiltersPreview aggs={this.props.selectedAggs} />
+            <Menu flex={true} primary={true}>
               {
                 categories.map((category) => {
                   return (
@@ -139,8 +115,12 @@ class SearchFacets extends React.Component {
   }
 }
 
-SearchFacets.propTypes = {};
-
+SearchFacets.propTypes = {
+  aggs: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  selectedAggs: PropTypes.object.isRequired
+};
 
 function mapStateToProps(state) {
   return {
@@ -148,13 +128,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    toggleAggs: (selectedAggs) => dispatch(toggleAggs(selectedAggs))
-  };
-}
-
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SearchFacets));
+export default withRouter(connect(mapStateToProps)(SearchFacets));

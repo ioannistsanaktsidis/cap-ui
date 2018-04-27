@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Accordion,
@@ -53,5 +54,16 @@ class AccordionObjectField extends React.Component {
     }
   }
 }
+
+
+AccordionObjectField.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  required: PropTypes.boolean,
+  idSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  properties: PropTypes.object,
+};
+
 
 export default AccordionObjectField;

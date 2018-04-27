@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Box,
@@ -50,7 +51,6 @@ class FormLayer extends React.Component {
                   onClick={this.props.remove ? this.props.remove : null}
                   icon={<Trash />}
                 /> : null
-
               }
               </Box>
             </Box>
@@ -61,5 +61,17 @@ class FormLayer extends React.Component {
     );
   }
 }
+
+FormLayer.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  required: PropTypes.boolean,
+  layerActive: PropTypes.boolean,
+  remove: PropTypes.func,
+  onClose: PropTypes.func,
+  idSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  properties: PropTypes.object,
+};
 
 export default FormLayer;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Box,
@@ -35,6 +36,17 @@ let FieldHeader = function (props) {
       {description ? <Paragraph margin="none" size="small">{description}</Paragraph> : null}
     </Box>
   );
+};
+
+FieldHeader.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  margin: PropTypes.string,
+  onArrayAddClick: PropTypes.func,
+  required: PropTypes.boolean,
+  idSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  properties: PropTypes.object,
 };
 
 export default FieldHeader;

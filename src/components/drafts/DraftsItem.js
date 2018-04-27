@@ -7,19 +7,18 @@ import Header from 'grommet/components/Header';
 import Heading from 'grommet/components/Heading';
 import Section from 'grommet/components/Section';
 
-import {login, logout} from '../../actions/auth';
 import {getDraftsItem} from '../../actions/drafts';
 
 import ReactJson from 'react-json-view';
 
-export class DraftsItem extends React.Component {
+class DraftsItem extends React.Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount() {
     let {id} = this.props.match.params;
-    this.props.getDraftsItem(id)
+    this.props.getDraftsItem(id);
   }
 
   render() {
@@ -79,7 +78,12 @@ export class DraftsItem extends React.Component {
   }
 }
 
-DraftsItem.propTypes = {};
+DraftsItem.propTypes = {
+  error: PropTypes.object.required,
+  getDraftsItem: PropTypes.func,
+  item: PropTypes.object.required,
+  match: PropTypes.object.required,
+};
 
 function mapStateToProps(state) {
   return {

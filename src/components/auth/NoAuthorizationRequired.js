@@ -25,6 +25,12 @@ export default function (ComposedComponent) {
     }
   }
 
+
+  NotAuthentication.propTypes = {
+    isLoggedIn: PropTypes.boolean,
+    history: PropTypes.object
+  };
+
   function mapStateToProps(state) {
     return { isLoggedIn: state.auth.get('isLoggedIn') };
   }

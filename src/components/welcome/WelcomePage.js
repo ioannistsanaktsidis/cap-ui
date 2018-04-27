@@ -18,7 +18,7 @@ import {loginLocalUser} from '../../actions/auth';
 
 import LoginIcon from 'grommet/components/icons/base/Login';
 
-export class WelcomePage extends React.Component {
+class WelcomePage extends React.Component {
   constructor(props) {
     super(props);
   }

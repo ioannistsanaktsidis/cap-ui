@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Box,
@@ -35,3 +36,7 @@ export default function ErrorListTemplate(props) {
     </Box>
   );
 }
+
+ErrorListTemplate.propTypes = {
+  errors: PropTypes.object
+};

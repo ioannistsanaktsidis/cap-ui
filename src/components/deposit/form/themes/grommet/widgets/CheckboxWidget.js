@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import FormField from 'grommet/components/FormField';
-import CheckBox from 'grommet/components/CheckBox';
+import { CheckBox, FormField } from 'grommet';
 
 function selectValue(value, selected, all) {
   const at = all.indexOf(value);
@@ -51,5 +51,14 @@ const CheckBoxWidget = function(props) {
   );
 };
 
+CheckBoxWidget.propTypes = {
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  id: PropTypes.string,
+  value: PropTypes.string,
+  options: PropTypes.object,
+  rawErrors: PropTypes.object,
+  schema: PropTypes.object
+};
 
 export default CheckBoxWidget;

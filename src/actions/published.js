@@ -56,11 +56,9 @@ export function getPublished() {
     let uri = '/api/records/';
     axios.get(uri)
       .then(function (response) {
-        console.log(response);
         dispatch(publishedSuccess(response.data));
       })
       .catch(function (error) {
-        console.log(error);
         dispatch(publishedError(error));
       });
   };
@@ -73,7 +71,6 @@ export function getPublishedItem(id) {
     let uri = `/api/records/${id}`;
     axios.get(uri)
       .then(function (response) {
-        console.log(response);
         dispatch(publishedItemSuccess(response.data));
       })
       .catch(function (error) {

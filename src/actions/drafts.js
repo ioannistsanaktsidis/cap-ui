@@ -10,6 +10,10 @@ export const TOGGLE_VALIDATE = 'TOGGLE_VALIDATE';
 export const CHANGE_SCHEMA = 'CHANGE_SCHEMA';
 export const UPDATE_FORM_DATA = 'UPDATE_FORM_DATA';
 
+export const DRAFTS_REQUEST = 'DRAFTS_REQUEST';
+export const DRAFTS_SUCCESS = 'DRAFTS_SUCCESS';
+export const DRAFTS_ERROR = 'DRAFTS_ERROR';
+
 export const DRAFTS_ITEM_REQUEST = 'DRAFTS_ITEM_REQUEST';
 export const DRAFTS_ITEM_SUCCESS = 'DRAFTS_ITEM_SUCCESS';
 export const DRAFTS_ITEM_ERROR = 'DRAFTS_ITEM_ERROR';
@@ -121,7 +125,6 @@ export function getDraftsItem(id) {
     let uri = `/api/deposits/${id}`;
     axios.get(uri)
       .then(function (response) {
-        console.log(response);
         dispatch(draftsItemSuccess(response.data));
       })
       .catch(function (error) {

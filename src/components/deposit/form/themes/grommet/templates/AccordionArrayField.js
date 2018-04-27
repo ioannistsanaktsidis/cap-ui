@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Accordion,
@@ -40,14 +41,14 @@ class AccordionArrayField extends React.Component {
   render() {
     return (
       <Accordion animate={false} openMulti={false}>
-        <AccordionPanel heading={this.props.header}>
+        <AccordionPanel heading={this.props.header}>string
           {
             this.props.items.length > 0 ?
             <Box colorIndex="light-2">
               {this.props.items.map(element => element.children)}
             </Box>:
             <ListPlaceholder
-              addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
+              addControl={<Button onClick={this._onAddClick.bind(this)} icon={<AddIcon />} />}
               emptyMessage="You do not have any items at the moment."
               unfilteredTotal={0}/>
           }
@@ -56,5 +57,17 @@ class AccordionArrayField extends React.Component {
     );
   }
 }
+
+AccordionArrayField.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  required: PropTypes.boolean,
+  idSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  items: PropTypes.array,
+  properties: PropTypes.object,
+  header: PropTypes.string,
+  onAddClick: PropTypes.func,
+};
 
 export default AccordionArrayField;

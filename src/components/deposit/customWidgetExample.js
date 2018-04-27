@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const MyCustomWidget = (props) => {
   return (
@@ -8,6 +9,16 @@ const MyCustomWidget = (props) => {
       required={props.required}
       onChange={(event) => props.onChange(event.target.value)} />
   );
+};
+
+MyCustomWidget.propTypes = {
+  value: PropTypes.object,
+  description: PropTypes.string,
+  required: PropTypes.boolean,
+  idSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  properties: PropTypes.object,
+  onChange: PropTypes.func,
 };
 
 export default MyCustomWidget;

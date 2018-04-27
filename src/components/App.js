@@ -54,10 +54,11 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.element,
+  initCurrentUser: PropTypes.func
 };
 
-function mapStateToProps(state) {
+function mapStateToProps() {
   return {};
 }
 

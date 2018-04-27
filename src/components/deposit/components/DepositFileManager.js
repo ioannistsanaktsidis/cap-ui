@@ -1,27 +1,30 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {connect} from 'react-redux';
 
-import Box from 'grommet/components/Box';
+import {
+  Box,
+  Tabs,
+  Title,
+  Tab,
+  Header,
+  Layer,
+  Sidebar,
+  Form,
+  FormField,
+  TextInput,
+  Article,
+  Heading,
+  Select
+} from 'grommet';
 
-import Tabs from 'grommet/components/Tabs';
-import Title from 'grommet/components/Title';
-import Tab from 'grommet/components/Tab';
-import Header from 'grommet/components/Header';
-import Layer from 'grommet/components/Layer';
-import Sidebar from 'grommet/components/Sidebar';
-import Form from 'grommet/components/Form';
-import FormField from 'grommet/components/FormField';
-import TextInput from 'grommet/components/TextInput';
-import Article from 'grommet/components/Article';
-import Heading from 'grommet/components/Heading';
-import Select from 'grommet/components/Select';
-
-import {toggleFilemanagerLayer} from '../../../actions/drafts';
+import { toggleFilemanagerLayer } from '../../../actions/drafts';
 
 import FileList from './FileList';
 
 import Dropzone from 'react-dropzone';
+
 
 const FileManagerDropzone = () => {
   return (
@@ -31,7 +34,6 @@ const FileManagerDropzone = () => {
           console.log("Dropped some files:::");
           console.log(acceptedFiles);
           console.log(rejectedFiles);
-          console.log(":::::::::::::::::::::");
         }}
       >
         Try dropping some files here, or click to select files to upload.
@@ -147,11 +149,15 @@ class FileManager extends React.Component {
             </Box>
           </Box>
         </Article>
-      </Layer>
-      : null
+      </Layer> : null
     );
   }
 }
+
+FileManager.propTypes = {
+  activeLayer: PropTypes.bool,
+  toggleFilemanagerLayer: PropTypes.func
+};
 
 function mapStateToProps(state) {
   return {

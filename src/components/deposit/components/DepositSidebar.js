@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {
@@ -84,6 +85,20 @@ class DepositSidebar extends React.Component {
     );
   }
 }
+
+DepositSidebar.propTypes = {
+  showSidebar: PropTypes.bool,
+  toggleFilemanagerLayer: PropTypes.func,
+  schemas: PropTypes.object,
+  selectedSchema: PropTypes.string,
+  onChangeSchema: PropTypes.func,
+  validate: PropTypes.bool,
+  toggleValidate: PropTypes.func,
+  liveValidate: PropTypes.bool,
+  toggleLiveValidate: PropTypes.func,
+  customValidation: PropTypes.bool,
+  toggleCustomValidation: PropTypes.func
+};
 
 function mapStateToProps(state) {
   return {

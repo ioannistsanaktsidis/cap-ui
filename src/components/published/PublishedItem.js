@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import Box from 'grommet/components/Box';
-import Heading from 'grommet/components/Heading';
-import Section from 'grommet/components/Section';
+import {
+  Box,
+  Heading,
+  Section
+} from 'grommet';
 
-import {login, logout} from '../../actions/auth';
 import {getPublishedItem} from '../../actions/published';
-
-
 
 export class IndexPage extends React.Component {
   constructor(props) {
@@ -18,8 +17,7 @@ export class IndexPage extends React.Component {
 
   componentDidMount() {
     let {id} = this.props.match.params;
-
-    this.props.getPublishedItem(id)
+    this.props.getPublishedItem(id);
   }
 
   render() {
@@ -53,7 +51,10 @@ export class IndexPage extends React.Component {
 }
 
 IndexPage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired
+  error: PropTypes.object.required,
+  getPublishedItem: PropTypes.func,
+  item: PropTypes.object.required,
+  match: PropTypes.object.required,
 };
 
 function mapStateToProps(state) {
@@ -65,8 +66,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: () => dispatch(login()),
-    logout: () => dispatch(logout()),
     getPublishedItem: (id) => dispatch(getPublishedItem(id))
   };
 }

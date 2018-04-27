@@ -28,21 +28,21 @@ const initialState = Map({
 export default function publishedReducer(state = initialState, action) {
   switch (action.type) {
     case PUBLISHED_REQUEST:
-      return state
+      return state;
     case PUBLISHED_SUCCESS:
-      return state
+      return state;
     case PUBLISHED_ERROR:
-      return state
+      return state;
     case PUBLISHED_ITEM_REQUEST:
       return state.setIn(['current_item', 'loading'], true);
     case PUBLISHED_ITEM_SUCCESS:
       return state
               .setIn(['current_item', 'loading'], false)
-              .setIn(['current_item', 'data'], action.published)
+              .setIn(['current_item', 'data'], action.published);
     case PUBLISHED_ITEM_ERROR:
       return state
               .setIn(['current_item', 'loading'], false)
-              .setIn(['current_item', 'error'], action.error)
+              .setIn(['current_item', 'error'], action.error);
     default:
       return state;
   }

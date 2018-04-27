@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {connect} from 'react-redux';
 
@@ -80,6 +81,23 @@ class DepositForm extends React.Component {
   }
 }
 
+DepositForm.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  schema: PropTypes.string,
+  selectSchema: PropTypes.string,
+  validate: PropTypes.bool,
+  liveValidate: PropTypes.bool,
+  idSchema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  properties: PropTypes.object,
+  formData: PropTypes.object,
+  customValidation: PropTypes.bool,
+  schemas: PropTypes.object,
+  changeSchema: PropTypes.func,
+  onChange: PropTypes.func
+};
+
 function mapStateToProps(state) {
   return {
     showSidebar: state.drafts.get('showSidebar'),
@@ -89,7 +107,6 @@ function mapStateToProps(state) {
     schema: state.drafts.get('schema'),
     uiSchema: state.drafts.get('uiSchema'),
     data: state.drafts.get('data'),
-    selectedSchema: state.drafts.get('selectedSchema')
   };
 }
 

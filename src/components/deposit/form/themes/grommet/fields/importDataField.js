@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Box from 'grommet/components/Box';
 import Button from 'grommet/components/Button';
@@ -12,7 +13,7 @@ import ListItem from 'grommet/components/ListItem';
 import FieldHeader from '../components/FieldHeader';
 import Edit from 'grommet/components/icons/base/Edit';
 
-class importDataField extends React.Component {
+class ImportDataField extends React.Component {
   constructor(props) {
     super(props);
 
@@ -118,4 +119,13 @@ class importDataField extends React.Component {
   }
 }
 
-export default importDataField;
+ImportDataField.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  required: PropTypes.boolean,
+  schema: PropTypes.object,
+  onChange: PropTypes.func,
+  properties: PropTypes.object,
+};
+
+export default ImportDataField;

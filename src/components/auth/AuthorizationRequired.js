@@ -36,6 +36,12 @@ export default (ComposedComponent, header=false) => {
     }
   }
 
+  Authentication.propTypes = {
+    isLoggedIn: PropTypes.bool,
+    history: PropTypes.object,
+    match: PropTypes.object
+  };
+
   function mapStateToProps(state) {
     return {isLoggedIn: state.auth.get('isLoggedIn')};
   }

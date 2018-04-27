@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import {connect} from 'react-redux';
 
 import {
@@ -31,6 +33,11 @@ class DepositPreviewer extends React.Component {
       </Sidebar> : null;
   }
 }
+
+DepositPreviewer.propTypes = {
+  showPreviewer: PropTypes.bool,
+  data: PropTypes.object
+};
 
 function mapStateToProps(state) {
   return {

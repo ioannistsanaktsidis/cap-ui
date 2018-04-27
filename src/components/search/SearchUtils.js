@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from 'grommet/components/Button';
-import Header from 'grommet/components/Header';
 import Box from 'grommet/components/Box';
 
 import Spinning from 'grommet/components/icons/Spinning';
