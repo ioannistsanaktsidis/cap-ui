@@ -5,14 +5,8 @@ import PropTypes from 'prop-types';
 
 import WelcomePage from './welcome/WelcomePage';
 import AboutPage from './about/AboutPage';
-import AvailableDeposits from './create/AvailableDeposits';
-import CreateDeposit from './create/CreateDeposit';
 import IndexPage from './index/IndexPage';
 import NotFoundPage from './NotFoundPage';
-import SearchPage from './search/SearchPage';
-import DepositPage from './deposit/DepositPage';
-import PublishedItem from './published/PublishedItem';
-import DraftsItem from './drafts/DraftsItem';
 
 import requireAuth from './auth/AuthorizationRequired';
 import noRequireAuth from './auth/NoAuthorizationRequired';
@@ -38,25 +32,14 @@ class App extends React.Component {
   }
 
   render() {
+    const RequireAuthIndexPage = requireAuth(IndexPage);
     return (
       <GrommetApp centered={false} id="app-main">
         <div id="main-container">
           <Switch id="main-container">
-            <Route exact path="/" component={requireAuth(IndexPage, true)} />
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
             <Route path="/about" component={AboutPage} />
-            <Route path="/search" component={requireAuth(SearchPage, true)} />
-            <Route path="/drafts/:id" component={requireAuth(DraftsItem, true)} />
-            <Route path="/published/:id" component={requireAuth(PublishedItem, true)} />
-            <Route exact path="/deposit" component={requireAuth(DepositPage, true)} />
-            <Route exact path="/deposit/create" component={requireAuth(AvailableDeposits, true)} />
-            {
-              this.props.groups ? 
-                this.props.groups.map(schema => 
-                  <Route exact path={`/deposit/create/${schema.get('deposit_group')}`} 
-                         key={schema.get('deposit_group')} 
-                         component={requireAuth(CreateDeposit, true)} />  ) : null
-            }
+            <IndexPage />
             <Route component={NotFoundPage} />
           </Switch>
         </div>

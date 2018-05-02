@@ -1,31 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import {connect} from 'react-redux';
-
-import Header from 'grommet/components/Header';
-
-import Box from 'grommet/components/Box';
-
-import Title from 'grommet/components/Title';
-import Paragraph from 'grommet/components/Paragraph';
-
-import List from 'grommet/components/List';
-import ListItem from 'grommet/components/ListItem';
-
-
 
 import {
-  Button
+  Box,
+  Button,
+  Header,
+  Title,
+  Paragraph,
+  List,
+  ListItem
 } from 'grommet';
 
 class SearchResults extends React.Component {
   constructor(props) {
     super(props);
   }
-
-  componentDidMount() {}
-
-  componentWillUnmount() {}
 
   render() {
     if (this.props.results){
@@ -73,22 +62,7 @@ class SearchResults extends React.Component {
 }
 
 SearchResults.propTypes = {
-  results: PropTypes.object.isRequired
+  results: PropTypes.array.isRequired
 };
-
-// function mapStateToProps(state) {
-//   return {};
-// }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     // actions: bindActionCreators(actions, dispatch)
-//   };
-// }
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(SearchResults);
 
 export default SearchResults;

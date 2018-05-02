@@ -28,7 +28,7 @@ class DepositHeader extends React.Component {
         <Box flex={true}  direction="row" justify="between" align="center">
           <Box pad="small">{this.props.selectedSchema}</Box>
           <Box align="center" flex={true} >{(this.props.selectedSchema)}</Box>
-          <Box direction="row">
+          <Box colorIndex="neutral-1-a" direction="row">
             <Menu responsive={true}
               label="Layout"
               size="small"

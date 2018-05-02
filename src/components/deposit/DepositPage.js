@@ -48,7 +48,7 @@ const transformSchema = (schema) => {
 class DepositPage extends React.Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
       formData: {},
       selectSchema: null,

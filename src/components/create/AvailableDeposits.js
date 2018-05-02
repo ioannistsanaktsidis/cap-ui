@@ -11,12 +11,12 @@ import {selectSchema} from '../../actions/drafts';
 import {withRouter} from 'react-router-dom';
 
 const CustomTile = withRouter(({ history, props=props, group=group, name=name}) => (
-      <Tile key={group} 
-            size="small" 
-            pad="small" 
-            colorIndex="light-2" 
+      <Tile key={group}
+            size="small"
+            pad="small"
+            colorIndex="light-2"
             onClick={() => (
-              history.push(`/deposit/create/${group}`),
+              history.push(`/create/${group}`),
               props.selectSchema(group))}>
         <Paragraph align="center">{name}</Paragraph>
       </Tile>
@@ -33,7 +33,7 @@ export class AvailableDeposits extends React.Component {
             this.props.groups ?
             this.props.groups.map(group => (
               <CustomTile key={group} props={this.props} group={group.get("deposit_group")} name={group.get("name")}/>
-            )) : 
+            )) :
             <Box> No available schemas.</Box>
           }
         </Tiles>

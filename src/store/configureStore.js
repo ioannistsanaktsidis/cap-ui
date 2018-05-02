@@ -2,6 +2,9 @@ import {createStore, compose, applyMiddleware} from 'redux';
 // import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
+// import { browserHistory } from 'history';
+
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 // 'routerMiddleware': the new way of storing route changes with redux middleware since rrV4.
 import { routerMiddleware } from 'react-router-redux';
 
@@ -9,8 +12,8 @@ import {createLogger} from 'redux-logger';
 
 import rootReducer from '../reducers';
 
-
 export const history = createHistory();
+
 function configureStoreProd(initialState) {
   const reactRouterMiddleware = routerMiddleware(history);
   const middlewares = [
@@ -18,14 +21,16 @@ function configureStoreProd(initialState) {
 
     // thunk middleware can also accept an extra argument to be passed to each thunk action
     // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
-    thunk,
     reactRouterMiddleware,
+    thunk,
   ];
 
-  return createStore(rootReducer, initialState, compose(
+  const store = createStore(rootReducer, initialState, compose(
     applyMiddleware(...middlewares)
     )
   );
+
+  return store;
 }
 
 function configureStoreDev(initialState) {
@@ -42,8 +47,8 @@ function configureStoreDev(initialState) {
 
     // thunk middleware can also accept an extra argument to be passed to each thunk action
     // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
-    thunk,
     reactRouterMiddleware,
+    thunk,
     loggerMiddleware,
   ];
 
@@ -65,5 +70,6 @@ function configureStoreDev(initialState) {
 }
 
 const configureStore = process.env.NODE_ENV === 'production' ? configureStoreProd : configureStoreDev;
+const store = configureStore();
 
-export default configureStore;
+export default store;

@@ -1,21 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import '../../styles/about-page.css';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
-// Since this component is simple and static, there's no parent container for it.
-const AboutPage = () => {
-  return (
-    <div>
-      <h2 className="alt-header">About</h2>
-      <p>
-        This example app is part of the <a href="https://github.com/coryhouse/react-slingshot">React-Slingshot
-        starter kit</a>.
-      </p>
-      <p>
-        <Link to="/badlink">Click this bad link</Link> to see the 404 page.
-      </p>
-    </div>
-  );
+import Box from 'grommet/components/Box';
+import Heading from 'grommet/components/Heading';
+import Section from 'grommet/components/Section';
+
+class AboutPage extends React.Component {
+  render() {
+    return (
+      <Box flex={true}>
+        <Box flex={true} colorIndex="neutral-1-a" justify="center" align="center">
+          <Section>
+            <Box size="large">
+              <Heading tag="h2">About Page</Heading>
+            </Box>
+          </Section>
+        </Box>
+      </Box>
+    );
+  }
+}
+
+AboutPage.propTypes = {
 };
 
 export default AboutPage;

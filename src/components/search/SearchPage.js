@@ -14,7 +14,6 @@ import queryString from 'query-string';
 class SearchPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {results: {}, selectedAggs: {}};
   }
 
   componentDidMount() {
@@ -40,6 +39,12 @@ class SearchPage extends React.Component {
 
     this.props.history.push(location);
     this.props.fetchSearch();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ( this.props.location.search !== nextProps.location.search ) {
+      this.props.fetchSearch()
+    }
   }
 
   getSearchParams() {
@@ -77,12 +82,12 @@ class SearchPage extends React.Component {
           loading={this.props.loading}
           currentPage={this.props.selectedAggs.page ? parseInt(this.props.selectedAggs.page) : 1}
           size={this.props.selectedAggs.size ? parseInt(this.props.selectedAggs.size) : 10}
-          total={total}
+          total={total || 0}
           onPageChange={this._changePage}
           onPageSizeChange={this._changePageSize}
         />
       );
-      results = (<SearchResults results={_results.hits.hits} />);
+      results = (<SearchResults results={_results.hits.hits || []} />);
     }
 
     return (
@@ -99,13 +104,11 @@ class SearchPage extends React.Component {
 
 SearchPage.propTypes = {
   loading: PropTypes.bool.isRequired,
-  total: PropTypes.number.isRequired,
-  size: PropTypes.number.isRequired,
   fetchSearch: PropTypes.func,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  selectedAggs: PropTypes.object.isRequired,
-  results: PropTypes.object.isRequired,
+  selectedAggs: PropTypes.array.isRequired,
+  results: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state) {

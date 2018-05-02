@@ -17,11 +17,6 @@ export default class SearchUtils extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.props.total;
-    this.props.size;
-  }
-
   componentWillUnmount() {}
 
   _onPageChange(page) {
@@ -65,14 +60,6 @@ export default class SearchUtils extends React.Component {
           <Button
             onClick={this._onNextPage.bind(this, num_pages)}
             icon={<NextIcon/>}/>
-        </Box>
-        <Box pad={{horizontal: "small"}} direction="row">
-          {this.props.loading ? <Spinning pad="small" size="small"/> : null}
-          <Sort options={[]}
-            value="name"
-            direction="asc"
-            onChange={()=>{ return ""; }}
-            />
         </Box>
       </Box>
     );

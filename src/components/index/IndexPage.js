@@ -1,45 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router';
+import {Switch, Route} from 'react-router-dom';
 
 import Box from 'grommet/components/Box';
 import Heading from 'grommet/components/Heading';
 import Section from 'grommet/components/Section';
+
+import SearchPage from '../search/SearchPage';
+import DepositPage from '../deposit/DepositPage';
+import PublishedItem from '../published/PublishedItem';
+import DraftsItem from '../drafts/DraftsItem';
+import AboutPage from '../about/AboutPage';
+import Header from '../partials/Header';
+import CreateIndex from '../create/CreateIndex';
 
 class IndexPage extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  componentWillMount() {
+    console.log("IndexPage::componentWillMount::", this.props)
+    if (!this.props.isLoggedIn) {
+      this.props.history.push({
+        pathname: '/login',
+        from: this.props.match.path
+      });
+    }
+  }
+
+  componentWillUpdate(nextProps) {
+    console.log("IndexPage::componentWillUpdate::", this.props, nextProps)
+    if (!nextProps.isLoggedIn) {
+      this.props.history.push('/login');
+    }
+  }
+
   render() {
+    console.log("IndexPage::componentWillUpdate::", this.props)
     return (
       <Box flex={true}>
-        <Box flex={true} colorIndex="neutral-1-a" justify="center" align="center">
-          <Section>
-            <Box size="large">
-              {
-                this.props.currentUser ?
-                <Heading tag="h2"> Hello, {this.props.currentUser.get('email')}</Heading> :
-                null
-              }
-            </Box>
-          </Section>
-        </Box>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={AboutPage} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/published/:id" component={PublishedItem} />
+          <Route path="/drafts/:id" component={DraftsItem} />
+          <Route path="/create" component={CreateIndex}/>
+        </Switch>
       </Box>
     );
   }
 }
 
-IndexPage.propTypes = {
-  currentUser: PropTypes.object.isRequired
-};
-
 function mapStateToProps(state) {
   return {
-    currentUser: state.auth.getIn(['currentUser', 'profile'])
+    isLoggedIn: state.auth.get('isLoggedIn')
   };
 }
 
-export default connect(
-  mapStateToProps
-)(IndexPage);
+export default withRouter(connect(mapStateToProps)(IndexPage));

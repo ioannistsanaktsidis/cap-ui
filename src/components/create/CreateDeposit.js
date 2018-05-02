@@ -15,7 +15,7 @@ import CMSAnalysisUISchema from '../deposit/uiSchemas/cms-analysis';
 import testUISchema from '../deposit/uiSchemas/testSchema';
 
 let uiSchemas = {
-  cms_analysis: CMSAnalysisUISchema,
+  "cms-analysis": CMSAnalysisUISchema,
 };
 
 const transformSchema = (schema) => {
@@ -28,7 +28,8 @@ const transformSchema = (schema) => {
     "$ana_type",
     "$schema",
     "general_title",
-    "_experiment"
+    "_experiment",
+    "control_number"
   ];
 
   schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
@@ -41,14 +42,15 @@ const transformSchema = (schema) => {
 export class CreateDeposit extends React.Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
       formData: {},
     };
   }
-  
+
   componentDidMount() {
-    this.props.fetchSchema(this.props.schema);
+    if (this.props.match.params.schema_id)
+      this.props.fetchSchema(this.props.match.params.schema_id);
   }
 
   _saveData() {
@@ -58,25 +60,25 @@ export class CreateDeposit extends React.Component {
   }
 
   render() {
-    let _schema = this.props.payload && this.props.payload.json ? transformSchema(this.props.payload.json) : null;
+    let _schema = transformSchema(this.props.payload);
     let schemaName =  this.props.schema;
-    let uiSchema = (schemaName) => {return uiSchemas[schemaName.replace(/-/g, '_')] ?  uiSchemas[schemaName.replace(/-/g, '_')] : {}};
+    console.log("--------save-----------::", _schema, schemaName);
     return (
       <Box id="deposit-page" basis="full" flex={true}>
         <DepositHeader saveData={this._saveData.bind(this)}/>
           <Box direction="row" flex={true} wrap={false}>
           {
-            this.props.payload && this.props.payload.json?
+            this.props.payload ?
             <DepositForm
               formData={this.state.formData}
               schema={_schema}
-              uiSchema={uiSchema(schemaName)}
+              uiSchema={uiSchemas[schemaName] || {}}
               onChange={(change) => {
                 console.log("CHANGE::",change);
                 this.setState({formData: change.formData});
               }}
-            /> : null  
-          }          
+            /> : null
+          }
           </Box>
       </Box>
     );

@@ -64,7 +64,7 @@ export default function depositReducer(state = initialState, action) {
     case FETCH_SCHEMA_SUCCESS:
       return state
               .set('loading', false)
-              .set('payload', action.payload)
+              .set('payload', action.schema)
     case FETCH_SCHEMA_ERROR:
       return state
               .set('loading', false)

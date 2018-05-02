@@ -16,6 +16,11 @@ export default function (ComposedComponent) {
       }
     }
 
+    shouldComponentUpdate(nextProps) {
+      if (this.props.isLoggedIn === nextProps.isLoggedIn)
+        return false;
+    }
+
     PropTypes = {
       router: PropTypes.object,
     }

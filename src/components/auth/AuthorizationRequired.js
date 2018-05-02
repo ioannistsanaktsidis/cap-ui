@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Box from 'grommet/components/Box';
-import AppHeader from '../partials/Header';
+import {withRouter} from 'react-router';
 
 export default (ComposedComponent, header=false) => {
   class Authentication extends Component {
@@ -28,11 +28,11 @@ export default (ComposedComponent, header=false) => {
     render() {
       let cc = <ComposedComponent {...this.props} />;
 
-      return header ?
+      return (
         <Box flex={true}>
-          <AppHeader />
           {cc}
-        </Box> : cc;
+        </Box>
+      );
     }
   }
 

@@ -102,10 +102,12 @@ export const fetchSchemaBegin = () => ({
   type: FETCH_SCHEMA_BEGIN
 });
 
-export const fetchSchemaSuccess = payload => ({
-  type: FETCH_SCHEMA_SUCCESS,
-  payload
-});
+export function fetchSchemaSuccess (schema) {
+  return {
+    type: FETCH_SCHEMA_SUCCESS,
+    schema
+  }
+};
 
 export const fetchSchemaError = error => ({
   type: FETCH_SCHEMA_ERROR,
@@ -135,24 +137,12 @@ export function updateFormData(data) {
 
 export function fetchSchema(schema) {
   return dispatch => {
+    const URL = "/api/schemas/deposits/records/" + schema + "-v0.0.1.json";
     dispatch(fetchSchemaBegin());
-      return getSchema(schema)
-        .then(([response, json]) =>{
-          if(response.status === 200){
-            dispatch(fetchSchemaSuccess({json}))
-          }
-          else{
-            dispatch(fetchSchemaError())
-          }
-    })
-
+    axios.get(URL)
+      .then((response) => dispatch(fetchSchemaSuccess(response.data)) )
+      .catch((error) => dispatch(fetchSchemaError()) )
   };
-}
-
-function getSchema(schema) {
-  const URL = "/api/schemas/deposits/records/" + schema + "-v0.0.1.json";
-  return fetch(URL, { method: 'GET'})
-     .then( response => Promise.all([response, response.json()]));
 }
 
 export function startDeposit(schema, initialData=null) {
