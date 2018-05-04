@@ -7,12 +7,6 @@ import {connect} from 'react-redux';
 
 import Box from 'grommet/components/Box';
 
-import CMSAnalysisUISchema from '../deposit/uiSchemas/cms-analysis';
-import testUISchema from '../deposit/uiSchemas/testSchema';
-
-import CMSAnalysisSchema from '../deposit/schemas/cms-analysis';
-import testSchema from '../deposit/schemas/testSchema';
-
 import AvailableDeposits from './AvailableDeposits';
 import CreateDeposit from './CreateDeposit';
 import {Switch, Route} from 'react-router-dom';

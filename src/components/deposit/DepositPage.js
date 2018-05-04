@@ -12,20 +12,11 @@ import DepositHeader from './components/DepositHeader';
 import DepositPreviewer from './components/DepositPreviewer';
 import DepositForm from './form/Form';
 
-import CMSAnalysisUISchema from './uiSchemas/cms-analysis';
-import testUISchema from './uiSchemas/testSchema';
-
-import CMSAnalysisSchema from './schemas/cms-analysis';
-import testSchema from './schemas/testSchema';
-
 import {startDeposit} from '../../actions/drafts';
 
 let schemas = {};
 
-let uiSchemas = {
-  CMSAnalysisSchema: CMSAnalysisUISchema,
-  testSchema: testUISchema,
-};
+let uiSchemas = {};
 
 const transformSchema = (schema) => {
   const schemaFieldsToRemove = [
