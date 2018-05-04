@@ -24,7 +24,6 @@ import {
 const initialState = Map({
   schema: null,
   schemaToFetch: null,
-  uiSchema: Map(),
   data: {},
   selectedSchema: null,
   fileManagerActiveLayer: false,
@@ -40,7 +39,7 @@ const initialState = Map({
     error: null,
     links: null
   }),
-  payload: {}
+  payload: null
 });
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
 // State is considered immutable. Instead,

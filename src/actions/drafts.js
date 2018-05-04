@@ -10,6 +10,7 @@ export const TOGGLE_VALIDATE = 'TOGGLE_VALIDATE';
 export const FETCH_SCHEMA_REQUEST = 'FETCH_SCHEMA_REQUEST';
 export const FETCH_SCHEMA_SUCCESS = 'FETCH_SCHEMA_SUCCESS';
 export const FETCH_SCHEMA_ERROR = 'FETCH_SCHEMA_ERROR';
+
 export const SELECT_SCHEMA = 'SELECT_SCHEMA';
 export const CHANGE_SCHEMA = 'CHANGE_SCHEMA';
 export const UPDATE_FORM_DATA = 'UPDATE_FORM_DATA';
@@ -21,8 +22,6 @@ export const DRAFTS_ERROR = 'DRAFTS_ERROR';
 export const DRAFTS_ITEM_REQUEST = 'DRAFTS_ITEM_REQUEST';
 export const DRAFTS_ITEM_SUCCESS = 'DRAFTS_ITEM_SUCCESS';
 export const DRAFTS_ITEM_ERROR = 'DRAFTS_ITEM_ERROR';
-
-
 
 export const CREATE_DRAFT_REQUEST = 'CREATE_DRAFT_REQUEST';
 export const CREATE_DRAFT_SUCCESS = 'CREATE_DRAFT_SUCCESS';
@@ -165,11 +164,24 @@ export function createDraftError(error) {
 
 export function fetchSchema(schema) {
   return dispatch => {
-    const URL = "/api/schemas/deposits/records/" + schema + "-v0.0.1.json";
+    let schemaUrl = "/api/schemas/deposits/records/" + schema + "-v0.0.1.json";
+    let uiSchemaUrl =  "/api/schemas/options/deposits/records/" + schema + "-v0.0.1.json";
     dispatch(fetchSchemaRequest());
-    axios.get(URL)
-      .then((response) => dispatch(fetchSchemaSuccess(response.data)) )
-      .catch((error) => dispatch(fetchSchemaError()) )
+    axios.get(schemaUrl)
+      .then(function(response) {
+          let schema = response.data;
+          axios.get(uiSchemaUrl)
+            .then(function(response) {
+              let uiSchema = response.data;
+              dispatch(fetchSchemaSuccess({schema:schema, uiSchema:uiSchema})); 
+            })
+            .catch(function(error) {
+              dispatch(fetchSchemaError()); 
+            })
+        })
+      .catch(function(error) {
+        dispatch(fetchSchemaError()); 
+      })
   };
 }
 
@@ -188,13 +200,22 @@ export function createDraft(data, schema) {
     data['$schema'] = `https://analysispreservation.cern.ch/schemas/deposits/records/${schema}-v0.0.1.json`;
     
     let uri = '/api/deposits/';
+
     axios.post(uri, data)
       .then(function(response){
-        dispatch(createDraftSuccess(response.data))
+        let  l = response.data.links.self.split('/');
+        let id = l[l.length - 1];
+        axios.put(uri + id, response.data.metadata)
+          .then(function(response){
+            dispatch(createDraftSuccess(response.data));
+          })
+          .catch(function(error) {
+            dispatch(createDraftError(error));
+          });
       })
       .catch(function(error) {
-        dispatch(createDraftError(error.response.data));
-      })
+        dispatch(createDraftError(error));
+      });
   };
 }
 
@@ -209,7 +230,7 @@ export function getDraftsItem(id) {
         dispatch(draftsItemSuccess(response.data));
       })
       .catch(function (error) {
-        dispatch(draftsItemError(error.response.data));
+        dispatch(draftsItemError(error));
       });
   };
 }

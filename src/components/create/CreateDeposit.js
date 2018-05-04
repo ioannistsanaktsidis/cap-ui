@@ -7,16 +7,9 @@ import {Box, Heading, Tiles, Tile, Paragraph} from 'grommet';
 
 import _isEqual from 'lodash/isEqual';
 
-import {startDeposit, fetchSchema, createDraft} from '../../actions/drafts';
+import {fetchSchema, createDraft} from '../../actions/drafts';
 import DepositForm from '../deposit/form/Form';
 import DepositHeader from '../deposit/components/DepositHeader';
-
-import CMSAnalysisUISchema from '../deposit/uiSchemas/cms-analysis';
-import testUISchema from '../deposit/uiSchemas/testSchema';
-
-let uiSchemas = {
-  "cms-analysis": CMSAnalysisUISchema,
-};
 
 const transformSchema = (schema) => {
   const schemaFieldsToRemove = [
@@ -34,7 +27,6 @@ const transformSchema = (schema) => {
 
   schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
   schema = { type: schema.type, properties: schema.properties };
-
   return schema;
 };
 
@@ -54,11 +46,12 @@ export class CreateDeposit extends React.Component {
   }
 
   _saveData() {
-    this.props.createDraft(this.state.formData, this.props.schema);
+    if (this.props.match.params.schema_id)
+      this.props.createDraft(this.state.formData, this.props.match.params.schema_id);
   }
 
   render() {
-    let _schema = transformSchema(this.props.payload);
+    let _schema = this.props.payload ? transformSchema(this.props.payload.schema):null;
     let schemaName =  this.props.schema;
     return (
       <Box id="deposit-page" basis="full" flex={true}>
@@ -69,7 +62,7 @@ export class CreateDeposit extends React.Component {
             <DepositForm
               formData={this.state.formData}
               schema={_schema}
-              uiSchema={uiSchemas[schemaName] || {}}
+              uiSchema={this.props.payload.uiSchema}
               onChange={(change) => {
                 console.log("CHANGE::",change);
                 this.setState({formData: change.formData});
@@ -87,6 +80,7 @@ CreateDeposit.propTypes = {};
 function mapStateToProps(state) {
   return {
     schema: state.drafts.get('schemaToFetch'),
+    uiSchema: state.drafts.get('uiSchema'),
     payload: state.drafts.get('payload')
   };
 }
