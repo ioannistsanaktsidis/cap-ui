@@ -7,7 +7,7 @@ export const TOGGLE_LIVE_VALIDATE = 'TOGGLE_LIVE_VALIDATE';
 export const TOGGLE_CUSTOM_VALIDATION = 'TOGGLE_CUSTOM_VALIDATION';
 export const TOGGLE_VALIDATE = 'TOGGLE_VALIDATE';
 
-export const FETCH_SCHEMA_BEGIN = 'FETCH_SCHEMA_BEGIN';
+export const FETCH_SCHEMA_REQUEST = 'FETCH_SCHEMA_REQUEST';
 export const FETCH_SCHEMA_SUCCESS = 'FETCH_SCHEMA_SUCCESS';
 export const FETCH_SCHEMA_ERROR = 'FETCH_SCHEMA_ERROR';
 export const SELECT_SCHEMA = 'SELECT_SCHEMA';
@@ -21,6 +21,12 @@ export const DRAFTS_ERROR = 'DRAFTS_ERROR';
 export const DRAFTS_ITEM_REQUEST = 'DRAFTS_ITEM_REQUEST';
 export const DRAFTS_ITEM_SUCCESS = 'DRAFTS_ITEM_SUCCESS';
 export const DRAFTS_ITEM_ERROR = 'DRAFTS_ITEM_ERROR';
+
+
+
+export const CREATE_DRAFT_REQUEST = 'CREATE_DRAFT_REQUEST';
+export const CREATE_DRAFT_SUCCESS = 'CREATE_DRAFT_SUCCESS';
+export const CREATE_DRAFT_ERROR = 'CREATE_DRAFT_ERROR';
 
 export function draftsRequest(){
   return {
@@ -98,9 +104,11 @@ export function toggleValidate() {
   };
 }
 
-export const fetchSchemaBegin = () => ({
-  type: FETCH_SCHEMA_BEGIN
-});
+export function fetchSchemaRequest() {
+  return {
+    type: FETCH_SCHEMA_REQUEST
+  }
+};
 
 export function fetchSchemaSuccess (schema) {
   return {
@@ -109,10 +117,10 @@ export function fetchSchemaSuccess (schema) {
   }
 };
 
-export const fetchSchemaError = error => ({
+export function fetchSchemaError(error) {
   type: FETCH_SCHEMA_ERROR,
   error
-});
+};
 
 export function selectSchema(schemaToFetch) {
   return {
@@ -135,10 +143,30 @@ export function updateFormData(data) {
   };
 }
 
+export function createDraftRequest() {
+  return {
+    type: CREATE_DRAFT_REQUEST
+  }
+}
+
+export function createDraftSuccess(draft) {
+  return {
+    type: CREATE_DRAFT_SUCCESS,
+    draft
+  }
+}
+
+export function createDraftError(error) {
+  return {
+    type: CREATE_DRAFT_ERROR,
+    error
+  }
+}
+
 export function fetchSchema(schema) {
   return dispatch => {
     const URL = "/api/schemas/deposits/records/" + schema + "-v0.0.1.json";
-    dispatch(fetchSchemaBegin());
+    dispatch(fetchSchemaRequest());
     axios.get(URL)
       .then((response) => dispatch(fetchSchemaSuccess(response.data)) )
       .catch((error) => dispatch(fetchSchemaError()) )
@@ -151,6 +179,22 @@ export function startDeposit(schema, initialData=null) {
     else dispatch(updateFormData({}));
 
     dispatch(changeSchema(schema));
+  };
+}
+
+export function createDraft(data, schema) {
+  return dispatch => {
+    dispatch(createDraftRequest());
+    data['$schema'] = `https://analysispreservation.cern.ch/schemas/deposits/records/${schema}-v0.0.1.json`;
+    
+    let uri = '/api/deposits/';
+    axios.post(uri, data)
+      .then(function(response){
+        dispatch(createDraftSuccess(response.data))
+      })
+      .catch(function(error) {
+        dispatch(createDraftError(error.response.data));
+      })
   };
 }
 

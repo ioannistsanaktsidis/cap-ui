@@ -7,7 +7,7 @@ import {
   TOGGLE_CUSTOM_VALIDATION,
   TOGGLE_VALIDATE,
   TOGGLE_SIDEBAR,
-  FETCH_SCHEMA_BEGIN,
+  FETCH_SCHEMA_REQUEST,
   FETCH_SCHEMA_SUCCESS,
   FETCH_SCHEMA_ERROR,
   CHANGE_SCHEMA,
@@ -16,6 +16,9 @@ import {
   DRAFTS_ITEM_REQUEST,
   DRAFTS_ITEM_SUCCESS,
   DRAFTS_ITEM_ERROR,
+  CREATE_DRAFT_REQUEST,
+  CREATE_DRAFT_SUCCESS,
+  CREATE_DRAFT_ERROR
 } from '../actions/drafts';
 
 const initialState = Map({
@@ -34,7 +37,8 @@ const initialState = Map({
     id: null,
     data: null,
     loading: false,
-    error: null
+    error: null,
+    links: null
   }),
   payload: {}
 });
@@ -57,7 +61,7 @@ export default function depositReducer(state = initialState, action) {
       return state.set('customValidation', !state.get('customValidation'));
     case TOGGLE_VALIDATE:
       return state.set('validate', !state.get('validate'));
-    case FETCH_SCHEMA_BEGIN:
+    case FETCH_SCHEMA_REQUEST:
       return state
               .set('loading', true)
               .set('error', null)
@@ -88,6 +92,23 @@ export default function depositReducer(state = initialState, action) {
               .setIn(['current_item', 'loading'], false)
               .setIn(['current_item', 'data'], action.draft);
     case DRAFTS_ITEM_ERROR:
+      return state
+              .setIn(['current_item', 'loading'], false)
+              .setIn(['current_item', 'error'], action.error);
+    case CREATE_DRAFT_REQUEST:
+      return state
+              .setIn(['current_item', 'loading'], true)
+              .setIn(['current_item', 'error'], null);
+    case CREATE_DRAFT_SUCCESS:
+      let  l = action.draft.links.self.split('/');
+      let id = l[l.length - 1];
+      return state
+              .setIn(['current_item', 'loading'], false)
+              .setIn(['current_item', 'error'], null)
+              .setIn(['current_item', 'id'], id)
+              .setIn(['current_item', 'data'], action.draft)
+              .setIn(['current_item', 'links'], action.draft.links);
+    case CREATE_DRAFT_ERROR:
       return state
               .setIn(['current_item', 'loading'], false)
               .setIn(['current_item', 'error'], action.error);

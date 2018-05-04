@@ -7,7 +7,7 @@ import {Box, Heading, Tiles, Tile, Paragraph} from 'grommet';
 
 import _isEqual from 'lodash/isEqual';
 
-import {startDeposit, fetchSchema} from '../../actions/drafts';
+import {startDeposit, fetchSchema, createDraft} from '../../actions/drafts';
 import DepositForm from '../deposit/form/Form';
 import DepositHeader from '../deposit/components/DepositHeader';
 
@@ -54,15 +54,12 @@ export class CreateDeposit extends React.Component {
   }
 
   _saveData() {
-    console.log("--------_saveData-----------");
-    console.log(this.state.formData);
-    console.log("--------_saveData-----------");
+    this.props.createDraft(this.state.formData, this.props.schema);
   }
 
   render() {
     let _schema = transformSchema(this.props.payload);
     let schemaName =  this.props.schema;
-    console.log("--------save-----------::", _schema, schemaName);
     return (
       <Box id="deposit-page" basis="full" flex={true}>
         <DepositHeader saveData={this._saveData.bind(this)}/>
@@ -97,7 +94,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchSchema: (schema) => dispatch(fetchSchema(schema)),
-    startDeposit: (schema, data) => dispatch(startDeposit(schema, data)),
+    createDraft: (data, schema) => dispatch(createDraft(data, schema))
   };
 }
 
