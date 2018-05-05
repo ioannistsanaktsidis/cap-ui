@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import FormField from 'grommet/components/FormField';
 
 let FieldTemplate = function (props) {
-  const {id, label, description, rawErrors=[], children} = props;
+  const {id, label, rawDescription, rawErrors=[], children} = props;
   let _errors = null;
 
   if (rawErrors.length > 0)
@@ -18,8 +18,8 @@ let FieldTemplate = function (props) {
 
   return (
     <FormField
-      help={description ? description : null}
-      label={label}
+      help={rawDescription ? rawDescription : null}
+      label={label ? label : null }
       key={id+label}
       error={_errors}>
       {children}

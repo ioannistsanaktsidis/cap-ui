@@ -1,4 +1,4 @@
-import {Map, fromJS} from 'immutable';
+import {Map, List, fromJS} from 'immutable';
 
 import {
   AUTHENTICATED,
@@ -7,7 +7,14 @@ import {
   LOGIN_SUCCESS,
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
-  LOGIN_ERROR
+  LOGIN_ERROR,
+
+  API_KEY_LIST_SUCCESS,
+  API_KEY_LIST_ERROR,
+  CREATE_TOKEN_SUCCESS,
+  CREATE_TOKEN_ERROR,
+  REVOKE_TOKEN_SUCCESS,
+  REVOKE_TOKEN_ERROR
 } from '../actions/auth';
 
 const initialState = Map({
@@ -15,7 +22,8 @@ const initialState = Map({
   currentUser: Map({}),
   token: localStorage.getItem('token'),
   error: null,
-  loading: false
+  loading: false,
+  tokens: List()
 });
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
 // State is considered immutable. Instead,
@@ -44,7 +52,21 @@ export default function authReducer(state = initialState, action) {
               .set('loading', false);
     case LOGIN_ERROR:
       return state;
-
+    case API_KEY_LIST_SUCCESS:
+      return state
+                .set('tokens', List(action.applications.tokens))
+    case API_KEY_LIST_ERROR:
+    case CREATE_TOKEN_SUCCESS:
+      return state
+                .setIn(['tokens', action.token.t_id], action.token)
+    case CREATE_TOKEN_ERROR:
+      return state
+                .setIn(['tokens', 'error'], action.error)
+    case REVOKE_TOKEN_SUCCESS:
+      return state
+                .deleteIn(['tokens', action.token])
+    // case REVOKE_TOKEN_ERROR:
+    //   return state
     default:
       return state;
   }

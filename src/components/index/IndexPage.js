@@ -15,6 +15,7 @@ import DraftsItem from '../drafts/DraftsItem';
 import AboutPage from '../about/AboutPage';
 import Header from '../partials/Header';
 import CreateIndex from '../create/CreateIndex';
+import SettingsIndex from '../settings/SettingsIndex';
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class IndexPage extends React.Component {
           <Route path="/published/:id" component={PublishedItem} />
           <Route path="/drafts/:id" component={DraftsItem} />
           <Route path="/create" component={CreateIndex}/>
+          <Route path="/settings" component={SettingsIndex}/>
         </Switch>
       </Box>
     );

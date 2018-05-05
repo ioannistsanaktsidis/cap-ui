@@ -47,6 +47,10 @@ class Header extends React.Component {
                 label="Logout"
                 animateIcon={true}
                 onClick={this.props.logout} />
+              <Anchor
+                label="Settings"
+                animateIcon={true}
+                path="/settings" />
             </Menu>
           </Menu>
         </Box>
