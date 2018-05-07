@@ -28,40 +28,6 @@ import prettyBytes from 'pretty-bytes';
 class DepositFilesList extends React.Component {
   constructor(props) {
     super(props);
-
-    this.files2 = [];
-    this.files = [
-      {
-        filename: "my_repo.tar",
-        uri: "",
-        type: "archive",
-        size: "1234"
-      },
-      {
-        filename: "config.json",
-        uri: "",
-        type: "configuration",
-        size: "4321"
-      },
-      {
-        filename: "ntuple_NNN_MMM.dat",
-        uri: "",
-        type: "dataset",
-        size: "5678"
-      },
-      {
-        filename: "ANA_NOTE_MMM_123.pdf",
-        uri: "",
-        type: "publication",
-        size: "5678"
-      },
-      {
-        filename: "result.jpg",
-        uri: "",
-        type: "ploot",
-        size: "5678"
-      }
-    ];
   }
 
   _getIcon(type) {
@@ -77,24 +43,35 @@ class DepositFilesList extends React.Component {
   }
 
   render() {
+    const filesEmptyMessage =
+      this.props.draftId ?
+      "No files attached.." :
+      "No files attached..This project has not yet been initiated. Please save or attach a file";
+
     return (
+      <span>
+      <FileManager
+        item_id={this.props.item_id}
+        files={this.props.files}
+        bucket={this.props.bucket}
+        activeLayer={this.props.fileManagerLayerActive}
+        key="_file_manager"/>
       <List basis="full" flex="true">
-        {[
-          <FileManager
-            activeLayer={this.props.fileManagerLayerActive}
-             key="_file_manager"/>,
-          this.files.length > 0 ?
-          this.files.map(file => (
-            <ListItem key={file.filename} justify="between" pad="none"  flex={true} >
+        {
+          this.props.files ?
+          this.props.files.keySeq().toArray().map((filename) => {
+            let file = this.props.files.get(filename)
+            return (
+            <ListItem key={file.key} justify="between" pad="none"  flex={true} >
               <Box direction="row" flex={true} justify="between">
                 <Box  direction="row" flex={true}>
                   <Box justify="center" margin={{horizontal: "small"}}>
-                    {this._getIcon(file.type)}
+                    {<PieChartIcon type="status" size="xsmall"/> || this._getIcon(file.type)}
                   </Box>
                   <Box justify="center" margin={{right: "small"}}>
-                    <Label justify="center" margin="none" size="small" truncate={true}> {file.filename}</Label>
+                    <Label justify="center" margin="none" size="small" truncate={true}> {file.key}</Label>
                   </Box>
-                  <Box  justify="center" margin={{right: "small"}}>{prettyBytes(parseInt(file.size))}</Box>
+                  <Box  justify="center" margin={{right: "small"}}>{prettyBytes(parseInt(file.size || "0"))}</Box>
                 </Box>
 
                 <Menu
@@ -112,14 +89,15 @@ class DepositFilesList extends React.Component {
                 </Menu>
               </Box>
             </ListItem>
-          )) :
+            );
+          }) :
           <ListPlaceholder
-            addControl={<Button icon={<AddIcon />} />}
-            emptyMessage="No files have been attached to this deposit."
+            emptyMessage={filesEmptyMessage}
             unfilteredTotal={0}/>
-        ]}
+        }
 
       </List>
+      </span>
     );
   }
 }

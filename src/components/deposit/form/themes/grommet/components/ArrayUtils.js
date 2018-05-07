@@ -32,9 +32,9 @@ let ArrayUtils = function (props) {
 };
 
 ArrayUtils.propTypes = {
-  hasRemove: PropTypes.boolean,
-  hasMoveDown: PropTypes.boolean,
-  hasMoveUp: PropTypes.boolean,
+  hasRemove: PropTypes.bool,
+  hasMoveDown: PropTypes.bool,
+  hasMoveUp: PropTypes.bool,
   onDropIndexClick: PropTypes.func,
   onReorderClick: PropTypes.func,
   index: PropTypes.string,

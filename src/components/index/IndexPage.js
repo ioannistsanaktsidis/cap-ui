@@ -11,11 +11,11 @@ import Section from 'grommet/components/Section';
 import SearchPage from '../search/SearchPage';
 import DepositPage from '../deposit/DepositPage';
 import PublishedItem from '../published/PublishedItem';
-import DraftsItem from '../drafts/DraftsItem';
 import AboutPage from '../about/AboutPage';
 import Header from '../partials/Header';
 import CreateIndex from '../create/CreateIndex';
 import SettingsIndex from '../settings/SettingsIndex';
+import DraftsIndex from '../drafts/DraftsIndex';
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -23,7 +23,6 @@ class IndexPage extends React.Component {
   }
 
   componentWillMount() {
-    console.log("IndexPage::componentWillMount::", this.props)
     if (!this.props.isLoggedIn) {
       this.props.history.push({
         pathname: '/login',
@@ -33,14 +32,12 @@ class IndexPage extends React.Component {
   }
 
   componentWillUpdate(nextProps) {
-    console.log("IndexPage::componentWillUpdate::", this.props, nextProps)
     if (!nextProps.isLoggedIn) {
       this.props.history.push('/login');
     }
   }
 
   render() {
-    console.log("IndexPage::componentWillUpdate::", this.props)
     return (
       <Box flex={true}>
         <Header />
@@ -48,7 +45,7 @@ class IndexPage extends React.Component {
           <Route exact path="/" component={AboutPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/published/:id" component={PublishedItem} />
-          <Route path="/drafts/:id" component={DraftsItem} />
+          <Route path="/drafts" component={DraftsIndex} />
           <Route path="/create" component={CreateIndex}/>
           <Route path="/settings" component={SettingsIndex}/>
         </Switch>

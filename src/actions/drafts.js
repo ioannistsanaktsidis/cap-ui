@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { replace } from 'react-router-redux'
 
 export const TOGGLE_FILEMANAGER_LAYER = 'TOGGLE_FILEMANAGER_LAYER';
 export const TOGGLE_PREVIEWER = 'TOGGLE_PREVIEWER';
@@ -19,6 +20,12 @@ export const DRAFTS_REQUEST = 'DRAFTS_REQUEST';
 export const DRAFTS_SUCCESS = 'DRAFTS_SUCCESS';
 export const DRAFTS_ERROR = 'DRAFTS_ERROR';
 
+export const INIT_FORM = 'INIT_FORM';
+
+export const INIT_DRAFT_REQUEST = 'INIT_DRAFT_REQUEST';
+export const INIT_DRAFT_SUCCESS = 'INIT_DRAFT_SUCCESS';
+export const INIT_DRAFT_ERROR = 'INIT_DRAFT_ERROR';
+
 export const DRAFTS_ITEM_REQUEST = 'DRAFTS_ITEM_REQUEST';
 export const DRAFTS_ITEM_SUCCESS = 'DRAFTS_ITEM_SUCCESS';
 export const DRAFTS_ITEM_ERROR = 'DRAFTS_ITEM_ERROR';
@@ -27,81 +34,44 @@ export const CREATE_DRAFT_REQUEST = 'CREATE_DRAFT_REQUEST';
 export const CREATE_DRAFT_SUCCESS = 'CREATE_DRAFT_SUCCESS';
 export const CREATE_DRAFT_ERROR = 'CREATE_DRAFT_ERROR';
 
-export function draftsRequest(){
-  return {
-    type: DRAFTS_REQUEST
-  };
-}
+export const BUCKET_ITEM_REQUEST = 'BUCKET_ITEM_REQUEST';
+export const BUCKET_ITEM_SUCCESS = 'BUCKET_ITEM_SUCCESS';
+export const BUCKET_ITEM_ERROR = 'BUCKET_ITEM_ERROR';
 
-export function draftsSuccess(drafts) {
-  return {
-    type: DRAFTS_SUCCESS,
-    drafts
-  };
-}
+export const UPLOAD_FILE_REQUEST = 'UPLOAD_FILE_REQUEST';
+export const UPLOAD_FILE_SUCCESS = 'UPLOAD_FILE_SUCCESS';
+export const UPLOAD_FILE_ERROR = 'UPLOAD_FILE_ERROR';
 
-export function draftsError(error) {
-  return {
-    type: DRAFTS_ERROR,
-    error
-  };
-}
+export function draftsRequest(){ return { type: DRAFTS_REQUEST }; }
+export function draftsSuccess(drafts) { return { type: DRAFTS_SUCCESS, drafts }; }
+export function draftsError(error) { return { type: DRAFTS_ERROR, error }; }
 
-export function draftsItemRequest(){
-  return {
-    type: DRAFTS_ITEM_REQUEST
-  };
-}
+export function initDraftRequest(){ return { type: INIT_DRAFT_REQUEST }; }
+export function initDraftSuccess(draft_id, draft) { return { type: INIT_DRAFT_SUCCESS, draft_id, draft }; }
+export function initDraftError(error) { return { type: INIT_DRAFT_ERROR, error }; }
 
-export function draftsItemSuccess(draft) {
-  return {
-    type: DRAFTS_ITEM_SUCCESS,
-    draft
-  };
-}
+export function draftsItemRequest(){ return { type: DRAFTS_ITEM_REQUEST }; }
+export function draftsItemSuccess(draft_id, draft) { return { type: DRAFTS_ITEM_SUCCESS, draft_id, draft }; }
+export function draftsItemError(error) { return { type: DRAFTS_ITEM_ERROR, error }; }
 
-export function draftsItemError(error) {
-  return {
-    type: DRAFTS_ITEM_ERROR,
-    error
-  };
-}
+export function bucketItemRequest(){ return { type: BUCKET_ITEM_REQUEST }; }
+export function bucketItemSuccess(bucket_id, bucket) { return { type: BUCKET_ITEM_SUCCESS, bucket_id, bucket }; }
+export function bucketItemError(error) { return { type: BUCKET_ITEM_ERROR, error }; }
 
-export function toggleFilemanagerLayer() {
-  return {
-    type: TOGGLE_FILEMANAGER_LAYER
-  };
-}
+export function uploadFileRequest(filename){ return { type: UPLOAD_FILE_REQUEST, filename }; }
+export function uploadFileSuccess(filename, data) { return { type: UPLOAD_FILE_SUCCESS, filename, data }; }
+export function uploadFileError(filename, error) { return { type: UPLOAD_FILE_ERROR, error }; }
 
-export function togglePreviewer() {
-  return {
-    type: TOGGLE_PREVIEWER
-  };
-}
 
-export function toggleSidebar() {
-  return {
-    type: TOGGLE_SIDEBAR
-  };
-}
+export function toggleFilemanagerLayer() { return { type: TOGGLE_FILEMANAGER_LAYER }; }
 
-export function toggleLiveValidate() {
-  return {
-    type: TOGGLE_LIVE_VALIDATE
-  };
-}
+export function initForm() { return { type: INIT_FORM }; }
 
-export function toggleCustomValidation() {
-  return {
-    type: TOGGLE_CUSTOM_VALIDATION
-  };
-}
-
-export function toggleValidate() {
-  return {
-    type: TOGGLE_VALIDATE
-  };
-}
+export function togglePreviewer() { return { type: TOGGLE_PREVIEWER }; }
+export function toggleSidebar() { return { type: TOGGLE_SIDEBAR }; }
+export function toggleLiveValidate() { return { type: TOGGLE_LIVE_VALIDATE }; }
+export function toggleCustomValidation() { return { type: TOGGLE_CUSTOM_VALIDATION }; }
+export function toggleValidate() { return { type: TOGGLE_VALIDATE }; }
 
 export function fetchSchemaRequest() {
   return {
@@ -128,19 +98,8 @@ export function selectSchema(schemaToFetch) {
   }
 }
 
-export function changeSchema(newSchema) {
-  return {
-    type: CHANGE_SCHEMA,
-    schema: newSchema
-  };
-}
-
-export function updateFormData(data) {
-  return {
-    type: UPDATE_FORM_DATA,
-    schema: data
-  };
-}
+export function changeSchema(newSchema) { return { type: CHANGE_SCHEMA, schema: newSchema }; }
+export function updateFormData(data) { return { type: UPDATE_FORM_DATA, schema: data }; }
 
 export function createDraftRequest() {
   return {
@@ -148,9 +107,10 @@ export function createDraftRequest() {
   }
 }
 
-export function createDraftSuccess(draft) {
+export function createDraftSuccess(draft_id, draft) {
   return {
     type: CREATE_DRAFT_SUCCESS,
+    draft_id,
     draft
   }
 }
@@ -166,6 +126,7 @@ export function fetchSchema(schema) {
   return dispatch => {
     let schemaUrl = "/api/schemas/deposits/records/" + schema + "-v0.0.1.json";
     let uiSchemaUrl =  "/api/schemas/options/deposits/records/" + schema + "-v0.0.1.json";
+
     dispatch(fetchSchemaRequest());
     axios.get(schemaUrl)
       .then(function(response) {
@@ -173,15 +134,56 @@ export function fetchSchema(schema) {
           axios.get(uiSchemaUrl)
             .then(function(response) {
               let uiSchema = response.data;
-              dispatch(fetchSchemaSuccess({schema:schema, uiSchema:uiSchema})); 
+              dispatch(fetchSchemaSuccess({schema:schema, uiSchema:uiSchema}));
             })
             .catch(function(error) {
-              dispatch(fetchSchemaError()); 
+              dispatch(fetchSchemaError());
             })
         })
       .catch(function(error) {
-        dispatch(fetchSchemaError()); 
+        dispatch(fetchSchemaError());
       })
+  };
+}
+
+export function getSchema(schema) {
+  return dispatch => {
+    let schemaUrl = "/api/schemas/" + schema;
+    let uiSchemaUrl =  "/api/schemas/options/" + schema;
+
+    dispatch(fetchSchemaRequest());
+    axios.get(schemaUrl)
+      .then(function(response) {
+          let schema = response.data;
+          axios.get(uiSchemaUrl)
+            .then(function(response) {
+              let uiSchema = response.data;
+              dispatch(fetchSchemaSuccess({schema:schema, uiSchema:uiSchema}));
+            })
+            .catch(function(error) {
+              dispatch(fetchSchemaError());
+            })
+        })
+      .catch(function(error) {
+        dispatch(fetchSchemaError());
+      })
+  };
+}
+
+export function initDraft(schema, project_name) {
+  return function (dispatch) {
+    let data = {
+      "general_title": project_name,
+      "$schema": `https://analysispreservation.cern.ch/schemas/deposits/records/${schema}-v0.0.1.json`
+    };
+
+    axios.post('/api/deposits/', data)
+      .then((response) => {
+        const draft_id = response.data.links.self.split('/deposits/')[1];
+        dispatch(initDraftSuccess(draft_id, response.data));
+        dispatch(replace(`/drafts/${draft_id}`));
+      })
+      .catch((error) => dispatch(initDraftError(error)) )
   };
 }
 
@@ -198,16 +200,16 @@ export function createDraft(data, schema) {
   return dispatch => {
     dispatch(createDraftRequest());
     data['$schema'] = `https://analysispreservation.cern.ch/schemas/deposits/records/${schema}-v0.0.1.json`;
-    
+
     let uri = '/api/deposits/';
 
     axios.post(uri, data)
       .then(function(response){
         let  l = response.data.links.self.split('/');
-        let id = l[l.length - 1];
-        axios.put(uri + id, response.data.metadata)
+        let draft_id = l[l.length - 1];
+        axios.put(uri + draft_id, response.data.metadata)
           .then(function(response){
-            dispatch(createDraftSuccess(response.data));
+            dispatch(createDraftSuccess(draft_id, response.data));
           })
           .catch(function(error) {
             dispatch(createDraftError(error));
@@ -220,17 +222,101 @@ export function createDraft(data, schema) {
 }
 
 
-export function getDraftsItem(id) {
+export function getDraftById(draft_id, fetchSchema=false) {
   return function (dispatch) {
     dispatch(draftsItemRequest());
 
-    let uri = `/api/deposits/${id}`;
+    let uri = `/api/deposits/${draft_id}`;
     axios.get(uri)
       .then(function (response) {
-        dispatch(draftsItemSuccess(response.data));
+        let url;
+        if (fetchSchema && response.data.metadata.$schema) {
+          url = response.data.metadata.$schema;
+          url = url.split('cern.ch/schemas/')[1];
+          dispatch(getSchema(url))
+        }
+        dispatch(draftsItemSuccess(draft_id, response.data));
       })
       .catch(function (error) {
         dispatch(draftsItemError(error));
       });
   };
 }
+
+export function getBucketById(bucket_id) {
+  return function (dispatch) {
+    dispatch(bucketItemRequest());
+
+    let uri = `/api/files/${bucket_id}`;
+    axios.get(uri)
+      .then(function (response) {
+        dispatch(bucketItemSuccess(bucket_id, response.data));
+      })
+      .catch(function (error) {
+        dispatch(bucketItemError(error));
+      });
+  };
+}
+
+// Semi - working file upload
+export function uploadFile(bucket_link, file) {
+  return function (dispatch) {
+    dispatch(uploadFileRequest(file.name));
+    bucket_link = bucket_link.replace('http:', 'https:');
+    let uri = `${bucket_link}/${file.name}`;
+
+    let oReq = new XMLHttpRequest();
+    oReq.open("PUT", uri, true);
+    oReq.onload = function (oEvent) {
+      try {
+        let data = oEvent.target.response;
+        data = JSON.parse(data)
+        dispatch(uploadFileSuccess(file.name, data));
+      }
+      catch (err) {
+        dispatch(uploadFileError(file.name, err));
+      }
+    };
+
+    oReq.onreadystatechange = function() {//Call a function when the state changes.
+        if(oReq.readyState == XMLHttpRequest.DONE && oReq.status == 200) {
+            console.log("DONNEEEEEE:::", oReq)
+            // Request finished. Do processing here.
+        }
+    }
+
+    oReq.addEventListener('error', function(event) {
+      dispatch(uploadFileError(file.name, {message: "Error in uploading"} ));
+    });
+
+    oReq.send(file);
+  };
+}
+// export function uploadFile(bucket_link, file) {
+//   return function (dispatch) {
+//     dispatch(draftsItemRequest());
+//     bucket_link = bucket_link.replace('http:', 'https:');
+//     let uri = `${bucket_link}/${file.name}`;
+
+//     const data = new FormData();
+//     data.append('file', file);
+//     data.append('name', 'myfile');
+
+//     // uri = uri+'?uploads&size=8&partSize=4'
+//     // axios.post(uri, data)
+//     //   .then((response) => {
+//     //     console.log("UPLOADED fiel::::::",response.data)
+//     //   })
+//     //   .catch((error) => {
+//     //     console.log("UPLOADED error::::::",error)
+//     //   })
+//     axios.put(uri, data)
+//       .then((response) => {
+//         console.log("UPLOADED fiel::::::",response.data)
+//       })
+//       .catch((error) => {
+//         console.log("UPLOADED error::::::",error)
+//       })
+
+//   };
+// }

@@ -32,7 +32,7 @@ export default function (ComposedComponent) {
 
 
   NotAuthentication.propTypes = {
-    isLoggedIn: PropTypes.boolean,
+    isLoggedIn: PropTypes.bool,
     history: PropTypes.object
   };
 

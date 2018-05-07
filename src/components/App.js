@@ -39,6 +39,7 @@ class App extends React.Component {
           <Switch id="main-container">
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
             <Route path="/about" component={AboutPage} />
+            <Route path="/" component={IndexPage} />
             <IndexPage />
             <Route component={NotFoundPage} />
           </Switch>

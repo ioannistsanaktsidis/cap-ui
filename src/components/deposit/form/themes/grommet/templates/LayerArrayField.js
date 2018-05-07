@@ -91,7 +91,7 @@ class ArrayFieldTemplate extends React.Component {
 ArrayFieldTemplate.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  required: PropTypes.boolean,
+  required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
   items: PropTypes.array,

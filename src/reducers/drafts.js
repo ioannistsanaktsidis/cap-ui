@@ -1,4 +1,4 @@
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 
 import {
   TOGGLE_FILEMANAGER_LAYER,
@@ -18,7 +18,13 @@ import {
   DRAFTS_ITEM_ERROR,
   CREATE_DRAFT_REQUEST,
   CREATE_DRAFT_SUCCESS,
-  CREATE_DRAFT_ERROR
+  CREATE_DRAFT_ERROR,
+  INIT_DRAFT_SUCCESS,
+  INIT_DRAFT_ERROR,
+  UPLOAD_FILE_REQUEST,
+  UPLOAD_FILE_SUCCESS,
+  UPLOAD_FILE_ERROR,
+  INIT_FORM,
 } from '../actions/drafts';
 
 const initialState = Map({
@@ -35,6 +41,7 @@ const initialState = Map({
   current_item: Map({
     id: null,
     data: null,
+    files: Map({}),
     loading: false,
     error: null,
     links: null
@@ -62,55 +69,83 @@ export default function depositReducer(state = initialState, action) {
       return state.set('validate', !state.get('validate'));
     case FETCH_SCHEMA_REQUEST:
       return state
-              .set('loading', true)
-              .set('error', null)
+        .set('loading', true)
+        .set('error', null)
     case FETCH_SCHEMA_SUCCESS:
       return state
-              .set('loading', false)
-              .set('payload', action.schema)
+        .set('loading', false)
+        .set('payload', action.schema)
     case FETCH_SCHEMA_ERROR:
       return state
-              .set('loading', false)
-              .set('error', action.error)
+        .set('loading', false)
+        .set('error', action.error)
     case SELECT_SCHEMA:
       return state
-              .set('schemaToFetch', action.schema)
+        .set('schemaToFetch', action.schema)
     case CHANGE_SCHEMA:
       return state
-              .set('selectedSchema', action.schema.selectedSchema )
-              .set('schema', action.schema.schema )
-              .set('uiSchema', action.schema.uiSchema );
+        .set('selectedSchema', action.schema.selectedSchema )
+        .set('schema', action.schema.schema )
+        .set('uiSchema', action.schema.uiSchema );
     case UPDATE_FORM_DATA:
       return state.set('data', action.data);
     case DRAFTS_ITEM_REQUEST:
       return state
-              .setIn(['current_item', 'loading'], true)
-              .setIn(['current_item', 'error'], null);
+        .setIn(['current_item', 'loading'], true)
+        .setIn(['current_item', 'error'], null);
     case DRAFTS_ITEM_SUCCESS:
       return state
-              .setIn(['current_item', 'loading'], false)
-              .setIn(['current_item', 'data'], action.draft);
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'id'], action.draft_id)
+        .setIn(['current_item', 'data'], action.draft.metadata)
+        .setIn(['current_item', 'files'], action.draft.files ? Map(action.draft.files.map(item => ([item.key, item]) ) ) : Map({}))
+        .setIn(['current_item', 'links'], Map(action.draft.links));
     case DRAFTS_ITEM_ERROR:
       return state
-              .setIn(['current_item', 'loading'], false)
-              .setIn(['current_item', 'error'], action.error);
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'error'], action.error);
     case CREATE_DRAFT_REQUEST:
       return state
-              .setIn(['current_item', 'loading'], true)
-              .setIn(['current_item', 'error'], null);
+        .setIn(['current_item', 'loading'], true)
+        .setIn(['current_item', 'error'], null);
     case CREATE_DRAFT_SUCCESS:
-      let  l = action.draft.links.self.split('/');
-      let id = l[l.length - 1];
       return state
-              .setIn(['current_item', 'loading'], false)
-              .setIn(['current_item', 'error'], null)
-              .setIn(['current_item', 'id'], id)
-              .setIn(['current_item', 'data'], action.draft)
-              .setIn(['current_item', 'links'], action.draft.links);
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'error'], null)
+        .setIn(['current_item', 'id'], action.draft_id)
+        .setIn(['current_item', 'data'], action.draft)
+              // .setIn(['current_item', 'links'], action.draft.links);
     case CREATE_DRAFT_ERROR:
       return state
-              .setIn(['current_item', 'loading'], false)
-              .setIn(['current_item', 'error'], action.error);
+        .setIn(['current_item', 'loading'], false)
+    case INIT_DRAFT_SUCCESS:
+      return state
+        .setIn(['current_item', 'id'], action.draft_id)
+        .setIn(['current_item', 'data'], action.draft)
+        .setIn(['current_item', 'links'], Map(action.draft.links));
+    case INIT_DRAFT_ERROR:
+      return state
+        .setIn(['current_item', 'error'], action.error);
+    case INIT_FORM:
+      return state
+        .set('current_item', Map({
+          id: null,
+          data: null,
+          loading: false,
+          error: null,
+          links: null,
+          files: Map({})
+        }))
+    case UPLOAD_FILE_REQUEST:
+      return state
+        .setIn(['current_item', 'files', 'action.filename'], { key: action.filename, status: 'uploading' })
+    case UPLOAD_FILE_SUCCESS:
+      return state
+        .setIn(['current_item', 'files', 'action.filename'], { key: action.filename, status: 'done' })
+    case UPLOAD_FILE_ERROR:
+      return state
+
+
     default:
       return state;
   }

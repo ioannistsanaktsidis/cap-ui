@@ -40,7 +40,7 @@ class Header extends React.Component {
             <SearchBar />
           </Box>
           <Menu pad={{horizontal: "small"}} direction="row" responsive={true}>
-            <Anchor path="/create" label="Create" />
+            <Anchor path="/drafts/create" label="Create" />
             <Anchor path="/search" label="Search" />
             <Menu responsive={true} icon={<UserIcon />} >
               <Anchor

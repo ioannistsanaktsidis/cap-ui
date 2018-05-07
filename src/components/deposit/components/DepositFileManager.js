@@ -5,6 +5,8 @@ import {connect} from 'react-redux';
 
 import {
   Box,
+  Button,
+  Paragraph,
   Tabs,
   Title,
   Tab,
@@ -16,15 +18,15 @@ import {
   TextInput,
   Article,
   Heading,
-  Select
+  Select,
+  Toast
 } from 'grommet';
 
-import { toggleFilemanagerLayer } from '../../../actions/drafts';
+import { toggleFilemanagerLayer, initDraft, uploadFile } from '../../../actions/drafts';
 
 import FileList from './FileList';
 
 import Dropzone from 'react-dropzone';
-
 
 const FileManagerDropzone = () => {
   return (
@@ -34,6 +36,8 @@ const FileManagerDropzone = () => {
           console.log("Dropped some files:::");
           console.log(acceptedFiles);
           console.log(rejectedFiles);
+
+          if (acceptedFiles.length > 0) this.props.uploadFile(acceptedFiles[0]);
         }}
       >
         Try dropping some files here, or click to select files to upload.
@@ -42,14 +46,21 @@ const FileManagerDropzone = () => {
   );
 };
 
+
 class FileManager extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  _onSubmit(schema, data) {
+    event.preventDefault();
+
+    this.props.initDraft(schema, data.formData )
+  }
+
   render() {
     return (
-      this.props.activeLayer ?
+      this.props.activeLayer && this.props.links ?
       <Layer
         closer={true}
         align="center"
@@ -58,16 +69,16 @@ class FileManager extends React.Component {
         onClose={this.props.toggleFilemanagerLayer}
         >
         <Article size="xlarge">
-
           <Box direction="row" size="xlarge" flex={true} wrap={false}>
             <Sidebar size="small" full={false} colorIndex="light-2">
               <Header>
                 <Box pad={{horizontal: "small"}}>
                   <Title>File Manager</Title>
+                  {this.props.links.get('bucket')}
                 </Box>
               </Header>
               <Box pad="small" colorIndex="light-2">
-                <FileList />
+                <FileList files={this.props.files}/>
               </Box>
             </Sidebar>
 
@@ -77,7 +88,20 @@ class FileManager extends React.Component {
                   <Box pad="medium">
                     <Heading tag="h5" strong={true}>Upload from Local</Heading>
                     <Box margin={{bottom: "small"}}>
-                      <FileManagerDropzone />
+                      <Box flex={true} >
+                        <Dropzone
+                          onDrop={(acceptedFiles, rejectedFiles) => {
+                            let bucket_url = this.props.links.get('bucket');
+                            bucket_url = bucket_url.replace('.cern.ch/', '.cern.ch/api/')
+                            // console.log("acceptedFiles", acceptedFiles);
+                            // console.log(rejectedFiles);
+
+                            if (acceptedFiles.length > 0) this.props.uploadFile(bucket_url, acceptedFiles[0]);
+                          }}
+                        >
+                          Try dropping some files here, or click to select files to upload.
+                        </Dropzone>
+                      </Box>
                     </Box>
                     <Heading tag="h5" strong={true}>Upload from URL</Heading>
                     <Box>
@@ -161,13 +185,16 @@ FileManager.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    activeLayer: state.drafts.get("fileManagerActiveLayer")
+    activeLayer: state.drafts.get("fileManagerActiveLayer"),
+    links: state.drafts.getIn(['current_item','links'])
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
+    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
+    initDraft: (schema, title) => dispatch(initDraft(schema, title)),
+    uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file))
   };
 }
 

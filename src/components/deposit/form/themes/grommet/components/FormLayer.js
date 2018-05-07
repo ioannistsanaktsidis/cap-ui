@@ -65,8 +65,8 @@ class FormLayer extends React.Component {
 FormLayer.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  required: PropTypes.boolean,
-  layerActive: PropTypes.boolean,
+  required: PropTypes.bool,
+  layerActive: PropTypes.bool,
   remove: PropTypes.func,
   onClose: PropTypes.func,
   idSchema: PropTypes.object,

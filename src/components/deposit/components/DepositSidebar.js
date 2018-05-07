@@ -4,22 +4,27 @@ import {connect} from 'react-redux';
 
 import {
   Box,
+  Button,
   FormField,
   Anchor,
   CheckBox,
+  Paragraph,
   Sidebar,
   Select,
+  Title
 } from 'grommet';
 
-import UploadIcon from 'grommet/components/icons/base/Upload';
+import AddIcon from 'grommet/components/icons/base/Add';
 
 import {
   toggleFilemanagerLayer,
-  toggleCustomValidation,
-  toggleLiveValidate,
-  toggleValidate
+  // toggleCustomValidation,
+  // toggleLiveValidate,
+  // toggleValidate
+  initDraft
 } from '../../../actions/drafts';
 
+import Form from '../form/GrommetForm';
 import SectionHeader from './SectionHeader';
 import DepositFilesList from './DepositFilesList';
 
@@ -28,60 +33,42 @@ class DepositSidebar extends React.Component {
     super(props);
   }
 
+  _onSubmit(schema, data) {
+    event.preventDefault();
+
+    this.props.initDraft(schema, data.formData )
+  }
+
   render() {
     return (
-      this.props.showSidebar ?
       <Sidebar full={false} size="medium" colorIndex="light-2">
-        <Box flex={true}>
-          <SectionHeader
-            label="Files | Data | Source Code"
-            icon={
-              <Box>
-                <Anchor
-                  onClick={this.props.toggleFilemanagerLayer}
-                  size="xsmall"
-                  icon={<UploadIcon />} />
+        {
+          this.props.draftId ?
+          <Box flex={true}>
+            <SectionHeader
+              label="Files | Data | Source Code"
+              icon={
+                  <Anchor
+                    onClick={this.props.toggleFilemanagerLayer}
+                    size="xsmall"
+                    icon={<AddIcon />} />
+                  }
+            />
+            <DepositFilesList files={this.props.files || []} draftId={this.props.draftId}/>
+          </Box> :
+          <Box pad="medium">
+            <Title>Start Your Project</Title>
+            <Paragraph>Give a name to your project..This way you can recognise it between your drafts</Paragraph>
+            <Form schema={{type: "string", title: "Project Name"}} onSubmit={this._onSubmit.bind(this, this.props.schema)} >
+              <Box flex={true} margin={{vertical: "medium"}}>
+                <Button label='Start Project'
+                  type='submit'
+                  primary={true} />
               </Box>
-            } />
-          <DepositFilesList />
-        </Box>
-        <Box flex={true}>
-          <SectionHeader label="Form Actions"/>
-          <Box pad="small"  flex={true}>
-            <FormField>
-              <Select
-                options={Object.keys(this.props.schemas)}
-                value={this.props.selectedSchema}
-                placeHolder="Choose schema to render"
-                onChange={this.props.onChangeSchema}/>
-            </FormField>
-            <FormField>
-              <CheckBox
-                label="Validation"
-                toggle={true}
-                checked={this.props.validate}
-                onChange={this.props.toggleValidate}
-                />
-            </FormField>
-            <FormField>
-              <CheckBox
-                label="Live Validate"
-                toggle={true}
-                checked={this.props.liveValidate}
-                onChange={this.props.toggleLiveValidate}
-                />
-            </FormField>
-            <FormField>
-              <CheckBox
-                label="Custom Validation"
-                toggle={true}
-                checked={this.props.customValidation}
-                onChange={this.props.toggleCustomValidation}
-                />
-            </FormField>
+            </Form>
           </Box>
-        </Box>
-      </Sidebar> : null
+        }
+      </Sidebar>
     );
   }
 }
@@ -103,19 +90,15 @@ DepositSidebar.propTypes = {
 function mapStateToProps(state) {
   return {
     showSidebar: state.drafts.get('showSidebar'),
-    customValidation: state.drafts.get('customValidation'),
-    liveValidate: state.drafts.get('liveValidate'),
-    validate: state.drafts.get('validate'),
-    selectedSchema: state.drafts.get('selectedSchema')
+    schema: state.drafts.get('schema'),
+    files: state.drafts.getIn(['current_item', 'files']),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
-    toggleLiveValidate: () => dispatch(toggleLiveValidate()),
-    toggleCustomValidation: () => dispatch(toggleCustomValidation()),
-    toggleValidate: () => dispatch(toggleValidate())
+    initDraft: (schema, title) => dispatch(initDraft(schema, title))
   };
 }
 

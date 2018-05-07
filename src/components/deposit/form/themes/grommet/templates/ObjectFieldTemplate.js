@@ -45,10 +45,10 @@ let ObjectFieldTemplate = function (props) {
 ObjectFieldTemplate.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  required: PropTypes.boolean,
+  required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
-  properties: PropTypes.object
+  properties: PropTypes.array
 };
 
 export default ObjectFieldTemplate;

@@ -43,7 +43,7 @@ FieldHeader.propTypes = {
   description: PropTypes.string,
   margin: PropTypes.string,
   onArrayAddClick: PropTypes.func,
-  required: PropTypes.boolean,
+  required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
   properties: PropTypes.object,

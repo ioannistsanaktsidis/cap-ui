@@ -122,7 +122,7 @@ class ImportDataField extends React.Component {
 ImportDataField.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  required: PropTypes.boolean,
+  required: PropTypes.bool,
   schema: PropTypes.object,
   onChange: PropTypes.func,
   properties: PropTypes.object,

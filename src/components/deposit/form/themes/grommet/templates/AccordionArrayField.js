@@ -61,7 +61,7 @@ class AccordionArrayField extends React.Component {
 AccordionArrayField.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  required: PropTypes.boolean,
+  required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
   items: PropTypes.array,

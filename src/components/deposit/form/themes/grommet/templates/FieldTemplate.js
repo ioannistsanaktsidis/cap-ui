@@ -30,7 +30,7 @@ let FieldTemplate = function (props) {
 FieldTemplate.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
-  description: PropTypes.string,
+  rawDescription: PropTypes.string,
   rawErrors: PropTypes.object,
   schema: PropTypes.object,
   children: PropTypes.element,
