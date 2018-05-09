@@ -24,6 +24,9 @@ import {
   UPLOAD_FILE_SUCCESS,
   UPLOAD_FILE_ERROR,
   INIT_FORM,
+  PUBLISH_DRAFT_REQUEST,
+  PUBLISH_DRAFT_SUCCESS,
+  PUBLISH_DRAFT_ERROR 
 } from '../actions/drafts';
 
 const initialState = Map({
@@ -39,6 +42,7 @@ const initialState = Map({
   customValidation: false,
   current_item: Map({
     id: null,
+    published_id: null,
     data: null,
     files: Map({}),
     loading: false,
@@ -72,8 +76,8 @@ export default function depositReducer(state = initialState, action) {
     case FETCH_SCHEMA_SUCCESS:
       return state
         .set('loading', false)
-        .set('schema', action.schema.schema )
-        .set('uiSchema', action.schema.uiSchema );
+        .set('schema', action.schema.schema)
+        .set('uiSchema', action.schema.uiSchema);
     case FETCH_SCHEMA_ERROR:
       return state
         .set('loading', false)
@@ -105,7 +109,7 @@ export default function depositReducer(state = initialState, action) {
         .setIn(['current_item', 'error'], null)
         .setIn(['current_item', 'id'], action.draft_id)
         .setIn(['current_item', 'data'], action.draft)
-              // .setIn(['current_item', 'links'], action.draft.links);
+        .setIn(['current_item', 'links'], Map(action.draft.links));
     case CREATE_DRAFT_ERROR:
       return state
         .setIn(['current_item', 'loading'], false)
@@ -136,8 +140,18 @@ export default function depositReducer(state = initialState, action) {
     case UPLOAD_FILE_ERROR:
       return state
         .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'error', error: action.error })
-
-
+    case PUBLISH_DRAFT_REQUEST:
+      return state
+        .setIn(['current_item', 'loading'], true)
+        .setIn(['current_item', 'error'], false);
+    case PUBLISH_DRAFT_SUCCESS:
+      return state
+        .setIn(['current_item', 'published_id'], action.published_id)
+        .setIn(['current_item', 'data'], action.published_record)
+    case PUBLISH_DRAFT_ERROR:
+      return state
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'error'], action.error);
     default:
       return state;
   }

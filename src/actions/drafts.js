@@ -26,6 +26,10 @@ export const DRAFTS_ITEM_REQUEST = 'DRAFTS_ITEM_REQUEST';
 export const DRAFTS_ITEM_SUCCESS = 'DRAFTS_ITEM_SUCCESS';
 export const DRAFTS_ITEM_ERROR = 'DRAFTS_ITEM_ERROR';
 
+export const PUBLISH_DRAFT_REQUEST = 'PUBLISH_DRAFT_REQUEST';
+export const PUBLISH_DRAFT_SUCCESS = 'PUBLISH_DRAFT_SUCCESS';
+export const PUBLISH_DRAFT_ERROR = 'PUBLISH_DRAFT_ERROR';
+
 export const CREATE_DRAFT_REQUEST = 'CREATE_DRAFT_REQUEST';
 export const CREATE_DRAFT_SUCCESS = 'CREATE_DRAFT_SUCCESS';
 export const CREATE_DRAFT_ERROR = 'CREATE_DRAFT_ERROR';
@@ -58,6 +62,9 @@ export function uploadFileRequest(filename){ return { type: UPLOAD_FILE_REQUEST,
 export function uploadFileSuccess(filename, data) { return { type: UPLOAD_FILE_SUCCESS, filename, data }; }
 export function uploadFileError(filename, error) { return { type: UPLOAD_FILE_ERROR, filename, error }; }
 
+export function publishDraftRequest() { return { type: PUBLISH_DRAFT_REQUEST }; }
+export function publishDraftSuccess(published_id, published_record) { return { type: PUBLISH_DRAFT_SUCCESS, published_id, published_record }; }
+export function publishDraftError(error) { return { type: PUBLISH_DRAFT_ERROR, error}; }
 
 export function toggleFilemanagerLayer() { return { type: TOGGLE_FILEMANAGER_LAYER }; }
 
@@ -153,14 +160,17 @@ export function initDraft(schema, project_name) {
 export function createDraft(data, schema) {
   return dispatch => {
     dispatch(createDraftRequest());
-    data['$schema'] = `https://analysispreservation.cern.ch/schemas/deposits/records/${schema}-v0.0.1.json`;
 
     let uri = '/api/deposits/';
 
+    data['$ana_type'] = schema;
+
     axios.post(uri, data)
-      .then(function(response){
-        let  l = response.data.links.self.split('/');
-        let draft_id = l[l.length - 1];
+      .then((response) => {
+        const draft_id = response.data.links.self.split('/deposits/')[1];
+        dispatch(initDraftSuccess(draft_id, response.data));
+        dispatch(replace(`/drafts/${draft_id}`));
+        delete response.data.metadata['$ana_type'];
         axios.put(uri + draft_id, response.data.metadata)
           .then(function(response){
             dispatch(createDraftSuccess(draft_id, response.data));
@@ -169,8 +179,23 @@ export function createDraft(data, schema) {
             dispatch(createDraftError(error));
           });
       })
+      .catch((error) => dispatch(initDraftError(error)) )
+  };
+}
+
+export function publishDraft(draft_id) {
+  return dispatch => {
+    dispatch(publishDraftRequest());
+
+    let uri = `/api/deposits/${draft_id}/actions/publish`;
+
+    axios.post(uri)
+      .then(function(response){
+        let pid =  response.data.metadata._deposit.pid.value;
+        dispatch(publishDraftSuccess(pid, response.data));
+      })
       .catch(function(error) {
-        dispatch(createDraftError(error));
+        dispatch(publishDraftError(error));
       });
   };
 }

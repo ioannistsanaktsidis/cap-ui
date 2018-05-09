@@ -14,6 +14,7 @@ import {
 import SplitIcon from 'grommet/components/icons/base/Split';
 import SplitsIcon from 'grommet/components/icons/base/Splits';
 import SaveIcon from 'grommet/components/icons/base/Save';
+import ShareIcon from 'grommet/components/icons/base/Share';
 
 import { togglePreviewer, toggleSidebar } from '../../../actions/drafts';
 
@@ -43,6 +44,13 @@ class DepositHeader extends React.Component {
               label="Save"
               onClick={this.props.saveData}
             />
+            <Button
+              icon={<ShareIcon/>}
+              plain={true}
+              secondary={true}
+              label="Share"
+              onClick={this.props.draft_id ? this.props.publishData: null}
+            />
           </Box>
         </Box>
       </Header>
@@ -54,12 +62,14 @@ DepositHeader.propTypes = {
   selectedSchema: PropTypes.string,
   showPreviewer: PropTypes.func,
   saveData: PropTypes.func,
+  publishData: PropTypes.func,
   showSidebar: PropTypes.func
 };
 
 function mapStateToProps(state) {
   return {
-    selectedSchema: state.drafts.get("selectedSchema")
+    selectedSchema: state.drafts.get("selectedSchema"),
+    draft_id: state.drafts.getIn(['current_item', 'id']),
   };
 }
 

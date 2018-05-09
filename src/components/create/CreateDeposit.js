@@ -7,7 +7,7 @@ import {Box, Heading, Tiles, Tile, Toast, Paragraph} from 'grommet';
 
 import _isEqual from 'lodash/isEqual';
 
-import {fetchSchema, createDraft, initForm, getDraftById} from '../../actions/drafts';
+import {fetchSchema, createDraft, initForm, getDraftById, publishDraft} from '../../actions/drafts';
 import DepositForm from '../deposit/form/Form';
 import DepositHeader from '../deposit/components/DepositHeader';
 import Sidebar from '../deposit/components/DepositSidebar';
@@ -68,8 +68,13 @@ export class CreateDeposit extends React.Component {
       this.props.createDraft(this.state.formData, this.props.match.params.schema_id);
   }
 
+  _publishData() {
+      this.props.publishDraft(this.props.draft_id);
+  }
+
   render() {
     let _schema = this.props.schema ? transformSchema(this.props.schema):null;
+
     return (
       <Box id="deposit-page" basis="full" flex={true}>
         {
@@ -78,7 +83,7 @@ export class CreateDeposit extends React.Component {
             {this.props.error.message}
           </Toast> : null
         }
-        <DepositHeader draftId={this.props.draft_id} saveData={this._saveData.bind(this)}/>
+        <DepositHeader draftId={this.props.draft_id} saveData={this._saveData.bind(this)} publishData={this._publishData.bind(this)}/>
           <Box direction="row" flex={true} wrap={false}>
           <Sidebar draftId={this.props.draft_id} />
           {
@@ -86,7 +91,7 @@ export class CreateDeposit extends React.Component {
             <DepositForm
               formData={this.state.formData}
               schema={_schema}
-              uiSchema={this.props.uiSchema || {} }
+              uiSchema={this.props.uiSchema || {}}
               onChange={(change) => {
                 console.log("CHANGE::",change);
                 this.setState({formData: change.formData});
@@ -108,6 +113,7 @@ function mapStateToProps(state) {
     uiSchema: state.drafts.get('uiSchema'),
     error: state.drafts.getIn(['current_item', 'error']),
     draft_id: state.drafts.getIn(['current_item', 'id']),
+    published_id: state.drafts.getIn(['current_item', 'published_id'])
   };
 }
 
@@ -116,7 +122,8 @@ function mapDispatchToProps(dispatch) {
     fetchSchema: (schema) => dispatch(fetchSchema(schema)),
     createDraft: (data, schema) => dispatch(createDraft(data, schema)),
     getDraftById: (id, fet) => dispatch(getDraftById(id, fet)),
-    initForm: () => dispatch(initForm())
+    initForm: () => dispatch(initForm()),
+    publishDraft: (depid) => dispatch(publishDraft(depid))
   };
 }
 
