@@ -16,8 +16,8 @@ const CustomTile = withRouter(({ history, props=props, group=group, name=name}) 
             pad="small"
             colorIndex="light-2"
             onClick={() => (
-              history.push(`/drafts/create/${group}`),
-              props.selectSchema(group))}>
+              history.push(`/drafts/create/${group}`)
+              )}>
         <Paragraph align="center">{name}</Paragraph>
       </Tile>
     ))
@@ -51,9 +51,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    selectSchema: (schema) => dispatch(selectSchema(schema))
-  };
+  return {};
 }
 
 

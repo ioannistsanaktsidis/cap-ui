@@ -9,7 +9,6 @@ import Heading from 'grommet/components/Heading';
 import Section from 'grommet/components/Section';
 
 import SearchPage from '../search/SearchPage';
-import DepositPage from '../deposit/DepositPage';
 import PublishedItem from '../published/PublishedItem';
 import AboutPage from '../about/AboutPage';
 import Header from '../partials/Header';

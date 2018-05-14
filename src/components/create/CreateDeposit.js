@@ -69,8 +69,7 @@ export class CreateDeposit extends React.Component {
   }
 
   render() {
-    let _schema = this.props.payload ? transformSchema(this.props.payload.schema):null;
-    let schemaName =  this.props.schema;
+    let _schema = this.props.schema ? transformSchema(this.props.schema):null;
     return (
       <Box id="deposit-page" basis="full" flex={true}>
         {
@@ -83,11 +82,11 @@ export class CreateDeposit extends React.Component {
           <Box direction="row" flex={true} wrap={false}>
           <Sidebar draftId={this.props.draft_id} />
           {
-            this.props.payload ?
+            this.props.schema ?
             <DepositForm
               formData={this.state.formData}
               schema={_schema}
-              uiSchema={this.props.uiSchema}
+              uiSchema={this.props.uiSchema || {} }
               onChange={(change) => {
                 console.log("CHANGE::",change);
                 this.setState({formData: change.formData});
@@ -105,12 +104,10 @@ CreateDeposit.propTypes = {};
 
 function mapStateToProps(state) {
   return {
-    schema: state.drafts.get('schemaToFetch'),
+    schema: state.drafts.get('schema'),
     uiSchema: state.drafts.get('uiSchema'),
-    payload: state.drafts.get('payload'),
     error: state.drafts.getIn(['current_item', 'error']),
     draft_id: state.drafts.getIn(['current_item', 'id']),
-    // draft: state.drafts.getIn(['current_item', 'data']),
   };
 }
 
@@ -118,7 +115,6 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchSchema: (schema) => dispatch(fetchSchema(schema)),
     createDraft: (data, schema) => dispatch(createDraft(data, schema)),
-    startDeposit: (schema, data) => dispatch(startDeposit(schema, data)),
     getDraftById: (id, fet) => dispatch(getDraftById(id, fet)),
     initForm: () => dispatch(initForm())
   };

@@ -10,7 +10,6 @@ import {
   FETCH_SCHEMA_REQUEST,
   FETCH_SCHEMA_SUCCESS,
   FETCH_SCHEMA_ERROR,
-  CHANGE_SCHEMA,
   SELECT_SCHEMA,
   UPDATE_FORM_DATA,
   DRAFTS_ITEM_REQUEST,
@@ -29,7 +28,7 @@ import {
 
 const initialState = Map({
   schema: null,
-  schemaToFetch: null,
+  uiSchema: null,
   data: {},
   selectedSchema: null,
   fileManagerActiveLayer: false,
@@ -45,8 +44,7 @@ const initialState = Map({
     loading: false,
     error: null,
     links: null
-  }),
-  payload: null
+  })
 });
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
 // State is considered immutable. Instead,
@@ -74,19 +72,12 @@ export default function depositReducer(state = initialState, action) {
     case FETCH_SCHEMA_SUCCESS:
       return state
         .set('loading', false)
-        .set('payload', action.schema)
+        .set('schema', action.schema.schema )
+        .set('uiSchema', action.schema.uiSchema );
     case FETCH_SCHEMA_ERROR:
       return state
         .set('loading', false)
         .set('error', action.error)
-    case SELECT_SCHEMA:
-      return state
-        .set('schemaToFetch', action.schema)
-    case CHANGE_SCHEMA:
-      return state
-        .set('selectedSchema', action.schema.selectedSchema )
-        .set('schema', action.schema.schema )
-        .set('uiSchema', action.schema.uiSchema );
     case UPDATE_FORM_DATA:
       return state.set('data', action.data);
     case DRAFTS_ITEM_REQUEST:

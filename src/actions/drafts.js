@@ -12,10 +12,6 @@ export const FETCH_SCHEMA_REQUEST = 'FETCH_SCHEMA_REQUEST';
 export const FETCH_SCHEMA_SUCCESS = 'FETCH_SCHEMA_SUCCESS';
 export const FETCH_SCHEMA_ERROR = 'FETCH_SCHEMA_ERROR';
 
-export const SELECT_SCHEMA = 'SELECT_SCHEMA';
-export const CHANGE_SCHEMA = 'CHANGE_SCHEMA';
-export const UPDATE_FORM_DATA = 'UPDATE_FORM_DATA';
-
 export const DRAFTS_REQUEST = 'DRAFTS_REQUEST';
 export const DRAFTS_SUCCESS = 'DRAFTS_SUCCESS';
 export const DRAFTS_ERROR = 'DRAFTS_ERROR';
@@ -91,16 +87,6 @@ export function fetchSchemaError(error) {
   error
 };
 
-export function selectSchema(schemaToFetch) {
-  return {
-    type: SELECT_SCHEMA,
-    schema: schemaToFetch
-  }
-}
-
-export function changeSchema(newSchema) { return { type: CHANGE_SCHEMA, schema: newSchema }; }
-export function updateFormData(data) { return { type: UPDATE_FORM_DATA, schema: data }; }
-
 export function createDraftRequest() {
   return {
     type: CREATE_DRAFT_REQUEST
@@ -122,34 +108,11 @@ export function createDraftError(error) {
   }
 }
 
+// [TOFIX] : update the way to handle schemas
 export function fetchSchema(schema) {
   return dispatch => {
     let schemaUrl = "/api/schemas/deposits/records/" + schema + "-v0.0.1.json";
     let uiSchemaUrl =  "/api/schemas/options/deposits/records/" + schema + "-v0.0.1.json";
-
-    dispatch(fetchSchemaRequest());
-    axios.get(schemaUrl)
-      .then(function(response) {
-          let schema = response.data;
-          axios.get(uiSchemaUrl)
-            .then(function(response) {
-              let uiSchema = response.data;
-              dispatch(fetchSchemaSuccess({schema:schema, uiSchema:uiSchema}));
-            })
-            .catch(function(error) {
-              dispatch(fetchSchemaError());
-            })
-        })
-      .catch(function(error) {
-        dispatch(fetchSchemaError());
-      })
-  };
-}
-
-export function getSchema(schema) {
-  return dispatch => {
-    let schemaUrl = "/api/schemas/" + schema;
-    let uiSchemaUrl =  "/api/schemas/options/" + schema;
 
     dispatch(fetchSchemaRequest());
     axios.get(schemaUrl)
@@ -187,14 +150,6 @@ export function initDraft(schema, project_name) {
   };
 }
 
-export function startDeposit(schema, initialData=null) {
-  return function (dispatch) {
-    if (initialData) dispatch(updateFormData(initialData));
-    else dispatch(updateFormData({}));
-
-    dispatch(changeSchema(schema));
-  };
-}
 
 export function createDraft(data, schema) {
   return dispatch => {
@@ -222,7 +177,7 @@ export function createDraft(data, schema) {
 }
 
 
-export function getDraftById(draft_id, fetchSchema=false) {
+export function getDraftById(draft_id, fetchSchemaFlag=false) {
   return function (dispatch) {
     dispatch(draftsItemRequest());
 
@@ -230,10 +185,11 @@ export function getDraftById(draft_id, fetchSchema=false) {
     axios.get(uri)
       .then(function (response) {
         let url;
-        if (fetchSchema && response.data.metadata.$schema) {
+        if (fetchSchemaFlag && response.data.metadata.$schema) {
           url = response.data.metadata.$schema;
-          url = url.split('cern.ch/schemas/')[1];
-          dispatch(getSchema(url))
+          url = url.split('/')
+          let schema = url[url.length-1].split("-v")[0];
+          dispatch(fetchSchema(schema))
         }
         dispatch(draftsItemSuccess(draft_id, response.data));
       })

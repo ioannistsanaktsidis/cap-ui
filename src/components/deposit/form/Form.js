@@ -62,7 +62,7 @@ class DepositForm extends React.Component {
                 onBlur={({type}) => console.log("onBlur::::", type)}
                 onChange={this.props.onChange}>
                 <span />
-              </Form> 
+              </Form>
           </Box>
         </Box>
       </Box>
@@ -83,7 +83,6 @@ DepositForm.propTypes = {
   formData: PropTypes.object,
   customValidation: PropTypes.bool,
   schemas: PropTypes.object,
-  changeSchema: PropTypes.func,
   onChange: PropTypes.func
 };
 
