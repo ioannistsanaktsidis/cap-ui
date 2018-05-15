@@ -7,7 +7,13 @@ import {Box, Heading, Tiles, Tile, Toast, Paragraph} from 'grommet';
 
 import _isEqual from 'lodash/isEqual';
 
-import {fetchSchema, createDraft, initForm, getDraftById, publishDraft} from '../../actions/drafts';
+import {fetchSchema, 
+        createDraft, 
+        initForm, 
+        getDraftById, 
+        publishDraft,
+        deleteDraft
+      } from '../../actions/drafts';
 import DepositForm from '../deposit/form/Form';
 import DepositHeader from '../deposit/components/DepositHeader';
 import Sidebar from '../deposit/components/DepositSidebar';
@@ -69,7 +75,11 @@ export class CreateDeposit extends React.Component {
   }
 
   _publishData() {
-      this.props.publishDraft(this.props.draft_id);
+    this.props.publishDraft(this.props.draft_id);
+  }
+
+  _deleteDraft() {
+    this.props.deleteDraft(this.props.draft_id);
   }
 
   render() {
@@ -83,7 +93,11 @@ export class CreateDeposit extends React.Component {
             {this.props.error.message}
           </Toast> : null
         }
-        <DepositHeader draftId={this.props.draft_id} saveData={this._saveData.bind(this)} publishData={this._publishData.bind(this)}/>
+        <DepositHeader  draftId={this.props.draft_id} 
+                        saveData={this._saveData.bind(this)} 
+                        publishData={this._publishData.bind(this)}
+                        deleteDraft={this._deleteDraft.bind(this)}
+                      />
           <Box direction="row" flex={true} wrap={false}>
           <Sidebar draftId={this.props.draft_id} />
           {
@@ -123,7 +137,8 @@ function mapDispatchToProps(dispatch) {
     createDraft: (data, schema) => dispatch(createDraft(data, schema)),
     getDraftById: (id, fet) => dispatch(getDraftById(id, fet)),
     initForm: () => dispatch(initForm()),
-    publishDraft: (depid) => dispatch(publishDraft(depid))
+    publishDraft: (draft_id) => dispatch(publishDraft(draft_id)),
+    deleteDraft: (draft_id) => dispatch(deleteDraft(draft_id))
   };
 }
 

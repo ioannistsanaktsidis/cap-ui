@@ -34,6 +34,11 @@ export const CREATE_DRAFT_REQUEST = 'CREATE_DRAFT_REQUEST';
 export const CREATE_DRAFT_SUCCESS = 'CREATE_DRAFT_SUCCESS';
 export const CREATE_DRAFT_ERROR = 'CREATE_DRAFT_ERROR';
 
+
+export const DELETE_DRAFT_REQUEST = 'DELETE_DRAFT_REQUEST';
+export const DELETE_DRAFT_SUCCESS = 'DELETE_DRAFT_SUCCESS';
+export const DELETE_DRAFT_ERROR = 'DELETE_DRAFT_ERROR';
+
 export const BUCKET_ITEM_REQUEST = 'BUCKET_ITEM_REQUEST';
 export const BUCKET_ITEM_SUCCESS = 'BUCKET_ITEM_SUCCESS';
 export const BUCKET_ITEM_ERROR = 'BUCKET_ITEM_ERROR';
@@ -98,7 +103,7 @@ export function createDraftRequest() {
   return {
     type: CREATE_DRAFT_REQUEST
   }
-}
+};
 
 export function createDraftSuccess(draft_id, draft) {
   return {
@@ -106,14 +111,32 @@ export function createDraftSuccess(draft_id, draft) {
     draft_id,
     draft
   }
-}
+};
 
 export function createDraftError(error) {
   return {
     type: CREATE_DRAFT_ERROR,
     error
   }
-}
+};
+
+export function deleteDraftRequest() {
+  return {
+    type: DELETE_DRAFT_REQUEST
+  }
+};
+
+export function deleteDraftSuccess() {
+  return {
+    type: DELETE_DRAFT_SUCCESS
+  }
+};
+
+export function deleteDraftError(error) {
+  return {
+    type: DELETE_DRAFT_ERROR
+  }
+};
 
 // [TOFIX] : update the way to handle schemas
 export function fetchSchema(schema) {
@@ -140,6 +163,7 @@ export function fetchSchema(schema) {
   };
 }
 
+
 export function initDraft(schema, project_name) {
   return function (dispatch) {
     let data = {
@@ -157,6 +181,7 @@ export function initDraft(schema, project_name) {
   };
 }
 
+// [TOFIX] : Split create draft and combine it with initDraft
 export function createDraft(data, schema) {
   return dispatch => {
     dispatch(createDraftRequest());
@@ -198,6 +223,23 @@ export function publishDraft(draft_id) {
         dispatch(publishDraftError(error));
       });
   };
+}
+
+export function deleteDraft(draft_id) {
+  return dispatch => {
+    dispatch(deleteDraftRequest());
+
+    let uri = `/api/deposits/${draft_id}`;
+
+    axios.delete(uri)
+      .then(function(response){
+        dispatch(deleteDraftSuccess());
+        dispatch(replace('/drafts'));
+      })
+      .catch(function(error) {
+        dispatch(deleteDraftError(error));
+      });
+  };  
 }
 
 export function getDraftById(draft_id, fetchSchemaFlag=false) {

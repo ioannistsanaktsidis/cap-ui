@@ -26,7 +26,10 @@ import {
   INIT_FORM,
   PUBLISH_DRAFT_REQUEST,
   PUBLISH_DRAFT_SUCCESS,
-  PUBLISH_DRAFT_ERROR 
+  PUBLISH_DRAFT_ERROR,
+  DELETE_DRAFT_REQUEST,
+  DELETE_DRAFT_SUCCESS,
+  DELETE_DRAFT_ERROR
 } from '../actions/drafts';
 
 const initialState = Map({
@@ -149,6 +152,18 @@ export default function depositReducer(state = initialState, action) {
         .setIn(['current_item', 'published_id'], action.published_id)
         .setIn(['current_item', 'data'], action.published_record)
     case PUBLISH_DRAFT_ERROR:
+      return state
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'error'], action.error);
+    case DELETE_DRAFT_REQUEST:
+      return state
+        .setIn(['current_item', 'loading'], true)
+        .setIn(['current_item', 'error'], false);
+    case DELETE_DRAFT_SUCCESS:
+      return state
+        .setIn(['current_item', 'id'], null)
+        .setIn(['current_item', 'data'], null);
+    case DELETE_DRAFT_ERROR:
       return state
         .setIn(['current_item', 'loading'], false)
         .setIn(['current_item', 'error'], action.error);
