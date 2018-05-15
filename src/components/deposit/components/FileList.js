@@ -12,6 +12,7 @@ import {
 
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 import AddIcon from 'grommet/components/icons/base/Add';
+import Status from 'grommet/components/icons/Status';
 
 import ArchiveIcon from 'grommet/components/icons/base/Archive';
 import DocumentConfigIcon from 'grommet/components/icons/base/DocumentConfig';
@@ -21,6 +22,12 @@ import NoteIcon from 'grommet/components/icons/base/Note';
 import MoreIcon from 'grommet/components/icons/base/More';
 
 import prettyBytes from 'pretty-bytes';
+
+const uploadStatusMap = {
+  "uploading": "disabled",
+  "error": "critical",
+  "done": "ok"
+};
 
 class FileList extends React.Component {
   constructor(props) {
@@ -49,15 +56,20 @@ class FileList extends React.Component {
             let file = this.props.files.get(filename)
             return (
             <ListItem key={file.key} justify="between" pad="none"  flex={true} >
-              <Box direction="row" flex={true} justify="between">
+              <Box direction="row" flex={true} justify="between" wrap={false}>
                 <Box  direction="row" flex={true}>
                   <Box justify="center" margin={{horizontal: "small"}}>
                     {this._getIcon(file.type)}
                   </Box>
                   <Box justify="center" flex={true} width="100" size="small" margin={{right: "small"}}>
-                    <Label justify="center" margin="none" size="small" truncate={true}> {file.key}</Label>
+                    <Label justify="center" margin="none" size="small" truncate={true}>{file.key}</Label>
                   </Box>
-                  <Box  justify="center" margin={{right: "small"}}>{prettyBytes(parseInt(file.size || "0"))}</Box>
+                  {
+                    file.status ?
+                    <Box justify="center" margin={{right: "small"}}>
+                      <Status size="small" value={uploadStatusMap[file.status]} />
+                    </Box> : null
+                  }
                 </Box>
 
                 <Menu
@@ -65,6 +77,9 @@ class FileList extends React.Component {
                   size="small"
                   dropAlign={{right: "right", top: "bottom"}}
                   icon={<MoreIcon size="xsmall" />}>
+                    <Box  justify="center" margin={{right: "small"}}>
+                      {file.size ? prettyBytes(parseInt(file.size)) : "No size"}
+                    </Box>
                     <Anchor href="#" className="active">
                       Download
                     </Anchor>

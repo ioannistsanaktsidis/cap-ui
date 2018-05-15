@@ -56,7 +56,7 @@ export function bucketItemError(error) { return { type: BUCKET_ITEM_ERROR, error
 
 export function uploadFileRequest(filename){ return { type: UPLOAD_FILE_REQUEST, filename }; }
 export function uploadFileSuccess(filename, data) { return { type: UPLOAD_FILE_SUCCESS, filename, data }; }
-export function uploadFileError(filename, error) { return { type: UPLOAD_FILE_ERROR, error }; }
+export function uploadFileError(filename, error) { return { type: UPLOAD_FILE_ERROR, filename, error }; }
 
 
 export function toggleFilemanagerLayer() { return { type: TOGGLE_FILEMANAGER_LAYER }; }
@@ -150,7 +150,6 @@ export function initDraft(schema, project_name) {
   };
 }
 
-
 export function createDraft(data, schema) {
   return dispatch => {
     dispatch(createDraftRequest());
@@ -175,7 +174,6 @@ export function createDraft(data, schema) {
       });
   };
 }
-
 
 export function getDraftById(draft_id, fetchSchemaFlag=false) {
   return function (dispatch) {
@@ -230,7 +228,7 @@ export function uploadFile(bucket_link, file) {
         dispatch(uploadFileSuccess(file.name, data));
       }
       catch (err) {
-        dispatch(uploadFileError(file.name, err));
+        dispatch(uploadFileError(file.name, err.message));
       }
     };
 
@@ -242,6 +240,7 @@ export function uploadFile(bucket_link, file) {
     }
 
     oReq.addEventListener('error', function(event) {
+      console.log("oReq.addEventListener:::", event)
       dispatch(uploadFileError(file.name, {message: "Error in uploading"} ));
     });
 

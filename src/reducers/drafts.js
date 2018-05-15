@@ -129,12 +129,13 @@ export default function depositReducer(state = initialState, action) {
         }))
     case UPLOAD_FILE_REQUEST:
       return state
-        .setIn(['current_item', 'files', 'action.filename'], { key: action.filename, status: 'uploading' })
+        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'uploading' })
     case UPLOAD_FILE_SUCCESS:
       return state
-        .setIn(['current_item', 'files', 'action.filename'], { key: action.filename, status: 'done' })
+        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'done' })
     case UPLOAD_FILE_ERROR:
       return state
+        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'error', error: action.error })
 
 
     default:

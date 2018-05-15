@@ -68,7 +68,7 @@ class FileManager extends React.Component {
         overlayClose={true}
         onClose={this.props.toggleFilemanagerLayer}
         >
-        <Article size="xlarge">
+        <Box size={{height: {min: "xxlarge"} , width: "xxlarge"}}>
           <Box direction="row" size="xlarge" flex={true} wrap={false}>
             <Sidebar size="small" full={false} colorIndex="light-2">
               <Header>
@@ -90,6 +90,16 @@ class FileManager extends React.Component {
                     <Box margin={{bottom: "small"}}>
                       <Box flex={true} >
                         <Dropzone
+                          style={{
+                            display: "flex",
+                            flex: 1,
+                            height: "100px",
+                            border: "2px dashed rgba(0, 0, 0, 0.25)",
+                            borderRadius: "4px",
+                            justifyContent: "center",
+                            alignContent: "center",
+                            alignItems: "center"
+                          }}
                           onDrop={(acceptedFiles, rejectedFiles) => {
                             let bucket_url = this.props.links.get('bucket');
                             bucket_url = bucket_url.replace('.cern.ch/', '.cern.ch/api/')
@@ -97,8 +107,7 @@ class FileManager extends React.Component {
                             // console.log(rejectedFiles);
 
                             if (acceptedFiles.length > 0) this.props.uploadFile(bucket_url, acceptedFiles[0]);
-                          }}
-                        >
+                          }}>
                           Try dropping some files here, or click to select files to upload.
                         </Dropzone>
                       </Box>
@@ -172,7 +181,7 @@ class FileManager extends React.Component {
               </Tabs>
             </Box>
           </Box>
-        </Article>
+        </Box>
       </Layer> : null
     );
   }
