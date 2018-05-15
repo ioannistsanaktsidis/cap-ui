@@ -44,11 +44,6 @@ class DepositFilesList extends React.Component {
   }
 
   render() {
-    const filesEmptyMessage =
-      this.props.draftId ?
-      "No files attached.." :
-      "No files attached..This project has not yet been initiated. Please save or attach a file";
-
     return (
       <span>
       <FileManager

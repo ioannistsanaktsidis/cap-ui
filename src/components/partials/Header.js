@@ -25,30 +25,31 @@ class Header extends React.Component {
 
   render() {
     return (
-      <GrommetHeader fixed={false}  size="small">
+      <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
         <Box
           flex={true}
-          colorIndex="neutral-1"
           pad={{horizontal: "small"}}
           justify="end"
           direction="row"
           responsive={false}>
-          <Title>
-            <Anchor path="/" label={config.project.name || "Project Name"} />
+          <Title >
+            <Anchor href="#" path="/" label={config.project.name || "Project Name"} />
           </Title>
           <Box flex={true} justify="center" colorIndex="neutral-1-t">
             <SearchBar />
           </Box>
           <Menu pad={{horizontal: "small"}} direction="row" responsive={true}>
             <Anchor path="/drafts/create" label="Create" />
-            <Anchor path="/search" label="Search" />
+            <Anchor href="#" path="/search" label="Search" />
             <Menu responsive={true} icon={<UserIcon />} >
               <Anchor
                 label="Logout"
+                href="#"
                 animateIcon={true}
                 onClick={this.props.logout} />
               <Anchor
                 label="Settings"
+                href="#"
                 animateIcon={true}
                 path="/settings" />
             </Menu>

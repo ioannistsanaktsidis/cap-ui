@@ -51,7 +51,7 @@ class FileList extends React.Component {
     return (
       <List basis="full" flex="true">
         {
-          this.props.files?
+          this.props.files && this.props.files.size > 0 ?
           this.props.files.keySeq().toArray().map((filename) => {
             let file = this.props.files.get(filename)
             return (
@@ -92,8 +92,7 @@ class FileList extends React.Component {
           )
           }) :
           <ListPlaceholder
-            addControl={<Button icon={<AddIcon />} />}
-            emptyMessage="No files have been attached to this deposit."
+            emptyMessage="No files have been attached to this project."
             unfilteredTotal={0}/>
         }
       </List>
