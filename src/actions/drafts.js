@@ -234,13 +234,11 @@ export function uploadFile(bucket_link, file) {
 
     oReq.onreadystatechange = function() {//Call a function when the state changes.
         if(oReq.readyState == XMLHttpRequest.DONE && oReq.status == 200) {
-            console.log("DONNEEEEEE:::", oReq)
             // Request finished. Do processing here.
         }
     }
 
     oReq.addEventListener('error', function(event) {
-      console.log("oReq.addEventListener:::", event)
       dispatch(uploadFileError(file.name, {message: "Error in uploading"} ));
     });
 

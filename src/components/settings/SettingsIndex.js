@@ -11,6 +11,9 @@ import ListItem from 'grommet/components/ListItem';
 import AddIcon from 'grommet/components/icons/base/Add';
 import CloseIcon from 'grommet/components/icons/base/Close';
 
+import Table from 'grommet/components/Table';
+import TableRow from 'grommet/components/TableRow';
+
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
 
 import Form from '../deposit/form/GrommetForm';
@@ -96,32 +99,37 @@ class SettingsIndex extends React.Component {
             !this.props.tokens.isEmpty() ?
 
             <Box colorIndex="light-2">
-            <List colorIndex="light-2">
-              <ListItem key="token_header">
-                <Box flex={true} direction="row">
-                  <Box basis="1/4">id</Box>
-                  <Box basis="1/4">Name</Box>
-                  <Box basis="1/4">Scopes</Box>
-                  <Box basis="1/4">Revoke</Box>
-                </Box>
-              </ListItem>
+            <Table colorIndex="light-2">
+              <thead key="token_header">
+                <tr>
+                  <th>id</th>
+                  <th>Name</th>
+                  <th>Scopes</th>
+                  <th>API key</th>
+                  <th>Revoke</th>
+                </tr>
+              </thead>
+              <tbody>
+
                 {
-                this.props.tokens.map((token, keyy) =>
-                {
-                  return token && token.t_id ?
-                  <ListItem key={token.t_id}>
-                    {
-                      [
-                        <Box basis="1/4">{token.t_id}</Box>,
-                        <Box basis="1/4">{token.name}</Box>,
-                        <Box basis="1/4">{token.scopes}</Box>,
-                        <Box basis="1/4"><Anchor icon={<CloseIcon/>} onClick={this._revokeToken.bind(this, token.t_id, keyy)} /></Box>
-                      ]
-                    }
-                  </ListItem> : null
-                })
+                  this.props.tokens.map((token, keyy) =>
+                  {
+                    return token && token.t_id ?
+                    <TableRow key={token.t_id}>
+                      {
+                        [
+                          <td>{token.t_id}</td>,
+                          <td>{token.name}</td>,
+                          <td>{token.scopes}</td>,
+                          <td>{token.access_token}</td>,
+                          <td><Anchor icon={<CloseIcon/>} onClick={this._revokeToken.bind(this, token.t_id, keyy)} /></td>
+                        ]
+                      }
+                    </TableRow> : null
+                  })
                 }
-            </List>
+              </tbody>
+            </Table>
             </Box> :
             <ListPlaceholder
               label='Add token'
