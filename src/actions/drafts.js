@@ -34,10 +34,13 @@ export const CREATE_DRAFT_REQUEST = 'CREATE_DRAFT_REQUEST';
 export const CREATE_DRAFT_SUCCESS = 'CREATE_DRAFT_SUCCESS';
 export const CREATE_DRAFT_ERROR = 'CREATE_DRAFT_ERROR';
 
-
 export const DELETE_DRAFT_REQUEST = 'DELETE_DRAFT_REQUEST';
 export const DELETE_DRAFT_SUCCESS = 'DELETE_DRAFT_SUCCESS';
 export const DELETE_DRAFT_ERROR = 'DELETE_DRAFT_ERROR';
+
+export const UPDATE_DRAFT_REQUEST = 'UPDATE_DRAFT_REQUEST';
+export const UPDATE_DRAFT_SUCCESS = 'UPDATE_DRAFT_SUCCESS';
+export const UPDATE_DRAFT_ERROR = 'UPDATE_DRAFT_ERROR';
 
 export const BUCKET_ITEM_REQUEST = 'BUCKET_ITEM_REQUEST';
 export const BUCKET_ITEM_SUCCESS = 'BUCKET_ITEM_SUCCESS';
@@ -46,6 +49,8 @@ export const BUCKET_ITEM_ERROR = 'BUCKET_ITEM_ERROR';
 export const UPLOAD_FILE_REQUEST = 'UPLOAD_FILE_REQUEST';
 export const UPLOAD_FILE_SUCCESS = 'UPLOAD_FILE_SUCCESS';
 export const UPLOAD_FILE_ERROR = 'UPLOAD_FILE_ERROR';
+
+export const FORM_DATA_CHANGE = 'FORM_DATA_CHANGE';
 
 export function draftsRequest(){ return { type: DRAFTS_REQUEST }; }
 export function draftsSuccess(drafts) { return { type: DRAFTS_SUCCESS, drafts }; }
@@ -81,6 +86,12 @@ export function toggleLiveValidate() { return { type: TOGGLE_LIVE_VALIDATE }; }
 export function toggleCustomValidation() { return { type: TOGGLE_CUSTOM_VALIDATION }; }
 export function toggleValidate() { return { type: TOGGLE_VALIDATE }; }
 
+export function formDataChange(data) {
+  return {
+    type: FORM_DATA_CHANGE,
+    data
+  }
+}
 export function fetchSchemaRequest() {
   return {
     type: FETCH_SCHEMA_REQUEST
@@ -137,6 +148,27 @@ export function deleteDraftError(error) {
     type: DELETE_DRAFT_ERROR
   }
 };
+
+export function updateDraftRequest() {
+  return {
+    type: UPDATE_DRAFT_REQUEST
+  }
+}
+
+export function updateDraftSuccess(draft_id, draft) {
+  return {
+    type: UPDATE_DRAFT_SUCCESS,
+    draft_id,
+    draft
+  }
+}
+
+export function updateDraftError(error) {
+  return {
+    type: UPDATE_DRAFT_ERROR,
+    error
+  }
+}
 
 // [TOFIX] : update the way to handle schemas
 export function fetchSchema(schema) {
@@ -208,6 +240,22 @@ export function createDraft(data, schema) {
   };
 }
 
+export function updateDraft(data, draft_id, schema) {
+  return dispatch => {
+    dispatch(updateDraftRequest());
+
+    let uri = `/api/deposits/${draft_id}`;
+    data["$schema"] = schema;
+    axios.put(uri, data)
+      .then(function(response){
+        dispatch(updateDraftSuccess(draft_id, response.data));
+      })
+      .catch(function(error) {
+        dispatch(updateDraftError(error));
+      });
+  };
+}
+
 export function publishDraft(draft_id) {
   return dispatch => {
     dispatch(publishDraftRequest());
@@ -239,7 +287,7 @@ export function deleteDraft(draft_id) {
       .catch(function(error) {
         dispatch(deleteDraftError(error));
       });
-  };  
+  };
 }
 
 export function getDraftById(draft_id, fetchSchemaFlag=false) {

@@ -62,7 +62,7 @@ AccordionObjectField.propTypes = {
   required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
-  properties: PropTypes.object,
+  properties: PropTypes.array,
 };
 
 

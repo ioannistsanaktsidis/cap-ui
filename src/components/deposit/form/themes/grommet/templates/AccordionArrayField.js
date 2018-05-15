@@ -40,8 +40,8 @@ class AccordionArrayField extends React.Component {
 
   render() {
     return (
-      <Accordion animate={false} openMulti={false}>
-        <AccordionPanel heading={this.props.header}>string
+      <Accordion key={this.props.header} animate={false} openMulti={false}>
+        <AccordionPanel heading={this.props.header}>
           {
             this.props.items.length > 0 ?
             <Box colorIndex="light-2">
@@ -66,7 +66,7 @@ AccordionArrayField.propTypes = {
   uiSchema: PropTypes.object,
   items: PropTypes.array,
   properties: PropTypes.object,
-  header: PropTypes.string,
+  header: PropTypes.object,
   onAddClick: PropTypes.func,
 };
 

@@ -27,10 +27,6 @@ import AvailableDeposits from '../components/AvailableDeposits';
 class DepositForm extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      formData: {}
-    };
   }
 
   _validate(formData, errors) {

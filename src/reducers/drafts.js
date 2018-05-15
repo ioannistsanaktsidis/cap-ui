@@ -29,7 +29,8 @@ import {
   PUBLISH_DRAFT_ERROR,
   DELETE_DRAFT_REQUEST,
   DELETE_DRAFT_SUCCESS,
-  DELETE_DRAFT_ERROR
+  DELETE_DRAFT_ERROR,
+  FORM_DATA_CHANGE
 } from '../actions/drafts';
 
 const initialState = Map({
@@ -47,6 +48,7 @@ const initialState = Map({
     id: null,
     published_id: null,
     data: null,
+    formData: {},
     files: Map({}),
     loading: false,
     error: null,
@@ -96,6 +98,7 @@ export default function depositReducer(state = initialState, action) {
         .setIn(['current_item', 'loading'], false)
         .setIn(['current_item', 'id'], action.draft_id)
         .setIn(['current_item', 'data'], action.draft.metadata)
+        .setIn(['current_item', 'formData'], action.draft.metadata)
         .setIn(['current_item', 'files'], action.draft.files ? Map(action.draft.files.map(item => ([item.key, item]) ) ) : Map({}))
         .setIn(['current_item', 'links'], Map(action.draft.links));
     case DRAFTS_ITEM_ERROR:
@@ -167,6 +170,9 @@ export default function depositReducer(state = initialState, action) {
       return state
         .setIn(['current_item', 'loading'], false)
         .setIn(['current_item', 'error'], action.error);
+    case FORM_DATA_CHANGE:
+      return state
+        .setIn(['current_item', 'formData'], action.data)
     default:
       return state;
   }
