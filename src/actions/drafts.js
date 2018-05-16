@@ -170,6 +170,23 @@ export function updateDraftError(error) {
   }
 }
 
+// [TOFIX] Plug validation action if needed.
+export function validate(data, schema) {
+  return dispatch => {
+    dispatch(validateRequest());
+    
+    data['$ana_type'] = schema;
+    
+    axios.post('/api/deposit/validator', data)
+      .then(function(response) {
+        dispatch(validateSuccess(respose.data));
+      })
+      .catch(function(error) {
+        dispatch(validateError());
+      })
+  };
+}
+
 // [TOFIX] : update the way to handle schemas
 export function fetchSchema(schema) {
   return dispatch => {
