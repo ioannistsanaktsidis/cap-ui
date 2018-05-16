@@ -16,6 +16,7 @@ import SplitsIcon from 'grommet/components/icons/base/Splits';
 import SaveIcon from 'grommet/components/icons/base/Save';
 import ShareIcon from 'grommet/components/icons/base/Share';
 import TrashIcon from 'grommet/components/icons/base/Trash';
+import RefreshIcon from 'grommet/components/icons/base/Refresh';
 
 import { togglePreviewer, toggleSidebar } from '../../../actions/drafts';
 
@@ -53,10 +54,17 @@ class DepositHeader extends React.Component {
               onClick={this.props.draft_id ? this.props.publishData: null}
             />
             <Button 
-              label='Delete'
+              label="Delete"
               icon={<TrashIcon/>}
               onClick={this.props.draft_id ? this.props.deleteDraft: null}
-              primary={true} 
+              primary={true}
+            />
+            <Button
+              icon={<RefreshIcon/>}
+              plain={true}
+              secondary={true}
+              label="Discard"
+              onClick={this.props.discardData}
             />
           </Box>
         </Box>

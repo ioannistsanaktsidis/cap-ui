@@ -30,6 +30,12 @@ import {
   DELETE_DRAFT_REQUEST,
   DELETE_DRAFT_SUCCESS,
   DELETE_DRAFT_ERROR,
+  DISCARD_DRAFT_REQUEST,
+  DISCARD_DRAFT_SUCCESS,
+  DISCARD_DRAFT_ERROR, 
+  EDIT_PUBLISHED_REQUEST,
+  EDIT_PUBLISHED_SUCCESS,
+  EDIT_PUBLISHED_ERROR,
   FORM_DATA_CHANGE
 } from '../actions/drafts';
 
@@ -167,6 +173,33 @@ export default function depositReducer(state = initialState, action) {
         .setIn(['current_item', 'id'], null)
         .setIn(['current_item', 'data'], null);
     case DELETE_DRAFT_ERROR:
+      return state
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'error'], action.error);
+    case DISCARD_DRAFT_REQUEST:
+      return state
+        .setIn(['current_item', 'loading'], true)
+        .setIn(['current_item', 'error'], false);
+    case DISCARD_DRAFT_SUCCESS:
+      return state
+        .setIn(['current_item', 'id'], action.draft_id)
+        .setIn(['current_item', 'published_id'], null)
+        .setIn(['current_item', 'data'], action.data)
+        .setIn(['current_item', 'formData'], action.data.metadata)
+    case DISCARD_DRAFT_ERROR:
+      return state
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'error'], action.error);
+    case EDIT_PUBLISHED_REQUEST:
+      return state
+        .setIn(['current_item', 'loading'], true)
+        .setIn(['current_item', 'error'], false);
+    case EDIT_PUBLISHED_SUCCESS:
+      return state
+        .setIn(['current_item', 'id'], action.draft_id)
+        .setIn(['current_item', 'published_id'], null)
+        .setIn(['current_item', 'data'], action.draft)
+    case EDIT_PUBLISHED_ERROR:
       return state
         .setIn(['current_item', 'loading'], false)
         .setIn(['current_item', 'error'], action.error);

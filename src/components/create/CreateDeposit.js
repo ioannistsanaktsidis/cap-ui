@@ -15,7 +15,9 @@ import {
   getDraftById,
   publishDraft,
   deleteDraft,
-  updateDraft
+  updateDraft,
+  discardDraft,
+  editPublished
 } from '../../actions/drafts';
 
 import DepositForm from '../deposit/form/Form';
@@ -70,10 +72,12 @@ export class CreateDeposit extends React.Component {
   }
 
   _saveData() {
-    if (this.props.draft_id)
+    if (this.props.draft_id && !this.props.published_id)
       this.props.updateDraft(this.props.formData, this.props.draft_id, this.props.formData.schema || null);
     else if (this.props.match.params.schema_id)
       this.props.createDraft(this.props.formData, this.props.match.params.schema_id);
+    else if (this.props.published_id && this.props.draft_id)
+      this.props.editPublished(this.props.formData, this.props.match.params.schema_id, this.props.draft_id);
   }
 
   _publishData() {
@@ -84,9 +88,12 @@ export class CreateDeposit extends React.Component {
     this.props.deleteDraft(this.props.draft_id);
   }
 
+  _discardData() {
+    this.props.discardDraft(this.props.draft_id);
+  }
+
   render() {
     let _schema = this.props.schema ? transformSchema(this.props.schema):null;
-
     return (
       <Box id="deposit-page" basis="full" flex={true}>
         {
@@ -99,6 +106,7 @@ export class CreateDeposit extends React.Component {
                         saveData={this._saveData.bind(this)}
                         publishData={this._publishData.bind(this)}
                         deleteDraft={this._deleteDraft.bind(this)}
+                        discardData={this._discardData.bind(this)}
                       />
           <Box direction="row" flex={true} wrap={false}>
           <Sidebar draftId={this.props.draft_id} />
@@ -143,6 +151,8 @@ function mapDispatchToProps(dispatch) {
     initForm: () => dispatch(initForm()),
     publishDraft: (draft_id) => dispatch(publishDraft(draft_id)),
     deleteDraft: (draft_id) => dispatch(deleteDraft(draft_id)),
+    discardDraft: (draft_id) => dispatch(discardDraft(draft_id)),
+    editPublished: (data, schema, draft_id) => dispatch(editPublished(data, schema, draft_id)),
     formDataChange: (data) => dispatch(formDataChange(data))
   };
 }

@@ -42,6 +42,10 @@ export const UPDATE_DRAFT_REQUEST = 'UPDATE_DRAFT_REQUEST';
 export const UPDATE_DRAFT_SUCCESS = 'UPDATE_DRAFT_SUCCESS';
 export const UPDATE_DRAFT_ERROR = 'UPDATE_DRAFT_ERROR';
 
+export const DISCARD_DRAFT_REQUEST = 'DISCARD_DRAFT_REQUEST';
+export const DISCARD_DRAFT_SUCCESS = 'DISCARD_DRAFT_SUCCESS';
+export const DISCARD_DRAFT_ERROR = 'DISCARD_DRAFT_ERROR';
+
 export const BUCKET_ITEM_REQUEST = 'BUCKET_ITEM_REQUEST';
 export const BUCKET_ITEM_SUCCESS = 'BUCKET_ITEM_SUCCESS';
 export const BUCKET_ITEM_ERROR = 'BUCKET_ITEM_ERROR';
@@ -49,6 +53,10 @@ export const BUCKET_ITEM_ERROR = 'BUCKET_ITEM_ERROR';
 export const UPLOAD_FILE_REQUEST = 'UPLOAD_FILE_REQUEST';
 export const UPLOAD_FILE_SUCCESS = 'UPLOAD_FILE_SUCCESS';
 export const UPLOAD_FILE_ERROR = 'UPLOAD_FILE_ERROR';
+
+export const EDIT_PUBLISHED_REQUEST = 'EDIT_PUBLISHED_REQUEST';
+export const EDIT_PUBLISHED_SUCCESS = 'EDIT_PUBLISHED_SUCCESS';
+export const EDIT_PUBLISHED_ERROR = 'EDIT_PUBLISHED_ERROR';
 
 export const FORM_DATA_CHANGE = 'FORM_DATA_CHANGE';
 
@@ -167,6 +175,48 @@ export function updateDraftError(error) {
   return {
     type: UPDATE_DRAFT_ERROR,
     error
+    }
+}
+
+export function discardDraftRequest() {
+  return {
+    type: DISCARD_DRAFT_REQUEST
+  }
+}
+
+export function discardDraftSuccess(draft_id, data) {
+  return {
+    type: DISCARD_DRAFT_SUCCESS,
+    draft_id,
+    data
+  }
+}
+
+export function discardDraftError(error) {
+  return {
+    type: DISCARD_DRAFT_ERROR,
+    error
+  }
+}
+
+export function editPublishedRequest() {
+  return {
+    type: EDIT_PUBLISHED_REQUEST
+  }
+}
+
+export function editPublishedSuccess(draft_id, draft) {
+  return {
+    type: EDIT_PUBLISHED_SUCCESS,
+    draft_id,
+    draft
+  }
+}
+
+export function editPublishedError(error) {
+  return {
+    type: EDIT_PUBLISHED_ERROR,
+    error
   }
 }
 
@@ -214,7 +264,7 @@ export function initDraft(schema, project_name) {
 }
 
 // [TOFIX] : Split create draft and combine it with initDraft
-export function createDraft(data, schema) {
+export function createDraft(data={}, schema) {
   return dispatch => {
     dispatch(createDraftRequest());
 
@@ -237,6 +287,27 @@ export function createDraft(data, schema) {
           });
       })
       .catch((error) => dispatch(initDraftError(error)) )
+  };
+}
+
+export function editPublished(data={}, schema, draft_id) {
+  return dispatch => {
+    dispatch(editPublishedRequest());
+
+    let uri = `/api/deposits/${draft_id}/actions/edit`;
+
+    axios.post(uri)
+      .then((response) => {
+        data["$schema"] = schema;
+        axios.put(`/api/deposits/${draft_id}`, data)
+          .then(function(response){
+            dispatch(editPublishedSuccess(draft_id, response.data));
+          })
+          .catch(function(error) {
+            dispatch(editPublishedError(error));
+          });
+      })
+      .catch((error) => dispatch(editPublishedError(error)) )
   };
 }
 
@@ -286,6 +357,22 @@ export function deleteDraft(draft_id) {
       })
       .catch(function(error) {
         dispatch(deleteDraftError(error));
+      });
+  };
+}
+
+export function discardDraft(draft_id) {
+  return dispatch => {
+    dispatch(discardDraftRequest());
+
+    let uri = `/api/deposits/${draft_id}/actions/discard`;
+
+    axios.post(uri)
+      .then(function(response){
+        dispatch(discardDraftSuccess(draft_id, response.data));
+      })
+      .catch(function(error) {
+        dispatch(discardDraftError(error));
       });
   };
 }
