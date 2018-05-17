@@ -21,12 +21,14 @@ export class IndexPage extends React.Component {
   }
 
   render() {
+    let item = this.props.item ? this.props.item.metadata:null;
+    let created = this.props.item ? this.props.item.created:null;
     return (
-      <Box flex={true}>
-        <Box flex={true} colorIndex="neutral-1-a"  align="center">
-          <Section>
+        <Box colorIndex="neutral-1-a" flex={true}  align="center">
+          <Section >
+           {item?
             <Box size="large">
-              <Heading tag="h2"> Published, {this.props.match.params.id}</Heading>
+              <Heading tag="h2">{item.general_title ? item.general_title : item.basic_info.title}</Heading>
               <hr/>
               {
                 this.props.error ?
@@ -36,16 +38,20 @@ export class IndexPage extends React.Component {
                 </Box>: null
               }
               {
-                this.props.item ?
+                item ?
                 <Box>
-                  <Heading tag="h5">Data</Heading>
-                  <div>{JSON.stringify(this.props.item)}</div>
+                  <Heading tag="h5">Description</Heading>
+                  <Heading tag="h5">Started</Heading>
+                  <div>{created}</div>
+                  <Heading tag="h5">Members</Heading>
+                  <Heading tag="h5">Files</Heading>
+                  <Heading tag="h5">JSON</Heading>
+                  <pre>{JSON.stringify(item, null, 2)}</pre>
                 </Box>: null
               }
-            </Box>
+            </Box>:null}
           </Section>
         </Box>
-      </Box>
     );
   }
 }

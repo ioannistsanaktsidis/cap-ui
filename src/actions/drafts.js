@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { replace } from 'react-router-redux'
+import { replace } from 'react-router-redux';
 
 export const TOGGLE_FILEMANAGER_LAYER = 'TOGGLE_FILEMANAGER_LAYER';
 export const TOGGLE_PREVIEWER = 'TOGGLE_PREVIEWER';
@@ -99,7 +99,8 @@ export function formDataChange(data) {
     type: FORM_DATA_CHANGE,
     data
   }
-}
+};
+
 export function fetchSchemaRequest() {
   return {
     type: FETCH_SCHEMA_REQUEST
@@ -354,6 +355,7 @@ export function publishDraft(draft_id) {
       .then(function(response){
         let pid =  response.data.metadata._deposit.pid.value;
         dispatch(publishDraftSuccess(pid, response.data));
+        dispatch(replace(`/published/${pid}`));
       })
       .catch(function(error) {
         dispatch(publishDraftError(error));

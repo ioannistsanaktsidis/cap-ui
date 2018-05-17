@@ -83,7 +83,7 @@ export function initCurrentUser() {
       .catch(function () {
         dispatch(clearAuth());
       });
-  }
+  };
 }
 
 
