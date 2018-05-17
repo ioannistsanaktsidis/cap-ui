@@ -21,7 +21,7 @@ class SearchPage extends React.Component {
   }
 
   _changePage(page){
-    let currentParams = this.getSearchParams();
+    let currentParams = queryString.parse(this.props.location.search);
 
     const location = {
       search: `${queryString.stringify(Object.assign(currentParams,{page: page}))}`
@@ -32,7 +32,7 @@ class SearchPage extends React.Component {
   }
 
   _changePageSize(size){
-    let currentParams = this.getSearchParams();
+    let currentParams = queryString.parse(this.props.location.search);
     const location = {
       search: `${queryString.stringify(Object.assign(currentParams,{size: size}))}`
     };
@@ -45,11 +45,6 @@ class SearchPage extends React.Component {
     if ( this.props.location.search !== nextProps.location.search ) {
       this.props.fetchSearch()
     }
-  }
-
-  getSearchParams() {
-    let params = queryString.parse(this.props.location.search);
-    return params;
   }
 
   render() {
@@ -83,8 +78,8 @@ class SearchPage extends React.Component {
           currentPage={this.props.selectedAggs.page ? parseInt(this.props.selectedAggs.page) : 1}
           size={this.props.selectedAggs.size ? parseInt(this.props.selectedAggs.size) : 10}
           total={total || 0}
-          onPageChange={this._changePage}
-          onPageSizeChange={this._changePageSize}
+          onPageChange={this._changePage.bind(this)}
+          onPageSizeChange={this._changePageSize.bind(this)}
         />
       );
       results = (<SearchResults results={_results.hits.hits || []} />);

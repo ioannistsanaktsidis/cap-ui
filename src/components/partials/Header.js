@@ -1,31 +1,51 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import GrommetHeader from 'grommet/components/Header';
 import Title from 'grommet/components/Title';
-import Box from 'grommet/components/Box'
+import Box from 'grommet/components/Box';
 import Menu from 'grommet/components/Menu';
+import Search from 'grommet/components/Search';
 import Anchor from 'grommet/components/Anchor';
 import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import SearchBar from '../search/SearchBar';
 
 import queryString from 'query-string';
 import UserIcon from 'grommet/components/icons/base/User';
 
-import SearchBar from '../search/SearchBar';
-
+import {fetchSearch} from '../../actions/search';
 import config from '../../config';
 import { logout } from '../../actions/auth';
 
 class Header extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+  }
+
+  _onSearchSubmit(event) {
+    let query = event.target.value;
+    let q = queryString.parse(this.props.history.location.search);
+    q["q"] = query;
+
+    const search_location = {
+      pathname: `/search`,
+      search: `${queryString.stringify(q, {encode:false})}`,
+      from: this.props.match.path
+    };
+
+    this.props.history.push(search_location);
+  }
+
+  getQuery() {
+    let q = queryString.parse(window.location.search, {encode:false});
+    return q["q"] || "";
   }
 
   render() {
+
     return (
-      <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
+      <GrommetHeader fixed={false}  size="small" colorIndex="neutral-1" >
         <Box
           flex={true}
           pad={{horizontal: "small"}}
@@ -52,8 +72,8 @@ class Header extends React.Component {
                 href="#"
                 animateIcon={true}
                 path="/settings" />
-            </Menu>
           </Menu>
+        </Menu>
         </Box>
       </GrommetHeader>
     );
@@ -66,6 +86,7 @@ Header.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
+    fetchSearch: query => dispatch(fetchSearch(query)),
     logout: () => dispatch(logout())
   };
 }

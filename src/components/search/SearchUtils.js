@@ -46,7 +46,8 @@ export default class SearchUtils extends React.Component {
         pad={{horizontal: "small"}}
         justify="between"
         alignContent="center">
-        <Box justify="center">
+
+        <Box justify="center" align="start">
           <span>
             <strong>{this.props.total}</strong> results
           </span>

@@ -14,118 +14,167 @@ import CheckBox from 'grommet/components/CheckBox';
 import FiltersPreview from './components/FiltersPreview';
 
 class SearchFacets extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  _onChange(category, event) {
-    const name = event.target ? event.target.name : null;
-    let currentParams = queryString.parse(this.props.location.search);
-    this._toggleAggs(category, name, currentParams);
-  }
-
-  _toggleAggs(category, name, selectedAggregations) {
-    let _selectedAggregations = Object.assign({},selectedAggregations);
-
-    if (!_selectedAggregations[category]) {
-        _selectedAggregations[category] = [];
+    constructor(props) {
+        super(props);
     }
 
-    if (typeof _selectedAggregations[category] =='string')
-        _selectedAggregations[category] = [_selectedAggregations[category]];
+    _onChange(category, event) {
+        const name = event.target ? event.target.name : null;
+        let currentParams = queryString.parse(this.props.location.search);
+        this._toggleAggs(category, name, currentParams);
+    }
 
-    let index = _selectedAggregations[category].indexOf(name);
+    _toggleAggs(category, name, selectedAggregations) {
+        let _selectedAggregations = Object.assign({},selectedAggregations);
 
-    if ( index == -1 ) _selectedAggregations[category].push(name);
-    else _selectedAggregations[category].splice(index, 1);
+        if (!_selectedAggregations[category]) {
+            _selectedAggregations[category] = [];
+        }
 
-    this.updateHistory(_selectedAggregations);
-  }
+        if (typeof _selectedAggregations[category] =='string')
+            _selectedAggregations[category] = [_selectedAggregations[category]];
 
-  updateHistory(selectedAggs) {
-    let currentParams = queryString.parse(this.props.location.search);
-    const location = {
-      search: `${queryString.stringify(Object.assign(currentParams,selectedAggs))}`
-    };
+        let index = _selectedAggregations[category].indexOf(name);
 
-    this.props.history.replace(location);
-  }
+        if ( index == -1 ) _selectedAggregations[category].push(name);
+        else _selectedAggregations[category].splice(index, 1);
 
-  render() {
-    if (this.props.aggs){
-      let _aggs = this.props.aggs;
+        this.updateHistory(_selectedAggregations);
+    }
 
-      let categories = Object.keys(_aggs);
-      return (
-        <Sidebar full={false} colorIndex="neutral-1-t">
-          <Box flex={true} justify="start">
-            <FiltersPreview aggs={this.props.selectedAggs} />
-            <Menu flex={true} primary={true}>
-              {
-                categories.map((category) => {
-                  return (
-                    <Box pad="small" key={category}>
-                      <Heading
-                        pad="small"
-                        tag="h5"
-                        strong={false}
-                        uppercase={true}
-                        truncate={true}
-                        href="#"
-                        className="active"
-                        label={category}
-                        id={category}
-                        value={category}
-                        >
-                        {category}
-                      </Heading>
-                      <Box size="medium" styles={{maxHeight: "100px"}} pad="none">
-                        {
-                          _aggs[category].buckets
-                            .map((cat_fields) => (
-                              <Box size="medium" key={String(cat_fields.key)} direction="row" justify="between" align="center" wrap={false}>
-                                <Box direction="row" justify="between" align="center" wrap={false}>
-                                  <CheckBox
-                                    label={cat_fields.key}
-                                    key={cat_fields.key}
-                                    name={String(cat_fields.key)}
-                                    pad={{horizontal: "small"}}
-                                    checked={
-                                      this.props.selectedAggs[category] && this.props.selectedAggs[category].indexOf(cat_fields.key) > -1 ? true : false
-                                    }
-                                    onChange={this._onChange.bind(this, category)}/>
-                                </Box>
-                                <Box alignSelf="end">{cat_fields.doc_count}</Box>
-                              </Box>
-                            )
-                          )
-                        }
-                      </Box>
-                    </Box>
-                  );
-              })
+    updateHistory(selectedAggs) {
+        let currentParams = queryString.parse(this.props.location.search);
+        const location = {
+            search: `${queryString.stringify(Object.assign(currentParams,selectedAggs))}`
+        };
+
+        this.props.history.replace(location);
+    }
+
+    isAggSelected(selected, value){
+        if (selected){
+            if (selected.constructor === Array){
+                return selected.indexOf(value) > -1;
+            }else{
+                return selected === value;
             }
-            </Menu>
-          </Box>
-        </Sidebar>
-      );
+        }
+
+        return false;
     }
 
-    return (<div>None</div>);
-  }
+    render() {
+
+        if (this.props.aggs){
+
+            let constructFacets = function(aggs){
+                let facets = {};
+                let keys = Object.keys(aggs).filter(key => {
+                    return typeof aggs[key] === 'object';
+                })
+
+                for(let key of keys){
+                    var obj = {};
+                    if(key.startsWith('facet_')){
+                        obj[key.replace('facet_','')] = 'filtered' in aggs[key] ? aggs[key]['filtered'] : aggs[key];
+                    }else{
+                        obj = constructFacets(aggs[key]);
+                    }
+                    Object.assign(facets, obj);
+                }
+
+                return facets;
+            }
+
+            let facets = constructFacets(this.props.aggs);
+            let categories = Object.keys(facets);
+
+            return (
+                <Sidebar full={false} colorIndex="neutral-1-t">
+                    <Box flex={true} justify="start">
+                        <Menu flex={true} primary={true}>
+                            {
+                                categories.map((category) => {
+                                    return (
+                                        <Box>
+                                            { facets[category].buckets.length > 0 &&
+                                            <Box pad="small" key={category}>
+                                                <Heading
+                                                    pad="small"
+                                                    tag="h5"
+                                                    strong={false}
+                                                    uppercase={true}
+                                                    truncate={true}
+                                                    href="#"
+                                                    className="active"
+                                                    label={category}
+                                                    id={category}
+                                                    value={category}
+                                                >
+                                                    {category}
+                                                </Heading>
+                                                <Box size="medium" styles={{maxHeight: "100px"}} pad="none" direction="column">
+                                                    {
+                                                        facets[category].buckets
+                                                            .map((field) => (
+                                                                <Box>
+                                                                    <Box size="medium" key={String(field.key)} direction="row" justify="between" align="left">
+                                                                        <CheckBox
+                                                                            label={field.key}
+                                                                            key={field.key}
+                                                                            name={String(field.key)}
+                                                                            checked={this.isAggSelected(this.props.selectedAggs[category], field.key) ? true : false}
+                                                                            onChange={this._onChange.bind(this, category)}/>
+                                                                        <Box align="end">{typeof field.doc_count === 'object' ? field.doc_count.doc_count : field.doc_count}</Box>
+                                                                    </Box>
+                                                                    <Box margin={{left: "small"}}>
+                                                                        {   this.isAggSelected(this.props.selectedAggs[category], field.key) &&
+                                                                            Object.keys(field).filter(key => key.startsWith('facet_')).map((key) => {
+                                                                                return field[key].buckets.map((nested_field) => (
+                                                                                    <Box size="medium" key={String(nested_field.key)} direction="row" justify="between" align="left">
+                                                                                        <CheckBox
+                                                                                            label={nested_field.key}
+                                                                                            key={nested_field.key}
+                                                                                            name={String(nested_field.key)}
+                                                                                            checked={this.isAggSelected(this.props.selectedAggs[key.replace('facet_','')], nested_field.key) ? true : false}
+                                                                                            onChange={this._onChange.bind(this, key.replace('facet_',''))}/>
+                                                                                        <Box align="end">{typeof nested_field.doc_count === 'object' ? nested_field.doc_count.doc_count : nested_field.doc_count}</Box>
+                                                                                    </Box>
+                                                                                )) 
+                                                                            })
+                                                                        }
+                                                                    </Box>
+                                                                </Box>
+                                                            ))
+                                                    }
+                                                </Box>
+                                            </Box>
+                                            }
+                                        </Box>
+                                    );
+                                })
+                            }
+                        </Menu>
+                    </Box>
+                </Sidebar>
+            );
+        }
+
+        return (<div>None</div>);
+    }
 }
 
 SearchFacets.propTypes = {
-  aggs: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  selectedAggs: PropTypes.object.isRequired
+    aggs: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    selectedAggs: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
-  return {
-    selectedAggs: state.search.getIn(['selectedAggs'])
-  };
+    return {
+        selectedAggs: state.search.getIn(['selectedAggs'])
+    };
 }
 
 export default withRouter(connect(mapStateToProps)(SearchFacets));
