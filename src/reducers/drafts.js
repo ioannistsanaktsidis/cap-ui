@@ -39,6 +39,12 @@ import {
   UPDATE_DRAFT_REQUEST,
   UPDATE_DRAFT_SUCCESS,
   UPDATE_DRAFT_ERROR,
+  PERMISSIONS_ITEM_REQUEST,
+  PERMISSIONS_ITEM_SUCCESS,
+  PERMISSIONS_ITEM_ERROR,
+  USERS_ITEM_REQUEST,
+  USERS_ITEM_SUCCESS,
+  USERS_ITEM_ERROR,
   FORM_DATA_CHANGE
 } from '../actions/drafts';
 
@@ -62,7 +68,8 @@ const initialState = Map({
     loading: false,
     message: null,
     error: null,
-    links: null
+    links: null,
+    permissions: {},
   })
 });
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
@@ -228,6 +235,30 @@ export default function depositReducer(state = initialState, action) {
       return state
         .setIn(['current_item', 'loading'], false)
         .setIn(['current_item', 'error'], action.error);
+    case PERMISSIONS_ITEM_REQUEST:
+      return state
+        .setIn(['current_item', 'loading'], true)
+        .setIn(['current_item', 'error'], false);
+    case PERMISSIONS_ITEM_SUCCESS:
+      return state
+        .setIn(['current_item', 'permissions'], action.permissions)
+    case PERMISSIONS_ITEM_ERROR:
+      return state
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'error'], action.error);
+    // CONSIDER MOVING TO ANOTHER COMPONENT
+    case USERS_ITEM_REQUEST:
+      return state
+        .set('loading', true)
+        .set('error', null); ; 
+    case USERS_ITEM_SUCCESS:
+      return state
+        .set('loading', false)
+        .set('users', action.users); 
+    case USERS_ITEM_ERROR:
+      return state
+        .set('loading', false)
+        .set('error', action.error); 
     case FORM_DATA_CHANGE:
       return state
         .setIn(['current_item', 'formData'], action.data)

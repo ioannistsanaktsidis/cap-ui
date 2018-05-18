@@ -93,7 +93,7 @@ export class CreateDeposit extends React.Component {
   }
 
   render() {
-    let _schema = this.props.schema ? transformSchema(this.props.schema):null;
+    let _schema = this.props.schema ? transformSchema(this.props.schema):null; 
     return (
       <Box id="deposit-page"  flex={true}>
         {

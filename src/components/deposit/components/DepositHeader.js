@@ -22,8 +22,21 @@ import ViewIcon from 'grommet/components/icons/base/View';
 import MoreIcon from 'grommet/components/icons/base/More';
 import Spinning from 'grommet/components/icons/Spinning';
 import Status from 'grommet/components/icons/Status';
+import SettingsOptionIcon from 'grommet/components/icons/base/SettingsOption';
+import {withRouter} from 'react-router';
 
 import { togglePreviewer, toggleSidebar } from '../../../actions/drafts';
+
+const SettingsAnchor = withRouter(({ history, draft_id=draft_id }) => (
+        <Anchor
+          icon={<SettingsOptionIcon/>}
+          plain={true}
+          secondary={true}
+          label="Settings"
+          onClick={() => history.push(`/drafts/${draft_id}/settings`)} 
+        />
+    ))
+
 
 class DepositHeader extends React.Component {
   constructor(props) {
@@ -81,6 +94,8 @@ class DepositHeader extends React.Component {
               justify="center"
               align="center"
               inline={true}>
+              {this.props.draft_id ?
+                <SettingsAnchor draft_id={this.props.draft_id} />:null}
               <Anchor
                 icon={<ShareIcon/>}
                 plain={true}

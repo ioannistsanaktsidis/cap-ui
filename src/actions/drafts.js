@@ -58,6 +58,15 @@ export const EDIT_PUBLISHED_REQUEST = 'EDIT_PUBLISHED_REQUEST';
 export const EDIT_PUBLISHED_SUCCESS = 'EDIT_PUBLISHED_SUCCESS';
 export const EDIT_PUBLISHED_ERROR = 'EDIT_PUBLISHED_ERROR';
 
+
+export const PERMISSIONS_ITEM_REQUEST = 'PERMISSIONS_ITEM_REQUEST';
+export const PERMISSIONS_ITEM_SUCCESS = 'PERMISSIONS_ITEM_SUCCESS';
+export const PERMISSIONS_ITEM_ERROR = 'PERMISSIONS_ITEM_ERROR';
+
+export const USERS_ITEM_REQUEST = 'USERS_ITEM_REQUEST';
+export const USERS_ITEM_SUCCESS = 'USERS_ITEM_SUCCESS';
+export const USERS_ITEM_ERROR = 'USERS_ITEM_ERROR';
+
 export const FORM_DATA_CHANGE = 'FORM_DATA_CHANGE';
 
 export function draftsRequest(){ return { type: DRAFTS_REQUEST }; }
@@ -217,6 +226,46 @@ export function editPublishedSuccess(draft_id, draft) {
 export function editPublishedError(error) {
   return {
     type: EDIT_PUBLISHED_ERROR,
+    error
+  }
+}
+
+export function permissionsItemRequest() {
+  return {
+    type: PERMISSIONS_ITEM_REQUEST
+  }
+}
+
+export function permissionsItemSuccess(permissions) {
+  return {
+    type: PERMISSIONS_ITEM_SUCCESS,
+    permissions
+  }
+}
+
+export function permissionsItemError(error) {
+  return {
+    type: PERMISSIONS_ITEM_ERROR,
+    error
+  }
+}
+
+export function usersItemRequest() {
+  return {
+    type: USERS_ITEM_REQUEST
+  }
+}
+
+export function usersItemSuccess(users) {
+  return {
+    type: USERS_ITEM_SUCCESS,
+    users
+  }
+}
+
+export function usersItemError(error) {
+  return {
+    type: USERS_ITEM_ERROR,
     error
   }
 }
@@ -472,6 +521,84 @@ export function uploadFile(bucket_link, file) {
     oReq.send(file);
   };
 }
+
+export function getPermissions(draft_id) {
+  return function (dispatch) {
+    dispatch(permissionsItemRequest);
+
+    let uri = `/api/deposits/${draft_id}`;
+
+    axios.get(uri)
+      .then(function(response) {
+        dispatch(permissionsItemSuccess(response.data.access));
+      })
+      .catch(function (error) {
+        dispatch(permissionsItemError(error));
+      });
+  }
+}
+
+export function removePermissions(draft_id, email, action) {
+  return function (dispatch) {
+    dispatch(permissionsItemRequest);
+    let data = _get_permissions_data(action, email, 'remove')
+    let uri = `/api/deposits/${draft_id}/actions/permissions`;
+    axios.post(uri, data)
+      .then(function(response) {
+        dispatch(permissionsItemSuccess(response.data.access));
+      })
+      .catch(function (error) {
+        dispatch(permissionsItemError(error));
+      });
+  }
+}
+
+export function addPermissions(draft_id, email, action) {
+  return function (dispatch) {
+    dispatch(permissionsItemRequest);
+    let data = _get_permissions_data(action, email, 'add')
+    let uri = `/api/deposits/${draft_id}/actions/permissions`;
+    axios.post(uri, data)
+      .then(function(response) {
+        dispatch(permissionsItemSuccess(response.data.access));
+      })
+      .catch(function (error) {
+        dispatch(permissionsItemError(error));
+      });
+  }
+}
+
+function _get_permissions_data(action, email,  operation) {
+  return {
+      "permissions": [
+          {
+              "type": "user",
+              "identity": `${email}`,
+              "permissions": [{'action': `${action}`,
+                                'op': `${operation}`}]
+          }
+      ]
+  }
+};
+
+
+export function getUsers() {
+  return function (dispatch) {
+    dispatch(usersItemRequest);
+    axios.get('/api/users')
+    .then(function (response) {
+      let users = response.data.hits.hits.map(item => ({email:item.email}));
+      dispatch(usersItemSuccess(users));
+    })
+    .catch(function (error) {
+      dispatch(usersItemError(error));
+    });
+  }
+};
+
+
+
+
 // export function uploadFile(bucket_link, file) {
 //   return function (dispatch) {
 //     dispatch(draftsItemRequest());
