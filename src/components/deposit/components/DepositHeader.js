@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Header,
+  Label,
   Menu
 } from 'grommet';
 
@@ -17,6 +18,10 @@ import SaveIcon from 'grommet/components/icons/base/Save';
 import ShareIcon from 'grommet/components/icons/base/Share';
 import TrashIcon from 'grommet/components/icons/base/Trash';
 import RefreshIcon from 'grommet/components/icons/base/Refresh';
+import ViewIcon from 'grommet/components/icons/base/View';
+import MoreIcon from 'grommet/components/icons/base/More';
+import Spinning from 'grommet/components/icons/Spinning';
+import Status from 'grommet/components/icons/Status';
 
 import { togglePreviewer, toggleSidebar } from '../../../actions/drafts';
 
@@ -25,48 +30,92 @@ class DepositHeader extends React.Component {
     super(props);
   }
 
+  // getStatusBar() {
+  //   if (this.props.loading ) {
+  //     return [
+  //       <Spinning colorIndex="neutral-1" />,
+  //       this.props.message && this.props.message.msg
+  //     ];
+  //   }
+  //   else if (this.props.message){
+  //     return [
+  //       <Status value={this.props.message.status} />,
+  //       this.props.message && this.props.message.msg
+  //     ]
+  //   }
+
+  // }
+
   render() {
     return (
       <Header flex={true} size="small" pad="none" colorIndex="neutral-1-a">
         <Box flex={true}  direction="row" justify="between" align="center">
-          <Box pad="small">{this.props.draftId} - {this.props.selectedSchema}</Box>
-          <Box align="center" flex={true} >{(this.props.selectedSchema)}</Box>
-          <Box colorIndex="neutral-1-a" direction="row">
-            <Menu responsive={true}
+          <Box justify="start" align="center" direction="row">
+            <Menu responsive={false}
               label="Layout"
-              size="small"
               inline={false}>
-              <Anchor icon={<SplitIcon/>} onClick={this.props.showPreviewer} />
-              <Anchor icon={<SplitsIcon/>} onClick={this.props.showSidebar} />
+              <Anchor label="Files" onClick={this.props.showPreviewer} />
+              <Anchor label="Previewer" onClick={this.props.showSidebar} />
             </Menu>
-            <Button
-              icon={<SaveIcon/>}
-              plain={true}
-              primary={true}
-              label="Save"
-              onClick={this.props.saveData}
-            />
-            <Button
-              icon={<ShareIcon/>}
-              plain={true}
-              secondary={true}
-              label="Share"
-              onClick={this.props.draft_id ? this.props.publishData: null}
-            />
-            <Button 
-              label="Delete"
-              icon={<TrashIcon/>}
-              onClick={this.props.draft_id ? this.props.deleteDraft: null}
-              primary={true}
-            />
-            <Button
-              icon={<RefreshIcon/>}
-              plain={true}
-              secondary={true}
-              label="Discard"
-              onClick={this.props.discardData}
-            />
           </Box>
+          <Box pad="small" flex={true} align="center" justify="center" direction="row" wrap={false}>
+            {this.props.draftId} - {this.props.selectedSchema}
+            {
+              this.props.message &&
+              <Box direction="row" pad={{horizontal: "small"}} align="center" justify="between">
+              {[
+                this.props.loading ?
+                <Spinning colorIndex="neutral-1" /> :
+                <Status value={this.props.message.status} />,
+                this.props.message && <Box pad={{horizontal: "small"}}><Label  size="small">{this.props.message.msg}</Label></Box>
+              ]}
+              </Box>
+            }
+          </Box>
+          <Box flex={false} >
+            <Menu responsive={true}
+              fill={true}
+              label="Layout"
+              direction="row"
+
+              justify="center"
+              align="center"
+              inline={true}>
+              <Anchor
+                icon={<ShareIcon/>}
+                plain={true}
+                secondary={true}
+                label="Share"
+                onClick={this.props.draft_id ? this.props.publishData: null}
+              />
+              <Anchor
+                icon={<SaveIcon/>}
+                plain={true}
+                label="Save"
+                onClick={this.props.saveData}
+              />
+              <Menu responsive={true}
+                icon={<MoreIcon />}
+
+                justify="center"
+                inline={false}>
+                  <Anchor
+                    label="Delete"
+                    icon={<TrashIcon/>}
+                    onClick={this.props.draft_id ? this.props.deleteDraft: null}
+                    primary={true}
+                  />
+                  <Anchor
+                    icon={<RefreshIcon/>}
+                    plain={true}
+                    secondary={true}
+                    label="Discard"
+                    onClick={this.props.discardData}
+                  />
+
+              </Menu>
+            </Menu>
+        </Box>
         </Box>
       </Header>
     );
@@ -85,6 +134,8 @@ function mapStateToProps(state) {
   return {
     selectedSchema: state.drafts.get("selectedSchema"),
     draft_id: state.drafts.getIn(['current_item', 'id']),
+    loading: state.drafts.getIn(['current_item', 'loading']),
+    message: state.drafts.getIn(['current_item', 'message']),
   };
 }
 

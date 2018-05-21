@@ -37,24 +37,23 @@ export function createTokenError(error) { return { type: CREATE_TOKEN_ERROR, err
 export function revokeTokenSuccess(token) { return { type: REVOKE_TOKEN_SUCCESS, token }; }
 export function revokeTokenError(error) { return { type: REVOKE_TOKEN_ERROR, error }; }
 
-export function loginLocalUser() {
+export function loginLocalUser(data) {
   return function (dispatch) {
     dispatch(loginRequest());
 
-    let uri = '/api/login_app';
+    let uri = '/api/login/local';
 
-    axios.post(uri, {})
+    axios.post(uri, data)
       .then(function (response) {
         let token = '12345';
+
         localStorage.setItem('token', token);
 
         dispatch(loginSuccess({
           userId: response.data,
           token: token,
           profile: {
-            name: "John",
-            lastname: "Doe",
-            email: "john.doe@cern.ch"
+            email: response.data
           }
         }));
       })
@@ -99,7 +98,7 @@ export function logout() {
   return function (dispatch) {
     dispatch(logoutRequest());
 
-    axios.get('/api/logout/')
+    axios.get('/api/logout')
       .then(function () {
         localStorage.clear();
         dispatch(logoutSuccess());

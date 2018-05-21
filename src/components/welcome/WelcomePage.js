@@ -55,7 +55,7 @@ class WelcomePage extends React.Component {
                 <hr/>
                 {
                   process.env.NODE_ENV === 'development' ?
-                  <LoginForm onSubmit={this.props.loginLocalUser} /> : null
+                  <LoginForm usernameType="email" defaultValues={{username: "info@inveniosoftware.org"}} onSubmit={this.props.loginLocalUser.bind(this) } /> : null
                 }
               </Box>
             </Box>
@@ -80,7 +80,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loginLocalUser: () => dispatch(loginLocalUser())
+    loginLocalUser: (data) => dispatch(loginLocalUser(data))
   };
 }
 

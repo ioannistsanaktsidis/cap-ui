@@ -225,9 +225,9 @@ export function editPublishedError(error) {
 export function validate(data, schema) {
   return dispatch => {
     dispatch(validateRequest());
-    
+
     data['$ana_type'] = schema;
-    
+
     axios.post('/api/deposit/validator', data)
       .then(function(response) {
         dispatch(validateSuccess(respose.data));
@@ -266,9 +266,11 @@ export function fetchSchema(schema) {
 
 export function initDraft(schema, project_name) {
   return function (dispatch) {
+    dispatch(createDraftRequest());
     let data = {
       "general_title": project_name,
-      "$schema": `https://analysispreservation.cern.ch/schemas/deposits/records/${schema}-v0.0.1.json`
+      "$ana_type": schema,
+      // "$schema": `https://analysispreservation.cern.ch/schemas/deposits/records/${schema}-v0.0.1.json`
     };
 
     axios.post('/api/deposits/', data)
@@ -401,7 +403,11 @@ export function getDraftById(draft_id, fetchSchemaFlag=false) {
     dispatch(draftsItemRequest());
 
     let uri = `/api/deposits/${draft_id}`;
-    axios.get(uri)
+    axios.get(uri, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
       .then(function (response) {
         let url;
         if (fetchSchemaFlag && response.data.metadata.$schema) {
@@ -437,7 +443,7 @@ export function getBucketById(bucket_id) {
 export function uploadFile(bucket_link, file) {
   return function (dispatch) {
     dispatch(uploadFileRequest(file.name));
-    bucket_link = bucket_link.replace('http:', 'https:');
+    bucket_link = '/api/files/'+bucket_link.split('/files/')[1];
     let uri = `${bucket_link}/${file.name}`;
 
     let oReq = new XMLHttpRequest();

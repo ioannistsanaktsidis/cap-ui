@@ -41,7 +41,7 @@ class Header extends React.Component {
           <Menu pad={{horizontal: "small"}} direction="row" responsive={true}>
             <Anchor path="/drafts/create" label="Create" />
             <Anchor href="#" path="/search" label="Search" />
-            <Menu responsive={true} icon={<UserIcon />} >
+            <Menu colorIndex="neutral-1" responsive={true} icon={<UserIcon />} >
               <Anchor
                 label="Logout"
                 href="#"

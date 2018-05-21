@@ -28,25 +28,6 @@ import FileList from './FileList';
 
 import Dropzone from 'react-dropzone';
 
-const FileManagerDropzone = () => {
-  return (
-    <Box flex={true} >
-      <Dropzone
-        onDrop={(acceptedFiles, rejectedFiles) => {
-          console.log("Dropped some files:::");
-          console.log(acceptedFiles);
-          console.log(rejectedFiles);
-
-          if (acceptedFiles.length > 0) this.props.uploadFile(acceptedFiles[0]);
-        }}
-      >
-        Try dropping some files here, or click to select files to upload.
-      </Dropzone>
-    </Box>
-  );
-};
-
-
 class FileManager extends React.Component {
   constructor(props) {
     super(props);

@@ -32,10 +32,13 @@ import {
   DELETE_DRAFT_ERROR,
   DISCARD_DRAFT_REQUEST,
   DISCARD_DRAFT_SUCCESS,
-  DISCARD_DRAFT_ERROR, 
+  DISCARD_DRAFT_ERROR,
   EDIT_PUBLISHED_REQUEST,
   EDIT_PUBLISHED_SUCCESS,
   EDIT_PUBLISHED_ERROR,
+  UPDATE_DRAFT_REQUEST,
+  UPDATE_DRAFT_SUCCESS,
+  UPDATE_DRAFT_ERROR,
   FORM_DATA_CHANGE
 } from '../actions/drafts';
 
@@ -57,6 +60,7 @@ const initialState = Map({
     formData: {},
     files: Map({}),
     loading: false,
+    message: null,
     error: null,
     links: null
   })
@@ -114,10 +118,12 @@ export default function depositReducer(state = initialState, action) {
     case CREATE_DRAFT_REQUEST:
       return state
         .setIn(['current_item', 'loading'], true)
+        .setIn(['current_item', 'message'], { msg: "Creating.."})
         .setIn(['current_item', 'error'], null);
     case CREATE_DRAFT_SUCCESS:
       return state
         .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'message'], { status: "ok" , msg: "Created!"})
         .setIn(['current_item', 'error'], null)
         .setIn(['current_item', 'id'], action.draft_id)
         .setIn(['current_item', 'data'], action.draft)
@@ -125,14 +131,33 @@ export default function depositReducer(state = initialState, action) {
     case CREATE_DRAFT_ERROR:
       return state
         .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'message'], { status: "critical" , msg: "Error while creating.."});
+    case UPDATE_DRAFT_REQUEST:
+      return state
+        .setIn(['current_item', 'loading'], true)
+        .setIn(['current_item', 'message'], { msg: "Updating.."});
+    case UPDATE_DRAFT_SUCCESS:
+      return state
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'message'], { status: "ok" , msg: "Saved!"});
+    case UPDATE_DRAFT_ERROR:
+      return state
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'message'], { status: "critical" , msg: "Error while updating.."});
     case INIT_DRAFT_SUCCESS:
       return state
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'message'], { status: "ok" , msg: "Created!"})
+        .setIn(['current_item', 'error'], null)
         .setIn(['current_item', 'id'], action.draft_id)
         .setIn(['current_item', 'data'], action.draft)
+        // .setIn(['current_item', 'formData'], action.draft)
         .setIn(['current_item', 'links'], Map(action.draft.links));
     case INIT_DRAFT_ERROR:
       return state
-        .setIn(['current_item', 'error'], action.error);
+        .setIn(['current_item', 'error'], action.error)
+        .setIn(['current_item', 'loading'], false)
+        .setIn(['current_item', 'message'], { status: "critical" , msg: "Error while creating.."});
     case INIT_FORM:
       return state
         .set('current_item', Map({

@@ -73,11 +73,11 @@ export class CreateDeposit extends React.Component {
 
   _saveData() {
     if (this.props.draft_id && !this.props.published_id)
-      this.props.updateDraft(this.props.formData, this.props.draft_id, this.props.formData.schema || null);
+      this.props.updateDraft({ ...this.props.formData, $search: this.props.draft.$search }, this.props.draft_id, this.props.formData.schema || null);
     else if (this.props.match.params.schema_id)
       this.props.createDraft(this.props.formData, this.props.match.params.schema_id);
     else if (this.props.published_id && this.props.draft_id)
-      this.props.editPublished(this.props.formData, this.props.match.params.schema_id, this.props.draft_id);
+      this.props.editPublished({ ...this.props.formData, $search: this.props.draft.$search }, this.props.match.params.schema_id, this.props.draft_id);
   }
 
   _publishData() {
@@ -95,7 +95,7 @@ export class CreateDeposit extends React.Component {
   render() {
     let _schema = this.props.schema ? transformSchema(this.props.schema):null;
     return (
-      <Box id="deposit-page" basis="full" flex={true}>
+      <Box id="deposit-page"  flex={true}>
         {
           this.props.error?
           <Toast status="critical">
@@ -108,21 +108,21 @@ export class CreateDeposit extends React.Component {
                         deleteDraft={this._deleteDraft.bind(this)}
                         discardData={this._discardData.bind(this)}
                       />
-          <Box direction="row" flex={true} wrap={false}>
-          <Sidebar draftId={this.props.draft_id} />
-          {
-            this.props.schema ?
-            <DepositForm
-              formData={this.props.formData}
-              schema={_schema}
-              uiSchema={this.props.uiSchema || {}}
-              onChange={(change) => {
-                // console.log("CHANGE::",change);
-                this.props.formDataChange(change.formData);
-              }}
-            /> : null
-          }
-          <Previewer data={this.props.formData || {}}/>
+          <Box direction="row" justify="between" flex={true} wrap={false}>
+            <Sidebar draftId={this.props.draft_id} />
+            {
+              this.props.schema ?
+              <DepositForm
+                formData={this.props.formData}
+                schema={_schema}
+                uiSchema={this.props.uiSchema || {}}
+                onChange={(change) => {
+                  // console.log("CHANGE::",change);
+                  this.props.formDataChange(change.formData);
+                }}
+              /> : null
+            }
+            <Previewer data={this.props.formData || {}}/>
           </Box>
       </Box>
     );
@@ -137,6 +137,7 @@ function mapStateToProps(state) {
     uiSchema: state.drafts.get('uiSchema'),
     error: state.drafts.getIn(['current_item', 'error']),
     draft_id: state.drafts.getIn(['current_item', 'id']),
+    draft: state.drafts.getIn(['current_item', 'data']),
     published_id: state.drafts.getIn(['current_item', 'published_id']),
     formData: state.drafts.getIn(['current_item', 'formData'])
   };

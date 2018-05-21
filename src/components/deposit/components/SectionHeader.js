@@ -13,7 +13,7 @@ export default function SectionHeader(props) {
       justify="center"
       alignContent="center"
       size="small"
-      colorIndex="neutral-1-t"
+      colorIndex="grey-4"
       pad="none">
       <Box flex={true}
         justify="between"
