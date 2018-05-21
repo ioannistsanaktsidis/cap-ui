@@ -11,7 +11,26 @@ import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../webpack.config.dev';
 
+
 const bundler = webpack(config);
+
+// *********************************************
+// **** DEV non-Docker - proxy to backend   ****
+// *********************************************
+//
+// var httpProxy = require('http-proxy');
+// var proxy = httpProxy.createProxyServer({
+//    target: 'http://localhost:5000/'
+//  });
+//
+// var proxyMiddleware = function(req, res, next) {
+//    if (req.url.indexOf('api') != -1) {
+//      req.url = req.url.replace('/api/', '/');
+//      proxy.web(req, res);
+//    } else {
+//      next();
+//    }
+// };
 
 // Run Browsersync and use middleware for Hot Module Replacement
 browserSync({
@@ -54,6 +73,10 @@ browserSync({
       // bundler should be the same as above
       webpackHotMiddleware(bundler),
 
+      // *********************************************
+      // **** DEV non-Docker - proxy to backend   ****
+      // *********************************************
+      // proxyMiddleware
     ],
     cors: true
   },
