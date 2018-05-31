@@ -22,9 +22,11 @@ import {
   Toast
 } from 'grommet';
 
-import { toggleFilemanagerLayer, initDraft, uploadFile } from '../../../actions/drafts';
+import { toggleFilemanagerLayer, initDraft, uploadFile, grabFile } from '../../../actions/drafts';
 
 import FileList from './FileList';
+
+import CleanForm from '../form/CleanForm';
 
 import Dropzone from 'react-dropzone';
 
@@ -94,11 +96,18 @@ class FileManager extends React.Component {
                       </Box>
                     </Box>
                     <Heading tag="h5" strong={true}>Upload from URL</Heading>
-                    <Box>
-                      <FormField
-                        label="URL to upload">
-                        <TextInput />
-                      </FormField>
+                    <Box flex={true} size={{height: {min: "large"}}}>
+                    <CleanForm 
+                      schema={{type:"string"}}
+                      onSubmit={(data) => {
+                        this.props.grabFile(this.props.draft_id, data.formData) 
+                      }}
+                      >
+                      <Button label='Submit'
+                        type='submit'
+                        primary={true}
+                      />
+                    </CleanForm>
                     </Box>
                   </Box>
                 </Tab>
@@ -176,7 +185,8 @@ FileManager.propTypes = {
 function mapStateToProps(state) {
   return {
     activeLayer: state.drafts.get("fileManagerActiveLayer"),
-    links: state.drafts.getIn(['current_item','links'])
+    links: state.drafts.getIn(['current_item','links']),
+    draft_id: state.drafts.getIn(['current_item', 'id'])
   };
 }
 
@@ -184,7 +194,8 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
     initDraft: (schema, title) => dispatch(initDraft(schema, title)),
-    uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file))
+    uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file)),
+    grabFile: (draft_id, url) => dispatch(grabFile(draft_id, url))
   };
 }
 

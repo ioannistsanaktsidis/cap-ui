@@ -522,6 +522,24 @@ export function uploadFile(bucket_link, file) {
   };
 }
 
+export function grabFile(draft_id, urlToGrab) {
+  console.log("DRAFT ID IS: ",draft_id);
+  console.log("URL TO GRAB: ",urlToGrab);
+  return dispatch => {
+    dispatch(uploadFileRequest(urlToGrab));
+
+    let uri = `/api/deposits/${draft_id}/actions/grab`;
+    let data = { url: urlToGrab}
+    axios.post(uri, data)
+      .then(function(response){
+        dispatch(uploadFileSuccess(urlToGrab, response.data));
+      })
+      .catch(function(error) {
+        dispatch(uploadFileError(urlToGrab, error.message));
+      });
+  };
+}
+
 export function getPermissions(draft_id) {
   return function (dispatch) {
     dispatch(permissionsItemRequest);
